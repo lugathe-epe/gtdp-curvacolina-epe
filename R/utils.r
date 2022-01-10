@@ -23,14 +23,40 @@
 #' 
 #' @export
 
-geragrade <- function(colina, nhl, npot) {
+geragrade <- function(colina, nhl, npot) UseMethod("geragrade", colina)
 
-    grade <- expand.grid(
-        hl  = colina$CC[, seq(min(hl),  max(hl),  length.out = nhl)],
-        pot = colina$CC[, seq(min(pot), max(pot), length.out = npot)]
-    )
+#' @export
+
+geragrade.data.table <- function(colina, nhl, npot) {
+
+    if(any(is.na(colina))) {
+        grade <- data.frame(hl = NA, pot = NA)
+    } else {
+        grade <- expand.grid(
+            hl  = colina[, seq(min(hl),  max(hl),  length.out = nhl)],
+            pot = colina[, seq(min(pot), max(pot), length.out = npot)]
+        )
+    }
 
     grade <- as.data.table(grade)
+
+    return(grade)
+}
+
+#' @export
+
+geragrade.data.frame <- function(colina, nhl, npot) {
+
+    grade <- geragrade.data.table(as.data.table(colina), nhl, npot)
+
+    return(grade)
+}
+
+#' @export
+
+geragrade.curvacolina <- function(colina, nhl, npot) {
+
+    grade <- geragrade(colina$CC, nhl, npot)
 
     return(grade)
 }
