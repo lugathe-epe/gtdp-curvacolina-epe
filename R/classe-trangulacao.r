@@ -35,6 +35,10 @@ print.triangulacao <- function(x, ...) {
     summary(x$colina)
 }
 
+#' Extracao Da Colina Original Em Objetos \code{triangulacao}
+
+getcolina.triangulacao <- function(object) object$colina
+
 # METODOS ------------------------------------------------------------------------------------------
 
 #' Amostragem De Pontos Na Triangulacao

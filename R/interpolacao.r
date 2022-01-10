@@ -71,6 +71,14 @@ new_interpolador <- function(interp, metodo) {
     return(obj)
 }
 
+#' Generica Para Extrair Colina Original do Ajuste
+#' 
+#' Extrai o dado ajustado corretamente dependendo do tipo de modelo. Funcao interna
+
+getcolina <- function(object) UseMethod("getcolina")
+
+getcolina.interpolador <- function(object) getcolina(object$mod)
+
 # METODOS ------------------------------------------------------------------------------------------
 
 #' Previsao Com Modelos Interpoladores
