@@ -62,6 +62,7 @@ interp <- predict(interp_tri, pontos)
 }
 \seealso{
 Other interpolador: 
+\code{\link{plot.interpolador}()},
 \code{\link{predict.interpolador}()}
 }
 \concept{interpolador}

@@ -23,6 +23,7 @@ Metodo para interpolar curva colina a partir de um objeto gerado por \code{inter
 }
 \seealso{
 Other interpolador: 
-\code{\link{interpolador}()}
+\code{\link{interpolador}()},
+\code{\link{plot.interpolador}()}
 }
 \concept{interpolador}
