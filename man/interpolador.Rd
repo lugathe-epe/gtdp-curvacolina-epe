@@ -48,7 +48,7 @@ selecionados.
 
 O argumento \code{...} so tem uso quando \code{metodo} corresponde a uma suavizacao por splines.
 Nestes casos, \code{...} pode conter qualquer um dos argumentos passados ao construtor do modelo,
-isto, e, tipo de spline (\code{bs}) e dimensao da base (\code{k}). Ver (\link[mgcv]{\code{te}}).
+isto, e, tipo de spline (\code{bs}) e dimensao da base (\code{k}). Ver (\code{\link[mgcv]{te}}).
 }
 \examples{
 

@@ -2,8 +2,8 @@
 
 #' Objeto \code{curvacolina} Exemplo
 #' 
-#' Exemplo de objeto retornado por uma das funcoes de leitura \link{\code{leaeqcolina}} ou 
-#' \link{\code{leaeqprocit}}
+#' Exemplo de objeto retornado por uma das funcoes de leitura \code{\link{leaeqcolina}} ou 
+#' \code{\link{leaeqprocit}}
 #' 
 #' @format Lista de um elemento chamado \code{CC}, um data.table de 1888 com as colunas
 #' \describe{
