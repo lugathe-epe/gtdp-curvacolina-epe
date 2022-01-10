@@ -15,8 +15,8 @@ RoxygenNote: 7.1.1
 Depends:
     R (>= 4.0)
 Imports:
-    data.table,
-    plotly,
-    ggplot2,
-    mgcv,
-    geometry
+    data.table (>= 1.14.0),
+    plotly (>= 4.10.0),
+    ggplot2 (>= 3.3.3),
+    mgcv (>= 1.8-35),
+    geometry (>= 0.4.5)
