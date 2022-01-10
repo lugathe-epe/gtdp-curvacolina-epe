@@ -55,6 +55,10 @@ getcolina.triangulacao <- function(object) object$colina
  
 predict.triangulacao <- function(object, pontos, ...) {
 
+    pontos <- pontos[complete.cases(pontos), ]
+
+    if(nrow(pontos) == 0) return(numeric(0))
+
     npontos <- nrow(pontos)
     pontos <- data.matrix(pontos)
 
