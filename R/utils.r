@@ -29,14 +29,10 @@ geragrade <- function(colina, nhl, npot) UseMethod("geragrade", colina)
 
 geragrade.data.table <- function(colina, nhl, npot) {
 
-    if(any(is.na(colina))) {
-        grade <- data.frame(hl = NA, pot = NA)
-    } else {
-        grade <- expand.grid(
-            hl  = colina[, seq(min(hl),  max(hl),  length.out = nhl)],
-            pot = colina[, seq(min(pot), max(pot), length.out = npot)]
-        )
-    }
+    grade <- expand.grid(
+        hl  = colina[, seq(min(hl),  max(hl),  length.out = nhl)],
+        pot = colina[, seq(min(pot), max(pot), length.out = npot)]
+    )
 
     grade <- as.data.table(grade)
 
