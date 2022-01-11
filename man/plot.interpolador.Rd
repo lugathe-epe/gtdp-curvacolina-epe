@@ -6,8 +6,8 @@
 \usage{
 \method{plot}{interpolador}(
   x,
-  add_colina = TRUE,
   tipo = c("3d", "2d"),
+  add_colina = TRUE,
   hl = 200,
   pot = 200,
   print = TRUE,
@@ -17,9 +17,9 @@
 \arguments{
 \item{x}{objeto \code{interpolador} retornado pela funcao homonima}
 
-\item{add_colina}{booleano indicando se os pontos da colina original tambem devem ser plotados}
-
 \item{tipo}{um de \code{c("3d", "2d")} indicando o tipo de grafico desejado}
+
+\item{add_colina}{booleano indicando se os pontos da colina original tambem devem ser plotados}
 
 \item{hl, pot}{vetores definindo grade amostrada. Ver Detalhes}
 

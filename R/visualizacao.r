@@ -88,8 +88,8 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
 #' a qual interpolar na superficie suavizada. Estes pontos serao entao utilizados para plot.
 #' 
 #' @param x objeto \code{interpolador} retornado pela funcao homonima
-#' @param add_colina booleano indicando se os pontos da colina original tambem devem ser plotados
 #' @param tipo um de \code{c("3d", "2d")} indicando o tipo de grafico desejado
+#' @param add_colina booleano indicando se os pontos da colina original tambem devem ser plotados
 #' @param hl,pot vetores definindo grade amostrada. Ver Detalhes
 #' @param print booleano indicando se o plot deve ser exibido. Caso \code{print = FALSE} o objeto
 #'     sera retornado silenciosamente
@@ -107,7 +107,7 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
 #' 
 #' @export 
 
-plot.interpolador <- function(x, add_colina = TRUE, tipo = c("3d", "2d"), hl = 200, pot = 200,
+plot.interpolador <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, hl = 200, pot = 200,
     print = TRUE, ...) {
 
     tipo <- match.arg(tipo)
@@ -137,7 +137,6 @@ plot.interpolador <- function(x, add_colina = TRUE, tipo = c("3d", "2d"), hl = 2
         invisible(p)
     } else {
         colina[, rend := factor(paste0(formatC(rend, format = "f", digits = 3), "%"))]
-        colina <- colina[complete.cases(colina), ]
         dsurf <- dsurf[complete.cases(dsurf)]
         p <- ggplot() +
             geom_raster(data = dsurf, aes(hl, pot, fill = rend)) +
