@@ -68,16 +68,30 @@ learqcolina <- function(arq, aba = 1) {
 learqprocit <- function(arq) {
 
     abas <- readxl::excel_sheets(arq)
-    abas <- abas[grep("Colina", abas)]
+    abas_colina   <- abas[grep("Colina", abas)]
+    abas_abertura <- abas[grep("Abertura", abas)]
 
-    alterada <- grepl("Alterada", abas)
-    if(any(alterada)) abas <- abas[alterada]
+    alterada <- grepl("Alterada", abas_colina)
+    if(any(alterada)) abas_colina <- abas_colina[alterada]
 
-    out <- lapply(abas, function(a) learqcolina(arq, aba = a))
+    colinas <- lapply(abas_colina, function(a) learqcolina(arq, aba = a))
 
-    if(length(out) > 1) names(out) <- paste0("colina_", seq(abas)) else out <- out[[1]]
+    if(any(alterada)) {
+        rho_g <- lapply(abas_abertura, function(a) {
+            plan <- as.data.table(readxl::read_xlsx(arq, a, col_names = FALSE, .name_repair = "minimal"))
+            plan <- as.numeric(plan[14:18, 7][[1]])
+            if(all(is.na(plan[4:5]))) return(plan[1:2]) else return(plan[4:5])
+        })
 
-    return(out)
+        colinas <- mapply(colinas, rho_g, FUN = function(colina, r_g) {
+            colina$CC[, vaz := pot / (hl * rend / 100 * r_g[1] * r_g[2]) * 1e6]
+            colina
+        }, SIMPLIFY = FALSE)
+    }
+
+    if(length(colinas) > 1) names(colinas) <- paste0("colina_", seq(abas_colina)) else colinas <- colinas[[1]]
+
+    return(colinas)
 }
 
 #' @import data.table
@@ -87,6 +101,8 @@ new_curvacolina <- function(rends, curvas) {
     colina <- mapply(rends, curvas, FUN = function(r, c) cbind(c, rend = r), SIMPLIFY = FALSE)
     colina <- do.call(rbind, colina)
     colina <- as.data.table(colina)
+    colina[, vaz := rep(NA, .N)]
+    setcolorder(colina, c("hl", "pot", "vaz", "rend"))
 
     colina <- list(CC = colina)
 
