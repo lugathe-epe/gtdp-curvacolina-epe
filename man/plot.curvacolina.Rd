@@ -15,8 +15,7 @@
 sera retornado silenciosamente}
 }
 \value{
-Se \code{tipo = "3d"} um objeto \code{plotly} contendo o plot 3d; se \code{tipo = "2d"}
-um objeto \code{ggplot} contendo o plot 2d. Em ambos os casos o grafico so sera exibido ao
+um objeto \code{plotly} contendo o plot. Em ambos os casos o grafico so sera exibido ao
 usuario caso \code{print = TRUE} (o padrao).
 }
 \description{

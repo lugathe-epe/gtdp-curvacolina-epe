@@ -24,8 +24,7 @@
 #' print(p)
 #' }
 #' 
-#' @return Se \code{tipo = "3d"} um objeto \code{plotly} contendo o plot 3d; se \code{tipo = "2d"}
-#'     um objeto \code{ggplot} contendo o plot 2d. Em ambos os casos o grafico so sera exibido ao
+#' @return um objeto \code{plotly} contendo o plot. Em ambos os casos o grafico so sera exibido ao
 #'     usuario caso \code{print = TRUE} (o padrao).
 #' 
 #' @family curvacolina
@@ -39,28 +38,40 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
 
     tipo <- match.arg(tipo)
 
+    dplot <- copy(x$CC)
+    dplot[, rend_label := formatC(rend, format = "f", digits = 5, drop0trailing = TRUE)]
+
     if(tipo == "3d") {
-        p <- plot_ly(x$CC, x = ~hl, y = ~pot, z = ~rend, color = ~rend,
+        dplot[, rend_label := paste0("Rend = ", rend_label, "%")]
+
+        p <- plot_ly(dplot, x = ~hl, y = ~pot, z = ~rend, color = ~rend_label, 
+            colors = viridisLite::viridis(attr(x, "ncurvas")),
             type = "scatter3d", mode = "markers") %>%
             layout(scene = list(
                 xaxis = list(title = list(text = "Queda Liquida")),
                 yaxis = list(title = list(text = "Potencia")),
                 zaxis = list(title = list(text = "Rendimento")))
-            ) %>%
-            hide_colorbar()
+            )
 
         if(print) print(p)
 
         invisible(p)
     } else {
+        dplot[, rend_label := paste0(rend_label, "%")]
 
-        dplot <- copy(x$CC)
-        dplot[, rend := factor(paste0(formatC(rend, format = "f", digits = 3), "%"))]
-        p <- ggplot(dplot, aes(hl, pot, color = rend)) + geom_point() +
-            scale_color_viridis_d(name = "Rendimento") +
-            labs(x = "Queda Liquida", y = "Potencia") +
-            theme_bw() +
-            guides(color = guide_legend(ncol = 1))
+        p <- plot_ly(dplot, x = ~hl, y = ~pot, color = ~rend_label, 
+            colors = viridisLite::viridis(attr(x, "ncurvas")),
+            type = "scatter", mode = "markers") %>%
+            layout(
+                xaxis = list(title = list(text = "Queda Liquida")),
+                yaxis = list(title = list(text = "Potencia"))
+            )
+        
+        #ggplot(dplot, aes(hl, pot, color = rend_label)) + geom_point() +
+            #scale_color_viridis_d(name = "Rendimento") +
+            #labs(x = "Queda Liquida", y = "Potencia") +
+            #theme_bw() +
+            #guides(color = guide_legend(ncol = 1))
 
         if(print) print(p)
 
