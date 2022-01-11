@@ -8,6 +8,12 @@ test_that("Modelagem por Triangulacao", {
     expect_equal(getcolina.triangulacao(interp), colinadummy)
 
     expect_snapshot_value(predict(interp, geragrade(colinadummy, 20, 20)), style = "json2")
+
+    p3d <- plot(interp, print = FALSE)
+    expect_equal(class(p3d), c("plotly", "htmlwidget"))
+
+    p2d <- plot(interp, tipo = "2d", print = FALSE)
+    expect_equal(class(p2d), c("gg", "ggplot"))
 })
 
 test_that("Modelagem por Tensor Product", {
@@ -20,4 +26,10 @@ test_that("Modelagem por Tensor Product", {
     expect_equal(getcolina.tensorprod(interp), colinadummy)
 
     expect_snapshot_value(predict(interp, geragrade(colinadummy, 20, 20)), style = "json2")
+
+    p3d <- plot(interp, print = FALSE)
+    expect_equal(class(p3d), c("plotly", "htmlwidget"))
+
+    p2d <- plot(interp, tipo = "2d", print = FALSE)
+    expect_equal(class(p2d), c("gg", "ggplot"))
 })
