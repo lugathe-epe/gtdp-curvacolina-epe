@@ -97,10 +97,37 @@ new_curvacolina <- function(rends, curvas) {
     return(colina)
 }
 
+# METODOS ------------------------------------------------------------------------------------------
+
+#' @import data.table
+#' 
+#' @export
+
+as.curvacolina <- function(x, ...) {
+
+    if(!("data.frame" %in% class(x))) stop("Argumento deve ser um data.frame ou data.table")
+
+    if(!all(c("hl", "pot", "vaz", "rend") %in% colnames(x))) {
+        stop("Verifique se as colunas 'hl', 'pot', 'vaz', 'rend' constam no dado")
+    }
+
+    x <- as.data.table(x)
+    x <- x[, .(hl, pot, vaz, rend)]
+    x <- list(CC = x)
+
+    class(x) <- "curvacolina"
+    attr(x, "rends") <- unique(x$CC$rend)
+    attr(x, "ncurvas") <- length(attr(x, "rends"))
+
+    return(x)
+}
+
 #' @export 
 
-print.curvacolina <- function(x, ...) print(x$CC)
+print.curvacolina <- function(x, ...) summary(x)
 
+#' @import data.table
+#' 
 #' @export
 
 summary.curvacolina <- function(x, ...) {
