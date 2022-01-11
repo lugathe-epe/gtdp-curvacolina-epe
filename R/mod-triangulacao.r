@@ -11,7 +11,7 @@
 #' @return objeto da classe \code{triangulacao} contendo a tesselacao da curva colina
 
 triangulacao <- function(colina, ...) {
-    tri <- geometry::delaunayn(colina$CC[, 1:2])
+    tri <- geometry::delaunayn(colina$CC[, .(hl, pot)])
     new_triangulacao(tri, colina)
 }
 
@@ -63,14 +63,14 @@ predict.triangulacao <- function(object, pontos, ...) {
     pontos <- data.matrix(pontos)
 
     triangulos <- object$triangulos
-    colina <- data.matrix(object$colina$CC)
+    colina     <- data.matrix(object$colina$CC)
 
-    barycoord <- geometry::tsearchn(colina[, 1:2], object$triangulos, pontos)
+    barycoord <- geometry::tsearchn(colina[, c("hl", "pot")], triangulos, pontos)
 
     interp <- sapply(seq(npontos), function(i) {
         indtri <- barycoord$idx[i]
         vertices <- triangulos[indtri, ]
-        rends  <- colina[vertices, 3]
+        rends  <- colina[vertices, "rend"]
         sum(barycoord$p[i, ] * rends)
     })
 
