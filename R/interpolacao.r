@@ -42,6 +42,12 @@
 #' pontos <- geragrade(colinadummy, 20, 20)
 #' interp <- predict(interp_tri, pontos)
 #' 
+#' \dontrun{
+#' # visualizacao 3d e 2d do resultado
+#' plot(interp)
+#' plot(interp, "2d")
+#' }
+#' 
 #' @return objeto da classe \code{interpolador} e subclasse \code{metodo}, isto e, um modelo com o 
 #'     qual se realizar previsoes e, assim, interpolar o dado original
 #' 

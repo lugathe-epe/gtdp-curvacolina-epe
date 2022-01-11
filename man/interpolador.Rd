@@ -59,6 +59,12 @@ interp_tri <- interpolador(colinadummy, "tri")
 pontos <- geragrade(colinadummy, 20, 20)
 interp <- predict(interp_tri, pontos)
 
+\dontrun{
+# visualizacao 3d e 2d do resultado
+plot(interp)
+plot(interp, "2d")
+}
+
 }
 \seealso{
 Other interpolador: 
