@@ -6,7 +6,10 @@ Authors@R:
            family = "Khenayfis",
            role = c("aut", "cre"),
            email = "lucaskhenayfis@example.com")
-Description: What the package does (one paragraph).
+Description: Funcoes para extracao dos dados de curva colina digitalizada a partir de planilhas 
+    especificas ou daquelas de processos iterativos. Suavizacao e/ou interpolacao destes dados, 
+    visando a amostragem em grade de modo a converter a curva colina para uma representacao em 
+    tabela. Visualizacao tridimensional e bidimensional dos dados originais e sua modelagem.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
