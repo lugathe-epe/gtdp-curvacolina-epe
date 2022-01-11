@@ -3,6 +3,13 @@ test_that("Leitura de colinas", {
     colina <- learqcolina(arq)
 
     expect_equal(class(colina), "curvacolina")
+    expect_equal(colnames(colina$CC), c("hl", "pot", "vaz", "rend"))
+
+    expect_true(all(colina$CC$hl - colinadummy$CC$hl == 0))
+    expect_true(all(colina$CC$pot - colinadummy$CC$pot == 0))
+    expect_true(all(colina$CC$rend - colinadummy$CC$rend == 0))
+    expect_true(all(is.na(colina$CC$vaz) & is.na(colinadummy$CC$vaz)))
+
     expect_snapshot_value(attr(colina, "ncurvas"))
     expect_snapshot_value(attr(colina, "rends"), style = "json2")
     expect_snapshot_value(data.matrix(colina$CC), style = "json2")
@@ -15,6 +22,9 @@ test_that("Leitura de processo iterativo (CC Original)", {
     expect_true(is.list(colina))
     expect_equal(length(colina), 2)
     expect_equal(names(colina), paste0("colina_", 1:2))
+
+    expect_equal(unname(sapply(colina, class)), rep("curvacolina", 2))
+
     for(i in seq(2)) {
         expect_snapshot_value(attr(colina[[i]], "ncurvas"))
         expect_snapshot_value(attr(colina[[i]], "rends"), style = "json2")
@@ -29,6 +39,9 @@ test_that("Leitura de processo iterativo (CC Alterada)", {
     expect_true(is.list(colina))
     expect_equal(length(colina), 2)
     expect_equal(names(colina), paste0("colina_", 1:2))
+
+    expect_equal(unname(sapply(colina, class)), rep("curvacolina", 2))
+
     for(i in seq(2)) {
         expect_snapshot_value(attr(colina[[i]], "ncurvas"))
         expect_snapshot_value(attr(colina[[i]], "rends"), style = "json2")
