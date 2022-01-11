@@ -12,8 +12,6 @@
 \item{pontos}{data.frame ou matriz contendo pontos nos quais amostrar o rendimento}
 
 \item{...}{demais parametros que possam ser passados aos metodos de \code{predict} especificos}
-
-\item{plot}{booleano indicando se deve ser realizado um plot do resultado}
 }
 \value{
 vetor de rendimentos nas coordenadas especificadas em \code{pontos}

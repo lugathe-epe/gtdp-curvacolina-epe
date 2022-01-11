@@ -28,15 +28,15 @@ tensorprod <- function(colina, ...) {
 
 new_tensorprod <- function(mod, colina) {
     obj        <- list(superficie = mod, colina = colina)
-    class(obj) <- "tensorprod"
+    class(obj) <- c("tensorprod", "interpolador")
     return(obj)
 }
+
+# METODOS ------------------------------------------------------------------------------------------
 
 #' Extracao Da Colina Original Em Objetos \code{triangulacao}
 
 getcolina.tensorprod <- function(object) object$colina
-
-# METODOS ------------------------------------------------------------------------------------------
 
 #' Amostragem De Pontos Na Suavizacao
 #' 

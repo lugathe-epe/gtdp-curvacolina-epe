@@ -19,8 +19,8 @@ interpolador(
 Ver Detalhes}
 }
 \value{
-objeto da classe \code{interpolador}, isto e, um modelo com o qual se realizar previsoes
-e, assim, interpolar o dado original
+objeto da classe \code{interpolador} e subclasse \code{metodo}, isto e, um modelo com o
+qual se realizar previsoes e, assim, interpolar o dado original
 }
 \description{
 Funcao para estimacao de diferentes interpoladores de curva colina

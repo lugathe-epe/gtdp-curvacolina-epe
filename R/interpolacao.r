@@ -42,8 +42,8 @@
 #' pontos <- geragrade(colinadummy, 20, 20)
 #' interp <- predict(interp_tri, pontos)
 #' 
-#' @return objeto da classe \code{interpolador}, isto e, um modelo com o qual se realizar previsoes
-#'     e, assim, interpolar o dado original
+#' @return objeto da classe \code{interpolador} e subclasse \code{metodo}, isto e, um modelo com o 
+#'     qual se realizar previsoes e, assim, interpolar o dado original
 #' 
 #' @family interpolador
 #' 
@@ -58,28 +58,14 @@ interpolador <- function(colina, metodo = c("triangulacao", "thinplate", "tensor
 
     interp <- eval(interp_func, envir = parent.frame())
 
-    new_interpolador(interp, metodo)
+    return(interp)
 }
-
-new_interpolador <- function(interp, metodo) {
-
-    obj <- list(mod = interp)
-
-    class(obj) <- "interpolador"
-    attr(obj, "metodo") <- metodo
-
-    return(obj)
-}
-
-#' Generica Para Extrair Colina Original do Ajuste
-#' 
-#' Extrai o dado ajustado corretamente dependendo do tipo de modelo. Funcao interna
-
-getcolina <- function(object) UseMethod("getcolina")
-
-getcolina.interpolador <- function(object) getcolina(object$mod)
 
 # METODOS ------------------------------------------------------------------------------------------
+
+#' Metodo Extrator De Colina
+
+getcolina.interpolador <- function(object) stop(paste0("Implemente metodo 'getcolina' do modelo: ", class(object)[1]))
 
 #' Previsao Com Modelos Interpoladores
 #' 
@@ -87,7 +73,6 @@ getcolina.interpolador <- function(object) getcolina(object$mod)
 #' 
 #' @param object objeto da classe \code{interpolador} retornado pela funcao homonima
 #' @param pontos data.frame ou matriz contendo pontos nos quais amostrar o rendimento
-#' @param plot booleano indicando se deve ser realizado um plot do resultado
 #' @param ... demais parametros que possam ser passados aos metodos de \code{predict} especificos
 #' 
 #' @return vetor de rendimentos nas coordenadas especificadas em \code{pontos}
@@ -97,7 +82,5 @@ getcolina.interpolador <- function(object) getcolina(object$mod)
 #' @export
 
 predict.interpolador <- function(object, pontos, ...) {
-
-    pred <- predict(object$mod, pontos = pontos, ...)
-    return(pred)
+    stop(paste0("Implemente metodo 'predict' do modelo: ", class(object)[1]))
 }

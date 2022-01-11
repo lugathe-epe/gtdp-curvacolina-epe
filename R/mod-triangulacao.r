@@ -19,7 +19,7 @@ new_triangulacao <- function(tri, colina) {
 
     obj <- list(triangulos = tri, colina = colina)
 
-    class(obj) <- "triangulacao"
+    class(obj) <- c("triangulacao", "interpolador")
     attr(obj, "ntri") <- nrow(tri)
 
     return(obj)
@@ -35,11 +35,11 @@ print.triangulacao <- function(x, ...) {
     summary(x$colina)
 }
 
+# METODOS ------------------------------------------------------------------------------------------
+
 #' Extracao Da Colina Original Em Objetos \code{triangulacao}
 
 getcolina.triangulacao <- function(object) object$colina
-
-# METODOS ------------------------------------------------------------------------------------------
 
 #' Amostragem De Pontos Na Triangulacao
 #' 

@@ -60,3 +60,11 @@ geragrade.curvacolina <- function(colina, nhl, npot) {
 
     return(grade)
 }
+
+# --------------------------------------------------------------------------------------------------
+
+#' Generica Para Extrair Colina Original do Ajuste
+#' 
+#' Extrai o dado ajustado corretamente dependendo do tipo de modelo. Funcao interna
+
+getcolina <- function(object) UseMethod("getcolina")
