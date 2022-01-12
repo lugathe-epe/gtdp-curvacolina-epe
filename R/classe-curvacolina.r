@@ -43,6 +43,8 @@ learqcolina <- function(arq, aba = 1) {
 
     plan <- as.data.frame(readxl::read_xlsx(arq, aba, col_names = FALSE, .name_repair = "minimal"))
 
+    if(nrow(plan) == 0) return(NULL)
+
     rends <- unname(unlist(plan[1, ]))
     rends <- rends[!is.na(rends)]
     rends <- as.numeric(regmatches(rends, regexpr("[[:digit:]]+(\\.[[:digit:]]+)?", rends)))
