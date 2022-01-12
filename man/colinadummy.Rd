@@ -23,7 +23,7 @@ Adicionalmente, contem os atributos
 colinadummy
 }
 \description{
-Exemplo de objeto retornado por uma das funcoes de leitura \code{\link{leaeqcolina}} ou
-\code{\link{leaeqprocit}}
+Exemplo de objeto retornado por uma das funcoes de leitura \code{\link{learqcolina}} ou
+\code{\link{learqprocit}}
 }
 \keyword{datasets}
