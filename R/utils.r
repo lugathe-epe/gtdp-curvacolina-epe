@@ -62,5 +62,10 @@ geragrade.curvacolina <- function(colina, nhl, npot) {
 #' Generica Para Extrair Colina Original do Ajuste
 #' 
 #' Extrai o dado ajustado corretamente dependendo do tipo de modelo. Funcao interna
+#' 
+#' @param object objeto do qual extrair \code{data.table} da curva colina. Pode ser um modelo 
+#'     interpolador ou objeto da classe \code{curvacolina}
+#' 
+#' @return \code{data.table} contendo a curva colina em formato padronizado
 
 getcolina <- function(object) UseMethod("getcolina")

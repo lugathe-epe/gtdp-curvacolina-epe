@@ -36,7 +36,7 @@ new_tensorprod <- function(mod, colina) {
 
 # METODOS ------------------------------------------------------------------------------------------
 
-#' Extracao Da Colina Original Em Objetos \code{triangulacao}
+#' @rdname getcolina
 
 getcolina.tensorprod <- function(object) object$colina
 

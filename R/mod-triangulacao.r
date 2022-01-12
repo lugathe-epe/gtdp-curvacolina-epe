@@ -39,7 +39,7 @@ print.triangulacao <- function(x, ...) {
 
 # METODOS ------------------------------------------------------------------------------------------
 
-#' Extracao Da Colina Original Em Objetos \code{triangulacao}
+#' @rdname getcolina
 
 getcolina.triangulacao <- function(object) object$colina
 

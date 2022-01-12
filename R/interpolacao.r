@@ -69,7 +69,7 @@ interpolador <- function(colina, metodo = c("triangulacao", "thinplate", "tensor
 
 # METODOS ------------------------------------------------------------------------------------------
 
-#' Metodo Extrator De Colina
+#' @rdname getcolina
 
 getcolina.interpolador <- function(object) stop(paste0("Implemente metodo 'getcolina' do modelo: ", class(object)[1]))
 
