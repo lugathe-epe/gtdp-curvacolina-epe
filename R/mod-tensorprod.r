@@ -13,6 +13,8 @@
 #' @return objeto da classe \code{tensorprod} contendo a suavizacao da curva colina
 #' 
 #' @importFrom mgcv gam te
+#' 
+#' @export
 
 tensorprod <- function(colina, ...) {
 

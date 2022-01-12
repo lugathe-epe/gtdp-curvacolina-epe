@@ -9,6 +9,8 @@
 #' @param colina objeto \code{curvacolina} retornado pelas funcoes de leitura
 #' 
 #' @return objeto da classe \code{triangulacao} contendo a tesselacao da curva colina
+#' 
+#' @export
 
 triangulacao <- function(colina, ...) {
     tri <- geometry::delaunayn(colina$CC[, .(hl, pot)])
