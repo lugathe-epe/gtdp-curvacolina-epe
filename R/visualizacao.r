@@ -8,6 +8,7 @@
 #' @param tipo um de \code{c("3d", "2d")} indicando o tipo de grafico desejado
 #' @param print booleano indicando se o plot deve ser exibido. Caso \code{print = FALSE} o objeto
 #'     sera retornado silenciosamente
+#' @param ... existe somente para consistencia de metodos. Nao possui utilidade
 #' 
 #' @examples 
 #' 
@@ -66,7 +67,7 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
                 xaxis = list(title = list(text = "Queda Liquida")),
                 yaxis = list(title = list(text = "Potencia"))
             )
-        
+
         #ggplot(dplot, aes(hl, pot, color = rend_label)) + geom_point() +
             #scale_color_viridis_d(name = "Rendimento") +
             #labs(x = "Queda Liquida", y = "Potencia") +
@@ -93,6 +94,7 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
 #' @param hl,pot vetores definindo grade amostrada. Ver Detalhes
 #' @param print booleano indicando se o plot deve ser exibido. Caso \code{print = FALSE} o objeto
 #'     sera retornado silenciosamente
+#' @param ... existe somente para consistencia de metodos. Nao possui utilidade
 #' 
 #' @return Se \code{tipo = "3d"} um objeto \code{plotly} contendo o plot 3d; se \code{tipo = "2d"}
 #'     um objeto \code{ggplot} contendo o plot 2d. Em ambos os casos o grafico so sera exibido ao

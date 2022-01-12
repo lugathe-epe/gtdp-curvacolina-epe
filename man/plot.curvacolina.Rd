@@ -13,6 +13,8 @@
 
 \item{print}{booleano indicando se o plot deve ser exibido. Caso \code{print = FALSE} o objeto
 sera retornado silenciosamente}
+
+\item{...}{existe somente para consistencia de metodos. Nao possui utilidade}
 }
 \value{
 um objeto \code{plotly} contendo o plot. Em ambos os casos o grafico so sera exibido ao

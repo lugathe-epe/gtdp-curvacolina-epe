@@ -50,6 +50,7 @@ getcolina.triangulacao <- function(object) object$colina
 #' @param object objeto da classe \code{triangulacao} retornado pela funcao homonima
 #' @param pontos data.frame ou matriz contendo coordenadas \code{(hl, pot)} dos pontos onde 
 #'     interpolar
+#' @param ... existe somente para consistencia de metodos. Nao possui utilidade
 #' 
 #' @return vetor de rendimentos interpolados
 #' 

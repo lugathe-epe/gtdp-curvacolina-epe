@@ -25,6 +25,8 @@
 
 \item{print}{booleano indicando se o plot deve ser exibido. Caso \code{print = FALSE} o objeto
 sera retornado silenciosamente}
+
+\item{...}{existe somente para consistencia de metodos. Nao possui utilidade}
 }
 \value{
 Se \code{tipo = "3d"} um objeto \code{plotly} contendo o plot 3d; se \code{tipo = "2d"}

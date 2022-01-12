@@ -11,6 +11,8 @@
 
 \item{pontos}{data.frame ou matriz contendo coordenadas \code{(hl, pot)} dos pontos onde
 interpolar}
+
+\item{...}{existe somente para consistencia de metodos. Nao possui utilidade}
 }
 \value{
 vetor de rendimentos interpolados
