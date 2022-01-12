@@ -20,24 +20,13 @@ thinplate <- function(colina, taxa_reducao = 2) {
 
     hl <- pot <- rend <- NULL
 
-    vec_reduz <- rep(FALSE, taxa_reducao)
-    vec_reduz[1] <- TRUE
+    colina_reduzida <- reduzcolina(colina, taxa_reducao)
 
-    colreduzida <- copy(colina$CC)
-    colreduzida <- split(colreduzida, colreduzida$rend)
-    colreduzida <- lapply(colreduzida, function(d) {
-        if(nrow(d) > 10) {
-            d <- d[rep(vec_reduz, length.out = .N)]
-        }
-        d
-    })
-    colreduzida <- as.curvacolina(rbindlist(colreduzida))
-
-    nknots <- nrow(colreduzida$CC)
-    knots  <- lapply(seq(nknots), function(i) colreduzida$CC[i, list(hl, pot)])
+    nknots <- nrow(colina_reduzida$CC)
+    knots  <- lapply(seq(nknots), function(i) colina_reduzida$CC[i, list(hl, pot)])
 
     mod <- gam(rend ~ s(hl, pot, bs = "tp", k = nknots, sp = 0, xt = list(max.knots = nknots)),
-        data = colreduzida$CC, knots = knots)
+        data = colina_reduzida$CC, knots = knots)
 
     new_thinplate(mod, colina)
 }
