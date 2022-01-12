@@ -12,7 +12,7 @@
 #' 
 #' @export
 
-triangulacao <- function(colina, ...) {
+triangulacao <- function(colina) {
     tri <- geometry::delaunayn(colina$CC[, .(hl, pot)])
     new_triangulacao(tri, colina)
 }
