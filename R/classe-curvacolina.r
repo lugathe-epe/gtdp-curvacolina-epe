@@ -67,6 +67,8 @@ learqcolina <- function(arq, aba = 1) {
 
 learqprocit <- function(arq) {
 
+    hl <- pot <- vaz <- rend <- NULL
+
     abas <- readxl::excel_sheets(arq)
     abas_colina   <- abas[grep("Colina", abas)]
     abas_abertura <- abas[grep("Abertura", abas)]
@@ -97,6 +99,8 @@ learqprocit <- function(arq) {
 #' @import data.table
 
 new_curvacolina <- function(rends, curvas) {
+
+    vaz <- NULL
 
     colina <- mapply(rends, curvas, FUN = function(r, c) cbind(c, rend = r), SIMPLIFY = FALSE)
     colina <- do.call(rbind, colina)
@@ -129,6 +133,8 @@ new_curvacolina <- function(rends, curvas) {
 
 as.curvacolina <- function(x) {
 
+    hl <- pot <- vaz <- rend <- NULL
+
     if(!("data.frame" %in% class(x))) stop("Argumento deve ser um data.frame ou data.table")
 
     if(!all(c("hl", "pot", "vaz", "rend") %in% colnames(x))) {
@@ -136,7 +142,7 @@ as.curvacolina <- function(x) {
     }
 
     x <- as.data.table(x)
-    x <- x[, .(hl, pot, vaz, rend)]
+    x <- x[, list(hl, pot, vaz, rend)]
     x <- list(CC = x)
 
     class(x) <- "curvacolina"
@@ -155,6 +161,7 @@ print.curvacolina <- function(x, ...) summary(x)
 #' @export
 
 summary.curvacolina <- function(object, ...) {
+    hl <- pot <- rend <- NULL
     cat("Numero de curvas:     ", attr(object, "ncurvas"), "\n")
     cat("Faixa de queda:       ", object$CC[, range(hl)], "\n")
     cat("Faixa de potencia:    ", object$CC[, range(pot)], "\n")

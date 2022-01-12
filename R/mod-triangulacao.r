@@ -13,7 +13,9 @@
 #' @export
 
 triangulacao <- function(colina) {
-    tri <- geometry::delaunayn(colina$CC[, .(hl, pot)])
+    hl <- pot <- NULL
+
+    tri <- geometry::delaunayn(colina$CC[, list(hl, pot)])
     new_triangulacao(tri, colina)
 }
 

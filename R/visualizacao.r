@@ -37,6 +37,8 @@
 
 plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
 
+    rend <- rend_label <- NULL
+
     tipo <- match.arg(tipo)
 
     dplot <- copy(x$CC)
@@ -111,6 +113,8 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
 
 plot.interpolador <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, hl = 200, pot = 200,
     print = TRUE, ...) {
+
+    rend <- NULL
 
     tipo <- match.arg(tipo)
 

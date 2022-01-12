@@ -29,6 +29,8 @@ geragrade <- function(colina, nhl, npot) UseMethod("geragrade", colina)
 
 geragrade.data.table <- function(colina, nhl, npot) {
 
+    hl <- pot <- NULL
+
     grade <- expand.grid(
         hl  = colina[, seq(min(hl),  max(hl),  length.out = nhl)],
         pot = colina[, seq(min(pot), max(pot), length.out = npot)]
