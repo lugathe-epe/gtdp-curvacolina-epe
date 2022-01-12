@@ -50,6 +50,8 @@ plot(colina)
 Other curvacolina: 
 \code{\link{as.curvacolina}()},
 \code{\link{geragrade}()},
-\code{\link{plot.curvacolina}()}
+\code{\link{plot.curvacolina}()},
+\code{\link{summary.curvacolina}()},
+\code{\link{write.curvacolina}()}
 }
 \concept{curvacolina}

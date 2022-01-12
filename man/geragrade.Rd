@@ -30,6 +30,8 @@ plot(colinadummy, "2d") + ggplot2::geom_point(data = grade, aes(hl, pot), col = 
 Other curvacolina: 
 \code{\link{as.curvacolina}()},
 \code{\link{learqcolina}()},
-\code{\link{plot.curvacolina}()}
+\code{\link{plot.curvacolina}()},
+\code{\link{summary.curvacolina}()},
+\code{\link{write.curvacolina}()}
 }
 \concept{curvacolina}

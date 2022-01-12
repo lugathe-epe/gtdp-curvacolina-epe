@@ -156,6 +156,16 @@ as.curvacolina <- function(x) {
 
 print.curvacolina <- function(x, ...) summary(x)
 
+#' Sumario De \code{curvacolina}
+#'
+#' Produz um breve sumario da curva colina
+#' 
+#' @param object objeto \code{curvacolina}
+#' 
+#' @return imprime um sumario da curva colina, sem retornar nada
+#' 
+#' @family curvacolina
+#' 
 #' @import data.table
 #' 
 #' @export
@@ -167,6 +177,23 @@ summary.curvacolina <- function(object, ...) {
     cat("Faixa de potencia:    ", object$CC[, range(pot)], "\n")
     cat("Faixa de rendimentos: ", range(attr(object, "rends")), "\n")
 }
+
+#' Escrita De \code{curvacolina}
+#' 
+#' Metodo para facilitacao de escrita de \code{curvacolina} lida pelas funcoes do pacote
+#' 
+#' @param x objeto \code{curvacolina} a ser escrito
+#' @param file caminho para escrita. Deve possuir extensao -- caso nao possua, sera adicionada
+#' 
+#' @return Escreve \code{x} no caminho especificado como um csv de quatro colunas
+#' 
+#' @family curvacolina
+#' 
+#' @import data.table
+#' 
+#' @export
+
+write.curvacolina <- function(x, file) fwrite(x$CC, file, quote = FALSE, sep = ";")
 
 # HELPERS ------------------------------------------------------------------------------------------
 
