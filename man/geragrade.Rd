@@ -28,6 +28,7 @@ plot(colinadummy, "2d") + ggplot2::geom_point(data = grade, aes(hl, pot), col = 
 }
 \seealso{
 Other curvacolina: 
+\code{\link{as.curvacolina}()},
 \code{\link{learqcolina}()},
 \code{\link{plot.curvacolina}()}
 }

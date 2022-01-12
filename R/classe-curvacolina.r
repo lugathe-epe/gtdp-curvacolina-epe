@@ -115,11 +115,19 @@ new_curvacolina <- function(rends, curvas) {
 
 # METODOS ------------------------------------------------------------------------------------------
 
+#' Conversor Para \code{curvacolina}
+#' 
+#' Forca um objeto tipo \code{data.frame} para classe \code{curvacolina}
+#' 
+#' @param x \code{data.frame}-like a ser convertido
+#' 
+#' @family curvacolina
+#' 
 #' @import data.table
 #' 
 #' @export
 
-as.curvacolina <- function(x, ...) {
+as.curvacolina <- function(x) {
 
     if(!("data.frame" %in% class(x))) stop("Argumento deve ser um data.frame ou data.table")
 
@@ -146,9 +154,9 @@ print.curvacolina <- function(x, ...) summary(x)
 #' 
 #' @export
 
-summary.curvacolina <- function(x, ...) {
-    cat("Numero de curvas:     ", attr(x, "ncurvas"), "\n")
-    cat("Faixa de queda:       ", x$CC[, range(hl)], "\n")
-    cat("Faixa de potencia:    ", x$CC[, range(pot)], "\n")
-    cat("Faixa de rendimentos: ", range(attr(x, "rends")), "\n")
+summary.curvacolina <- function(object, ...) {
+    cat("Numero de curvas:     ", attr(object, "ncurvas"), "\n")
+    cat("Faixa de queda:       ", object$CC[, range(hl)], "\n")
+    cat("Faixa de potencia:    ", object$CC[, range(pot)], "\n")
+    cat("Faixa de rendimentos: ", range(attr(object, "rends")), "\n")
 }

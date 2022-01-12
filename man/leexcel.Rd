@@ -48,6 +48,7 @@ plot(colina)
 }
 \seealso{
 Other curvacolina: 
+\code{\link{as.curvacolina}()},
 \code{\link{geragrade}()},
 \code{\link{plot.curvacolina}()}
 }
