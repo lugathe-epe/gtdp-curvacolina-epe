@@ -80,18 +80,19 @@ learqprocit <- function(arq) {
 
     colinas <- lapply(abas_colina, function(a) learqcolina(arq, aba = a))
 
-    if(any(alterada)) {
-        rho_g <- lapply(abas_abertura, function(a) {
-            plan <- as.data.table(readxl::read_xlsx(arq, a, col_names = FALSE, .name_repair = "minimal"))
-            plan <- as.numeric(plan[14:18, 7][[1]])
-            if(all(is.na(plan[4:5]))) return(plan[1:2]) else return(plan[4:5])
-        })
+    rho_g <- lapply(abas_abertura, function(a) {
+        plan <- as.data.table(readxl::read_xlsx(arq, a, col_names = FALSE, .name_repair = "minimal"))
+        plan <- as.numeric(plan[14:18, 7][[1]])
+        if(all(is.na(plan[4:5]))) return(plan[1:2]) else return(plan[4:5])
+    })
 
-        colinas <- mapply(colinas, rho_g, FUN = function(colina, r_g) {
-            colina$CC[, vaz := pot / (hl * rend / 100 * r_g[1] * r_g[2]) * 1e6]
-            colina
-        }, SIMPLIFY = FALSE)
-    }
+    colinas <- mapply(colinas, rho_g, FUN = function(colina, r_g) {
+        if(is.null(colina)) return(NULL)
+        colina$CC[, vaz := pot / (hl * rend / 100 * r_g[1] * r_g[2]) * 1e6]
+        colina
+    }, SIMPLIFY = FALSE)
+
+    colinas <- colinas[!sapply(colinas, is.null)]
 
     if(length(colinas) > 1) names(colinas) <- paste0("colina_", seq(abas_colina)) else colinas <- colinas[[1]]
 
