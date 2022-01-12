@@ -167,3 +167,42 @@ summary.curvacolina <- function(object, ...) {
     cat("Faixa de potencia:    ", object$CC[, range(pot)], "\n")
     cat("Faixa de rendimentos: ", range(attr(object, "rends")), "\n")
 }
+
+# HELPERS ------------------------------------------------------------------------------------------
+
+#' Redutor De \code{curvacolina}
+#' 
+#' Retorna o objeto \code{curvacolina} com um numero reduzido de observacoes
+#' 
+#' O argumento \code{taxa} e utilizado da seguinte maneira: seja \code{n} o numero de observacoes em
+#' \code{colina}, sera amostrado um subset dessas tomando uma a cada \code{taxa} observacoes. Por
+#' exemplo, se \code{taxa = 3}, sao selecionadas as observacoes 1, 4, 7, e assim por diante.
+#' 
+#' O processo de selecao descrito acima e realizado \bold{por curva de rendimento}, dado que a curva
+#' tenha pelo menos \code{5 * taxa} observacoes. Este limite e algo essencialmente arbitrario.
+#' 
+#' @param colina objeto \code{curvacolina} retornado pelas funcoes de leitura
+#' @param taxa inteiro indicando reducao do tamanho do historico em \code{taxa_reducao} vezes. Ver 
+#'     Detalhes
+#' 
+#' @return \code{colina} passada com observacoes selecionadas
+#' 
+#' @export
+
+reduzcolina <- function(colina, taxa) {
+
+    vec_reduz <- rep(FALSE, taxa)
+    vec_reduz[1] <- TRUE
+
+    colreduzida <- copy(colina$CC)
+    colreduzida <- split(colreduzida, colreduzida$rend)
+    colreduzida <- lapply(colreduzida, function(d) {
+        if(nrow(d) > (5 * taxa)) {
+            d <- d[rep(vec_reduz, length.out = .N)]
+        }
+        d
+    })
+    colreduzida <- as.curvacolina(rbindlist(colreduzida))
+
+    return(colreduzida)
+}
