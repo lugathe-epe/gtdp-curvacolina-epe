@@ -61,6 +61,7 @@ interpolador <- function(colina, metodo = c("triangulacao", "thinplate", "tensor
 
     interp_func <- match.call()
     interp_func[[1]] <- as.name(metodo)
+    interp_func$metodo <- NULL
 
     interp <- eval(interp_func, envir = parent.frame())
 
