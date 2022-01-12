@@ -80,6 +80,16 @@ learqprocit <- function(arq) {
 
     colinas <- lapply(abas_colina, function(a) learqcolina(arq, aba = a))
 
+    # pode ser que alguma planilha tenha sido montada errado, com abas 'Alterada' vazias
+    # nesse caso refaz a leitura das abas 'Original' mesmo, emitindo um aviso
+    all_null <- all(sapply(colinas, is.null))
+    if(all_null) {
+        abas_colina <- abas[grepl("Colina Original", abas)]
+        colinas <- lapply(abas_colina, function(a) learqcolina(arq, aba = a))
+
+        warning("Abas 'Alterada' em '", arq, "' foram encontradas vazias -- leitura realizada das 'Original'")
+    }
+
     rho_g <- lapply(abas_abertura, function(a) {
         plan <- as.data.table(readxl::read_xlsx(arq, a, col_names = FALSE, .name_repair = "minimal"))
         plan <- as.numeric(plan[14:18, 7][[1]])
