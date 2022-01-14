@@ -38,38 +38,42 @@ arq_colina <- system.file("extdata/colina.xlsx", package = "curvacolina")
 colina     <- learqcolina(arq_colina)
 
 # visualizacao
-plot(colina)
+plot(colina, "2d")
 ```
+
+<img src="man/figures/README-leitura-1.png" width="100%" />
 
 Com o objeto `colina` lido, podemos ajustar e plotar um interpolador
 sobre ele…
 
 ``` r
-superf <- interpolador(colina, metodo = "thinplate")
+superf <- interpolador(colina, metodo = "triangulacao")
 
-plot(superf)
+plot(superf, "2d")
 ```
 
-… e extrai uma grade em formato padronizado
+<img src="man/figures/README-interpolacao-1.png" width="100%" />
+
+… e extrair uma grade em formato padronizado
 
 ``` r
-# extrai uma grade regular 20x20 a partir do dominio da curva colina
-pontos <- geragrade(colina, 20, 20)
+# extrai uma grade regular a partir do dominio da curva colina
+pontos <- geragrade(colina, dhl = 40:60, dpot = seq(200, 400, by = 10))
 
 # calcula rendimentos interpolados nos pontos de grade
 grade <- predict(superf, pontos, full.output = TRUE)
 
 grade
-#>            hl      pot     rend
-#>   1: 34.02109 119.3151 34.29555
-#>   2: 35.45215 119.3151 36.07708
-#>   3: 36.88321 119.3151 37.78893
-#>   4: 38.31428 119.3151 39.58158
-#>   5: 39.74534 119.3151 41.65958
-#>  ---                           
-#> 396: 55.48703 450.5660 84.82066
-#> 397: 56.91810 450.5660 85.15055
-#> 398: 58.34916 450.5660 85.47044
-#> 399: 59.78022 450.5660 85.77856
-#> 400: 61.21129 450.5660 86.09460
+#>      hl pot     rend
+#>   1: 40 200 78.67424
+#>   2: 41 200 78.92752
+#>   3: 42 200 79.00653
+#>   4: 43 200 78.94092
+#>   5: 44 200 78.97493
+#>  ---                
+#> 437: 56 400 91.02819
+#> 438: 57 400 91.18985
+#> 439: 58 400 91.34657
+#> 440: 59 400 91.47022
+#> 441: 60 400 91.61852
 ```

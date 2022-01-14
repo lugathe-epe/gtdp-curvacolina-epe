@@ -40,7 +40,7 @@ Abaixo esta um trecho de codigo exemplificando de forma simplificada o uso das f
 contidas neste pacote. Mais informacoes acerca das funcoes utilizadas estao disponiveis nas 
 respectivas paginas de ajuda.
 
-```{r leitura}
+```{r leitura, fig.height=6}
 library(curvacolina)
 
 # leitura de uma curva colina (usando planilha embutida no pacote)
@@ -48,24 +48,22 @@ arq_colina <- system.file("extdata/colina.xlsx", package = "curvacolina")
 colina     <- learqcolina(arq_colina)
 
 # visualizacao
-plot(colina)
-
+plot(colina, "2d")
 ```
 
 Com o objeto `colina` lido, podemos ajustar e plotar um interpolador sobre ele...
 
-```{r interpolacao}
-superf <- interpolador(colina, metodo = "thinplate")
+```{r interpolacao, fig.height=6}
+superf <- interpolador(colina, metodo = "triangulacao")
 
-plot(superf)
-
+plot(superf, "2d")
 ```
 
-... e extrai uma grade em formato padronizado
+... e extrair uma grade em formato padronizado
 
 ```{r extraigrade}
-# extrai uma grade regular 20x20 a partir do dominio da curva colina
-pontos <- geragrade(colina, 20, 20)
+# extrai uma grade regular a partir do dominio da curva colina
+pontos <- geragrade(colina, dhl = 40:60, dpot = seq(200, 400, by = 10))
 
 # calcula rendimentos interpolados nos pontos de grade
 grade <- predict(superf, pontos, full.output = TRUE)
