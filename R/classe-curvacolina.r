@@ -174,6 +174,7 @@ print.curvacolina <- function(x, ...) summary(x)
 #' Produz um breve sumario da curva colina
 #' 
 #' @param object objeto \code{curvacolina}
+#' @param ... existe somente para consistencia de metodos. Nao possui utilidade
 #' 
 #' @return imprime um sumario da curva colina, sem retornar nada
 #' 

@@ -8,6 +8,8 @@
 }
 \arguments{
 \item{object}{objeto \code{curvacolina}}
+
+\item{...}{existe somente para consistencia de metodos. Nao possui utilidade}
 }
 \value{
 imprime um sumario da curva colina, sem retornar nada
