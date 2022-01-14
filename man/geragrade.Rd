@@ -2,14 +2,15 @@
 % Please edit documentation in R/utils.r
 \name{geragrade}
 \alias{geragrade}
-\title{Gera Grade \code{nhl} x \code{npot} No Dominio Da Curva Colina}
+\title{Gera Grade \code{dhl} x \code{dpot} No Dominio Da Curva Colina}
 \usage{
-geragrade(colina, nhl, npot)
+geragrade(colina, dhl, dpot)
 }
 \arguments{
 \item{colina}{objeto da classe \code{curvacolina} (retornado pelas funcoes de leitura)}
 
-\item{nhl, npot}{numero de divisoes no eixo de queda liquida e potencia, respectivamente}
+\item{dhl, dpot}{numero de divisoes no eixo de queda liquida e potencia, respectivamente. Tambem
+podem ser fornecidos vetores indicando as posicoes das divisoes de queda e potencia}
 }
 \value{
 data.frame contendo coordenadas dos pontos na grade
@@ -19,7 +20,8 @@ Funcao auxiliar para gerar grades de pontos nos quais interpolar a curva colina
 }
 \examples{
 
-grade <- geragrade(colinadummy, 20, 20)
+grade1 <- geragrade(colinadummy, 20, 20)
+grade2 <- geragrade(colinadummy, 40:60, seq(150, 400, by = 10))
 
 \dontrun{
 plot(colinadummy, "2d") + ggplot2::geom_point(data = grade, aes(hl, pot), col = 2)
