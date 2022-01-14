@@ -25,8 +25,9 @@
 #' print(p)
 #' }
 #' 
-#' @return um objeto \code{plotly} contendo o plot. Em ambos os casos o grafico so sera exibido ao
-#'     usuario caso \code{print = TRUE} (o padrao).
+#' @return se \code{tipo = "3d"} um objeto \code{plotly}, do contrario um objeto \code{ggplot} 
+#'     contendo o plot. Em ambos os casos o grafico so sera exibido ao usuario caso 
+#'     \code{print = TRUE} (o padrao).
 #' 
 #' @family curvacolina
 #' 
@@ -37,7 +38,7 @@
 
 plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
 
-    rend <- rend_label <- NULL
+    hl <- pot <- rend <- rend_label <- NULL
 
     tipo <- match.arg(tipo)
 
@@ -62,19 +63,11 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
     } else {
         dplot[, rend_label := paste0(rend_label, "%")]
 
-        p <- plot_ly(dplot, x = ~hl, y = ~pot, color = ~rend_label, 
-            colors = viridisLite::viridis(attr(x, "ncurvas")),
-            type = "scatter", mode = "markers") %>%
-            layout(
-                xaxis = list(title = list(text = "Queda Liquida")),
-                yaxis = list(title = list(text = "Potencia"))
-            )
-
-        #ggplot(dplot, aes(hl, pot, color = rend_label)) + geom_point() +
-            #scale_color_viridis_d(name = "Rendimento") +
-            #labs(x = "Queda Liquida", y = "Potencia") +
-            #theme_bw() +
-            #guides(color = guide_legend(ncol = 1))
+        p <- ggplot(dplot, aes(hl, pot, color = rend_label)) + geom_point() +
+            scale_color_viridis_d(name = "Rendimento") +
+            labs(x = "Queda Liquida", y = "Potencia") +
+            theme_bw() +
+            guides(color = guide_legend(ncol = 1))
 
         if(print) print(p)
 

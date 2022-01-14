@@ -17,8 +17,9 @@ sera retornado silenciosamente}
 \item{...}{existe somente para consistencia de metodos. Nao possui utilidade}
 }
 \value{
-um objeto \code{plotly} contendo o plot. Em ambos os casos o grafico so sera exibido ao
-usuario caso \code{print = TRUE} (o padrao).
+se \code{tipo = "3d"} um objeto \code{plotly}, do contrario um objeto \code{ggplot}
+contendo o plot. Em ambos os casos o grafico so sera exibido ao usuario caso
+\code{print = TRUE} (o padrao).
 }
 \description{
 Plots bi ou tridimensionais de curvas colinas
