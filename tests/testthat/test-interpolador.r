@@ -7,7 +7,15 @@ test_that("Modelagem por Triangulacao", {
 
     expect_equal(getcolina.triangulacao(interp), colinadummy)
 
-    expect_snapshot_value(predict(interp, geragrade(colinadummy, 20, 20)), style = "json2")
+    gg <- geragrade(colinadummy, 20, 20)
+
+    pred_vec <- predict(interp, gg)
+    expect_snapshot_value(pred_vec, style = "json2")
+
+    pred_full <- predict(interp, gg, TRUE)
+    expect_equal(class(pred_full), c("data.table", "data.frame"))
+    expect_equal(colnames(pred_full), c("hl", "pot", "rend"))
+    expect_equal(pred_full$rend, pred_vec)
 
     p3d <- plot(interp, hl = 10, pot = 10, print = FALSE)
     expect_equal(class(p3d), c("plotly", "htmlwidget"))
@@ -25,7 +33,15 @@ test_that("Modelagem por Tensor Product", {
 
     expect_equal(getcolina.tensorprod(interp), colinadummy)
 
-    expect_snapshot_value(predict(interp, geragrade(colinadummy, 20, 20)), style = "json2")
+    gg <- geragrade(colinadummy, 20, 20)
+
+    pred_vec <- predict(interp, gg)
+    expect_snapshot_value(pred_vec, style = "json2")
+
+    pred_full <- predict(interp, gg, TRUE)
+    expect_equal(class(pred_full), c("data.table", "data.frame"))
+    expect_equal(colnames(pred_full), c("hl", "pot", "rend"))
+    expect_equal(pred_full$rend, pred_vec)
 
     p3d <- plot(interp, hl = 10, pot = 10, print = FALSE)
     expect_equal(class(p3d), c("plotly", "htmlwidget"))
@@ -43,7 +59,15 @@ test_that("Modelagem por Thin Plate", {
 
     expect_equal(getcolina.thinplate(interp), colinadummy)
 
-    expect_snapshot_value(predict(interp, geragrade(colinadummy, 20, 20)), style = "json2")
+    gg <- geragrade(colinadummy, 20, 20)
+
+    pred_vec <- predict(interp, gg)
+    expect_snapshot_value(pred_vec, style = "json2")
+
+    pred_full <- predict(interp, gg, TRUE)
+    expect_equal(class(pred_full), c("data.table", "data.frame"))
+    expect_equal(colnames(pred_full), c("hl", "pot", "rend"))
+    expect_equal(pred_full$rend, pred_vec)
 
     p3d <- plot(interp, hl = 10, pot = 10, print = FALSE)
     expect_equal(class(p3d), c("plotly", "htmlwidget"))
