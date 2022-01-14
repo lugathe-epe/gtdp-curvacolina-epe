@@ -52,13 +52,16 @@ getcolina.triangulacao <- function(object) object$colina
 #' @param object objeto da classe \code{triangulacao} retornado pela funcao homonima
 #' @param pontos data.frame ou matriz contendo coordenadas \code{(hl, pot)} dos pontos onde 
 #'     interpolar
+#' @param full.output booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
+#'     interpolados nas coordenadas \code{pontos}; se \code{TRUE} um data.table de \code{pontos} com
+#'     a coluna \code{rend} adicionada com os rendimentos interpolados
 #' @param ... existe somente para consistencia de metodos. Nao possui utilidade
 #' 
 #' @return vetor de rendimentos interpolados
 #' 
 #' @export
  
-predict.triangulacao <- function(object, pontos, ...) {
+predict.triangulacao <- function(object, pontos, full.output = FALSE, ...) {
 
     pontos <- pontos[complete.cases(pontos), ]
 
@@ -78,6 +81,8 @@ predict.triangulacao <- function(object, pontos, ...) {
         rends  <- colina[vertices, "rend"]
         sum(barycoord$p[i, ] * rends)
     })
+
+    if(full.output) interp <- as.data.table(cbind(pontos, rend = interp)) else interp <- as.numeric(interp)
 
     return(interp)
 }

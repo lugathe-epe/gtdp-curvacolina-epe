@@ -4,13 +4,17 @@
 \alias{predict.triangulacao}
 \title{Amostragem De Pontos Na Triangulacao}
 \usage{
-\method{predict}{triangulacao}(object, pontos, ...)
+\method{predict}{triangulacao}(object, pontos, full.output = FALSE, ...)
 }
 \arguments{
 \item{object}{objeto da classe \code{triangulacao} retornado pela funcao homonima}
 
 \item{pontos}{data.frame ou matriz contendo coordenadas \code{(hl, pot)} dos pontos onde
 interpolar}
+
+\item{full.output}{booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
+interpolados nas coordenadas \code{pontos}; se \code{TRUE} um data.table de \code{pontos} com
+a coluna \code{rend} adicionada com os rendimentos interpolados}
 
 \item{...}{existe somente para consistencia de metodos. Nao possui utilidade}
 }
