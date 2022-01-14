@@ -14,7 +14,7 @@ interpolar}
 
 \item{full.output}{booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
 interpolados nas coordenadas \code{pontos}; se \code{TRUE} um data.table de \code{pontos} com
-a coluna \code{rend} adicionada com os rendimentos interpolados}
+as coluna \code{rend} e \code{inhull}}
 
 \item{...}{existe somente para consistencia de metodos. Nao possui utilidade}
 }

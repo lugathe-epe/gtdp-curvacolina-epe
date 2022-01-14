@@ -16,7 +16,7 @@
 #' 
 #' @export
 
-thinplate <- function(colina, taxa_reducao = 2) {
+thinplate <- function(colina, taxa_reducao = 1) {
 
     hl <- pot <- rend <- NULL
 
@@ -52,7 +52,7 @@ getcolina.thinplate <- function(object) object$colina
 #'     interpolar
 #' @param full.output booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
 #'     interpolados nas coordenadas \code{pontos}; se \code{TRUE} um data.table de \code{pontos} com
-#'     a coluna \code{rend} adicionada com os rendimentos interpolados
+#'     as coluna \code{rend} e \code{inhull}
 #' @param ... existe somente para consistencia de metodos. Nao possui utilidade
 #' 
 #' @return vetor de rendimentos interpolados
@@ -69,8 +69,14 @@ predict.thinplate <- function(object, pontos, full.output = FALSE, ...) {
 
     interp <- unname(predict(object$superficie, newdata = pontos))
 
-    # o as.numeric e necessario porque predict.gam retorna 'array' e nao vetor normal
-    if(full.output) interp <- as.data.table(cbind(pontos, rend = interp)) else interp <- as.numeric(interp)
+    if(full.output) {
+        interp <- as.data.table(cbind(pontos, rend = interp))
+        inhull <- geometry::inhulln(geometry::convhulln(getcolina(object)$CC[, 1:2]), data.matrix(pontos))
+        interp$inhull <- inhull
+    } else {
+        # o as.numeric e necessario porque predict.gam retorna 'array' e nao vetor normal
+        interp <- as.numeric(interp)
+    }
 
     return(interp)
 }

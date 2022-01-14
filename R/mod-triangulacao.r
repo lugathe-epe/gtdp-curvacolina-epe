@@ -54,7 +54,7 @@ getcolina.triangulacao <- function(object) object$colina
 #'     interpolar
 #' @param full.output booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
 #'     interpolados nas coordenadas \code{pontos}; se \code{TRUE} um data.table de \code{pontos} com
-#'     a coluna \code{rend} adicionada com os rendimentos interpolados
+#'     as coluna \code{rend} e \code{inhull}
 #' @param ... existe somente para consistencia de metodos. Nao possui utilidade
 #' 
 #' @return vetor de rendimentos interpolados
@@ -82,7 +82,13 @@ predict.triangulacao <- function(object, pontos, full.output = FALSE, ...) {
         sum(barycoord$p[i, ] * rends)
     })
 
-    if(full.output) interp <- as.data.table(cbind(pontos, rend = interp)) else interp <- as.numeric(interp)
+    if(full.output) {
+        interp <- as.data.table(cbind(pontos, rend = interp))
+        inhull <- geometry::inhulln(geometry::convhulln(getcolina(object)$CC[, 1:2]), data.matrix(pontos))
+        interp$inhull <- inhull
+    } else {
+        interp <- as.numeric(interp)
+    }
 
     return(interp)
 }

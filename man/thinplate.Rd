@@ -4,7 +4,7 @@
 \alias{thinplate}
 \title{Suavizacao De \code{curvacolina} Thin Plate Regression Splines}
 \usage{
-thinplate(colina, taxa_reducao = 2)
+thinplate(colina, taxa_reducao = 1)
 }
 \arguments{
 \item{colina}{objeto \code{curvacolina} retornado pelas funcoes de leitura}

@@ -78,8 +78,20 @@ getcolina.interpolador <- function(object) stop(paste0("Implemente metodo 'getco
 #' 
 #' Metodo para interpolar curva colina a partir de um objeto gerado por \code{interpolador}
 #' 
+#' O argumento \code{full.output} permite alterar a saida da interpolacao. Se 
+#' \code{full.output = FALSE}, o padrao, apenas o vetor de rendimentos interpolados sera retornado. 
+#' Caso \code{full.output = TRUE}, a saida sera um data.table com as colunas
+#' 
+#' \describe{
+#' \item{\code{hl}}{queda liquida no ponto interpolado}
+#' \item{\code{pot}}{potencia no ponto interpolado}
+#' \item{\code{rend}}{rendimento interpolado}
+#' \item{\code{inhull}}{booleano indicando se o ponto foi interpolado (\code{TRUE}) ou extrapolado (\code{FALSE})}
+#' } 
+#' 
 #' @param object objeto da classe \code{interpolador} retornado pela funcao homonima
 #' @param pontos data.frame ou matriz contendo pontos nos quais amostrar o rendimento
+#' @param full.output booleano indicando o nivel de detalhe na saida da funcao. Ver Detalhes
 #' @param ... demais parametros que possam ser passados aos metodos de \code{predict} especificos
 #' 
 #' @return vetor de rendimentos nas coordenadas especificadas em \code{pontos}
@@ -88,6 +100,6 @@ getcolina.interpolador <- function(object) stop(paste0("Implemente metodo 'getco
 #' 
 #' @export
 
-predict.interpolador <- function(object, pontos, ...) {
+predict.interpolador <- function(object, pontos, full.output, ...) {
     stop(paste0("Implemente metodo 'predict' do modelo: ", class(object)[1]))
 }

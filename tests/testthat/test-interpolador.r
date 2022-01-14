@@ -14,7 +14,7 @@ test_that("Modelagem por Triangulacao", {
 
     pred_full <- predict(interp, gg, TRUE)
     expect_equal(class(pred_full), c("data.table", "data.frame"))
-    expect_equal(colnames(pred_full), c("hl", "pot", "rend"))
+    expect_equal(colnames(pred_full), c("hl", "pot", "rend", "inhull"))
     expect_equal(pred_full$rend, pred_vec)
 
     p3d <- plot(interp, hl = 10, pot = 10, print = FALSE)
@@ -40,7 +40,7 @@ test_that("Modelagem por Tensor Product", {
 
     pred_full <- predict(interp, gg, TRUE)
     expect_equal(class(pred_full), c("data.table", "data.frame"))
-    expect_equal(colnames(pred_full), c("hl", "pot", "rend"))
+    expect_equal(colnames(pred_full), c("hl", "pot", "rend", "inhull"))
     expect_equal(pred_full$rend, pred_vec)
 
     p3d <- plot(interp, hl = 10, pot = 10, print = FALSE)
@@ -66,7 +66,7 @@ test_that("Modelagem por Thin Plate", {
 
     pred_full <- predict(interp, gg, TRUE)
     expect_equal(class(pred_full), c("data.table", "data.frame"))
-    expect_equal(colnames(pred_full), c("hl", "pot", "rend"))
+    expect_equal(colnames(pred_full), c("hl", "pot", "rend", "inhull"))
     expect_equal(pred_full$rend, pred_vec)
 
     p3d <- plot(interp, hl = 10, pot = 10, print = FALSE)
