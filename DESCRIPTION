@@ -25,6 +25,7 @@ Imports:
     ggplot2 (>= 3.3.3),
     viridisLite (>= 0.4.0),
     mgcv (>= 1.8-35),
+    fields (>= 13.3),
     geometry (>= 0.4.5)
 Suggests: 
     testthat (>= 3.0.0)

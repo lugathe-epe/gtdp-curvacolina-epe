@@ -12,7 +12,7 @@
 #' 
 #' @return objeto da classe \code{thinplate} contendo a suavizacao da curva colina
 #' 
-#' @importFrom mgcv gam s
+#' @importFrom fields Tps
 #' 
 #' @export
 
@@ -22,11 +22,7 @@ thinplate <- function(colina, taxa_reducao = 1) {
 
     colina_reduzida <- reduzcolina(colina, taxa_reducao)
 
-    nknots <- nrow(colina_reduzida$CC)
-    knots  <- lapply(seq(nknots), function(i) colina_reduzida$CC[i, list(hl, pot)])
-
-    mod <- gam(rend ~ s(hl, pot, bs = "tp", k = nknots, sp = 0, xt = list(max.knots = nknots)),
-        data = colina_reduzida$CC, knots = knots)
+    mod <- Tps(colina_reduzida$CC[, list(hl, pot)], colina_reduzida$CC$rend, lambda = 0)
 
     new_thinplate(mod, colina)
 }
@@ -67,7 +63,7 @@ predict.thinplate <- function(object, pontos, full.output = FALSE, ...) {
 
     pontos <- as.data.frame(pontos)
 
-    interp <- unname(predict(object$superficie, newdata = pontos))
+    interp <- unname(predict(object$superficie, x = pontos))
 
     if(full.output) {
         interp <- as.data.table(cbind(pontos, rend = interp))
