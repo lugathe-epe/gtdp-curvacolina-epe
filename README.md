@@ -4,6 +4,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/lkhenayfis/gtdp-curvacolina/workflows/R-CMD-check/badge.svg)](https://github.com/lkhenayfis/gtdp-curvacolina/actions)
+[![test-coverage](https://github.com/lkhenayfis/gtdp-curvacolina/workflows/test-coverage/badge.svg)](https://github.com/lkhenayfis/gtdp-curvacolina/actions)
 <!-- badges: end -->
 
 # curvacolina
