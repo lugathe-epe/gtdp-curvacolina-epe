@@ -1,6 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/lkhenayfis/gtdp-curvacolina/workflows/R-CMD-check/badge.svg)](https://github.com/lkhenayfis/gtdp-curvacolina/actions)
+<!-- badges: end -->
+
 # curvacolina
 
 Pacote com funcoes facilitadoras da importacao de planilhas de curva
@@ -64,16 +69,16 @@ pontos <- geragrade(colina, dhl = 40:60, dpot = seq(200, 400, by = 10))
 grade <- predict(superf, pontos, full.output = TRUE)
 
 grade
-#>      hl pot     rend
-#>   1: 40 200 78.67424
-#>   2: 41 200 78.92752
-#>   3: 42 200 79.00653
-#>   4: 43 200 78.94092
-#>   5: 44 200 78.97493
-#>  ---                
-#> 437: 56 400 91.02819
-#> 438: 57 400 91.18985
-#> 439: 58 400 91.34657
-#> 440: 59 400 91.47022
-#> 441: 60 400 91.61852
+#>      hl pot     rend inhull
+#>   1: 40 200 78.67424   TRUE
+#>   2: 41 200 78.92752   TRUE
+#>   3: 42 200 79.00653   TRUE
+#>   4: 43 200 78.94092   TRUE
+#>   5: 44 200 78.97493   TRUE
+#>  ---                       
+#> 437: 56 400 91.02819   TRUE
+#> 438: 57 400 91.18985   TRUE
+#> 439: 58 400 91.34657   TRUE
+#> 440: 59 400 91.47022   TRUE
+#> 441: 60 400 91.61852   TRUE
 ```
