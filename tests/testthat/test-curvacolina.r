@@ -12,7 +12,11 @@ test_that("Leitura de colinas", {
 
     expect_snapshot_value(attr(colina, "ncurvas"))
     expect_snapshot_value(attr(colina, "rends"), style = "json2")
-    expect_snapshot_value(data.matrix(colina$CC), style = "json2")
+
+    # a ideia desse teste e checar se a leitura da colina continua correta. Originalmente era 
+    # comparado um snapshot de colina$CC inteira, mas isso fica pesado demais no diretorio
+    summ <- sapply(colina$CC, summary)
+    expect_snapshot_value(summ, style = "json2")
 })
 
 test_that("Leitura de processo iterativo (CC Original)", {
@@ -28,7 +32,9 @@ test_that("Leitura de processo iterativo (CC Original)", {
     for(i in seq(2)) {
         expect_snapshot_value(attr(colina[[i]], "ncurvas"))
         expect_snapshot_value(attr(colina[[i]], "rends"), style = "json2")
-        expect_snapshot_value(data.matrix(colina[[i]]$CC), style = "json2")
+
+        summ <- sapply(colina[[i]]$CC, summary)
+        expect_snapshot_value(summ, style = "json2")
     }
 })
 
@@ -45,6 +51,8 @@ test_that("Leitura de processo iterativo (CC Alterada)", {
     for(i in seq(2)) {
         expect_snapshot_value(attr(colina[[i]], "ncurvas"))
         expect_snapshot_value(attr(colina[[i]], "rends"), style = "json2")
-        expect_snapshot_value(data.matrix(colina[[i]]$CC), style = "json2")
+
+        summ <- sapply(colina[[i]]$CC, summary)
+        expect_snapshot_value(summ, style = "json2")
     }
 })
