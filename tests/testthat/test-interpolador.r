@@ -51,7 +51,7 @@ test_that("Modelagem por Tensor Product", {
 })
 
 test_that("Modelagem por Thin Plate", {
-    interp <- interpolador(colinadummy, "thinplate", taxa_reducao = 2)
+    interp <- interpolador(colinadummy, "thinplate", taxa_reducao = 5)
 
     expect_equal(class(interp), c("thinplate", "interpolador"))
     expect_equal(length(interp), 2)
