@@ -4,19 +4,32 @@
 \alias{geragrade}
 \title{Gera Grade \code{dhl} x \code{dpot} No Dominio Da Curva Colina}
 \usage{
-geragrade(colina, dhl, dpot)
+geragrade(colina, dhl, dpot, expande)
 }
 \arguments{
 \item{colina}{objeto da classe \code{curvacolina} (retornado pelas funcoes de leitura)}
 
 \item{dhl, dpot}{numero de divisoes no eixo de queda liquida e potencia, respectivamente. Tambem
 podem ser fornecidos vetores indicando as posicoes das divisoes de queda e potencia}
+
+\item{expande}{vetor de duas posicoes indicando percentual de expansao do dominio. Ver Detalhes}
 }
 \value{
 data.frame contendo coordenadas dos pontos na grade
 }
 \description{
 Funcao auxiliar para gerar grades de pontos nos quais interpolar a curva colina
+}
+\details{
+\code{expande} permite montar grades que vao alem dos minimos e maximos de queda e potencia
+observados na curva colina. Deve ser informado como um vetor de duas posicoes indicando
+percentuais em formato decimal (5\% = 0.05), sendo a primeira posicao para queda e a segunda para
+potencia. Para um dado valor em \code{expande}, a faixa de quedas ou potencias sera expandida
+segundo
+
+\eqn{faixa_hl = range(hl) + c(-range(hl) * expande[1], -range(hl) * expande[1])}
+
+O calculo para potencia e analogo.
 }
 \examples{
 

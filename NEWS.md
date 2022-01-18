@@ -1,3 +1,7 @@
+# gradecolina (dev)
+
+* `gradecolina` agora aceita parametro de expansao. So e usado se `dhl` e `dpot` forem escalares
+
 # curvacolina 1.0.1
 
 ## Bug fixes
