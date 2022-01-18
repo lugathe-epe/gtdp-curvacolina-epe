@@ -79,9 +79,11 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
 #' 
 #' Funcao para visualizacao dos modelos ajustados atraves de \code{interpolador}
 #' 
-#' Os argumentos \code{hl} e \code{pot} devem ser fornecidos como um numero, indicando quantos 
-#' cortes no eixo de queda e potencia, respectivamente, devem ser utilizados na geracao de uma grade 
-#' a qual interpolar na superficie suavizada. Estes pontos serao entao utilizados para plot.
+#' Para plotar uma superficie e necessario amostrar pontos numa grade regular. A definicao desta 
+#' grade e realizada atraves do argumento \code{...}, que sera utilizado numa chamada de 
+#' \code{\link{geragrade}} e esta grade amostrada do interpolador \code{x}. E possivel deixa-lo nao
+#' especificado; neste caso sera usado o padrao \code{list(dhl = 200, dpot = 200)}, que deve ser
+#' suficiente para um plot suave na maioria das circunstancias.
 #' 
 #' @param x objeto \code{interpolador} retornado pela funcao homonima
 #' @param tipo um de \code{c("3d", "2d")} indicando o tipo de grafico desejado
@@ -89,7 +91,8 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
 #' @param hl,pot vetores definindo grade amostrada. Ver Detalhes
 #' @param print booleano indicando se o plot deve ser exibido. Caso \code{print = FALSE} o objeto
 #'     sera retornado silenciosamente
-#' @param ... existe somente para consistencia de metodos. Nao possui utilidade
+#' @param ... parametros passados para \code{\link{geragrade}} para amostragem da superficie. Se 
+#'     deixado vazio e gerada uma grade 200 x 200. Ver Detalhes
 #' 
 #' @return Se \code{tipo = "3d"} um objeto \code{plotly} contendo o plot 3d; se \code{tipo = "2d"}
 #'     um objeto \code{ggplot} contendo o plot 2d. Em ambos os casos o grafico so sera exibido ao
@@ -104,16 +107,18 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
 #' 
 #' @export 
 
-plot.interpolador <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, hl = 200, pot = 200,
-    print = TRUE, ...) {
+plot.interpolador <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print = TRUE, ...) {
 
     rend <- NULL
 
     tipo <- match.arg(tipo)
 
+    ggargs <- list(...)
+    if(length(ggargs) == 0) ggargs <- list(dhl = 200, dpot = 200)
+
     if(add_colina) colina <- copy(getcolina(x)$CC) else colina <- data.table(hl = NA, pot = NA, rend = 0)
 
-    dsurf <- geragrade(getcolina(x), hl, pot)
+    dsurf <- do.call(geragrade, c(list(colina = getcolina(x)), ggargs))
     dsurf[, rend := predict(x, dsurf)]
 
     if(tipo == "3d") {

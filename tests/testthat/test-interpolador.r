@@ -17,10 +17,10 @@ test_that("Modelagem por Triangulacao", {
     expect_equal(colnames(pred_full), c("hl", "pot", "rend", "inhull"))
     expect_equal(pred_full$rend, pred_vec)
 
-    p3d <- plot(interp, hl = 10, pot = 10, print = FALSE)
+    p3d <- plot(interp, print = FALSE, dhl = 10, dpot = 10)
     expect_equal(class(p3d), c("plotly", "htmlwidget"))
 
-    p2d <- plot(interp, hl = 10, pot = 10, tipo = "2d", print = FALSE)
+    p2d <- plot(interp, tipo = "2d", print = FALSE, dhl = 10, dpot = 10)
     expect_equal(class(p2d), c("gg", "ggplot"))
 })
 
@@ -43,10 +43,10 @@ test_that("Modelagem por Tensor Product", {
     expect_equal(colnames(pred_full), c("hl", "pot", "rend", "inhull"))
     expect_equal(pred_full$rend, pred_vec)
 
-    p3d <- plot(interp, hl = 10, pot = 10, print = FALSE)
+    p3d <- plot(interp, print = FALSE, dhl = 10, dpot = 10)
     expect_equal(class(p3d), c("plotly", "htmlwidget"))
 
-    p2d <- plot(interp, hl = 10, pot = 10, tipo = "2d", print = FALSE)
+    p2d <- plot(interp, tipo = "2d", print = FALSE, dhl = 10, dpot = 10)
     expect_equal(class(p2d), c("gg", "ggplot"))
 })
 
@@ -69,9 +69,9 @@ test_that("Modelagem por Thin Plate", {
     expect_equal(colnames(pred_full), c("hl", "pot", "rend", "inhull"))
     expect_equal(pred_full$rend, pred_vec)
 
-    p3d <- plot(interp, hl = 10, pot = 10, print = FALSE)
+    p3d <- plot(interp, print = FALSE, dhl = 10, dpot = 10)
     expect_equal(class(p3d), c("plotly", "htmlwidget"))
 
-    p2d <- plot(interp, hl = 10, pot = 10, tipo = "2d", print = FALSE)
+    p2d <- plot(interp, tipo = "2d", print = FALSE, dhl = 10, dpot = 10)
     expect_equal(class(p2d), c("gg", "ggplot"))
 })

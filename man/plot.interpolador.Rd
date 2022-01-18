@@ -4,15 +4,7 @@
 \alias{plot.interpolador}
 \title{Visualizacao De Interpolacoes}
 \usage{
-\method{plot}{interpolador}(
-  x,
-  tipo = c("3d", "2d"),
-  add_colina = TRUE,
-  hl = 200,
-  pot = 200,
-  print = TRUE,
-  ...
-)
+\method{plot}{interpolador}(x, tipo = c("3d", "2d"), add_colina = TRUE, print = TRUE, ...)
 }
 \arguments{
 \item{x}{objeto \code{interpolador} retornado pela funcao homonima}
@@ -21,12 +13,13 @@
 
 \item{add_colina}{booleano indicando se os pontos da colina original tambem devem ser plotados}
 
-\item{hl, pot}{vetores definindo grade amostrada. Ver Detalhes}
-
 \item{print}{booleano indicando se o plot deve ser exibido. Caso \code{print = FALSE} o objeto
 sera retornado silenciosamente}
 
-\item{...}{existe somente para consistencia de metodos. Nao possui utilidade}
+\item{...}{parametros passados para \code{\link{geragrade}} para amostragem da superficie. Se
+deixado vazio e gerada uma grade 200 x 200. Ver Detalhes}
+
+\item{hl, pot}{vetores definindo grade amostrada. Ver Detalhes}
 }
 \value{
 Se \code{tipo = "3d"} um objeto \code{plotly} contendo o plot 3d; se \code{tipo = "2d"}
@@ -37,9 +30,11 @@ usuario caso \code{print = TRUE} (o padrao).
 Funcao para visualizacao dos modelos ajustados atraves de \code{interpolador}
 }
 \details{
-Os argumentos \code{hl} e \code{pot} devem ser fornecidos como um numero, indicando quantos
-cortes no eixo de queda e potencia, respectivamente, devem ser utilizados na geracao de uma grade
-a qual interpolar na superficie suavizada. Estes pontos serao entao utilizados para plot.
+Para plotar uma superficie e necessario amostrar pontos numa grade regular. A definicao desta
+grade e realizada atraves do argumento \code{...}, que sera utilizado numa chamada de
+\code{\link{geragrade}} e esta grade amostrada do interpolador \code{x}. E possivel deixa-lo nao
+especificado; neste caso sera usado o padrao \code{list(dhl = 200, dpot = 200)}, que deve ser
+suficiente para um plot suave na maioria das circunstancias.
 }
 \seealso{
 Other interpolador: 
