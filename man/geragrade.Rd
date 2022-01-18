@@ -4,13 +4,16 @@
 \alias{geragrade}
 \title{Gera Grade \code{dhl} x \code{dpot} No Dominio Da Curva Colina}
 \usage{
-geragrade(colina, dhl, dpot, expande)
+geragrade(colina, dhl, dpot, byhl, bypot, expande)
 }
 \arguments{
 \item{colina}{objeto da classe \code{curvacolina} (retornado pelas funcoes de leitura)}
 
 \item{dhl, dpot}{numero de divisoes no eixo de queda liquida e potencia, respectivamente. Tambem
 podem ser fornecidos vetores indicando as posicoes das divisoes de queda e potencia}
+
+\item{byhl, bypot}{intervalo entre divisoes de queda e potencia, respectivamente; se forncecido
+\code{dhl} e \code{dpot} serao ignorados. Ver Detalhes}
 
 \item{expande}{vetor de duas posicoes indicando percentual de expansao do dominio. Ver Detalhes}
 }
@@ -21,6 +24,25 @@ data.frame contendo coordenadas dos pontos na grade
 Funcao auxiliar para gerar grades de pontos nos quais interpolar a curva colina
 }
 \details{
+Os argumentos \code{dhl} e \code{dpot} especificam a grade de maneira mais simples: se forem
+inteiros, as coordenadas de queda e potencia da grade sao geradas segmentando a faixa de quedas
+e potencias contidas na colina em \code{dhl} e \code{dpot} respectivamente. Caso sejam vetores,
+a grade sera construida com as posicoes contidas nestes vetores. Veja os Exemplos.
+
+\code{byhl} e \code{bypot} permitem uma especificacao mais detalhada. Estes argumentos sao
+interpretados como o intervalo de separacao entre cada divisao de queda e potencia na grade. Para
+manter a consistencia, a faixa de quedas e potencias usada nessa construcao nao sao exatamente
+aquelas contidas na colina, como quando gerando grades a partir de \code{dhl} e \code{dpot} (pois
+muito provavelmente uma sequencia comecando em min(hl) andando de byhl em byhl nao terminaria em
+max(hl)). Os minimos e maximos das faixas serao obtidos segundo as regras:
+
+\intemize{
+\item{minimo: o maior multiplo de \code{byX} menor que min(X)}
+\item{maximo: o menor multiplo de \code{byX} maior que max(X)}
+}
+
+Se estes dois argumentos forem passados, \code{dhl} e \code{dpot} sao automaticamente ignorados.
+
 \code{expande} permite montar grades que vao alem dos minimos e maximos de queda e potencia
 observados na curva colina. Deve ser informado como um vetor de duas posicoes indicando
 percentuais em formato decimal (5\% = 0.05), sendo a primeira posicao para queda e a segunda para
@@ -29,12 +51,20 @@ segundo
 
 \eqn{faixa_hl = range(hl) + c(-range(hl) * expande[1], -range(hl) * expande[1])}
 
-O calculo para potencia e analogo.
+O calculo para potencia e analogo. Esta expansao de faixa se aplica tanto no caso em que
+\code{dhl} e \code{dpot} sao passados quanto \code{byhl} e \code{bypot}. Adicionalmente, se
+\code{dhl} e \code{dpot} forem fornecidos como vetores, \code{expande} sera ignorado.
 }
 \examples{
 
+# grade contemplando toda a faixa de quedas e potencias da colina, cada uma divida em 20 partes
 grade1 <- geragrade(colinadummy, 20, 20)
+
+# grade com coordenadas especificadas diretamente
 grade2 <- geragrade(colinadummy, 40:60, seq(150, 400, by = 10))
+
+# grade com intervalos de 1 cm em queda e 10 MW em potencia
+# grade3 <- geragrade(colinadummy, byhl = .1, bypot = 10)
 
 \dontrun{
 plot(colinadummy, "2d") + ggplot2::geom_point(data = grade, aes(hl, pot), col = 2)

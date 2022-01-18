@@ -2,6 +2,16 @@
 
 * `gradecolina` agora aceita parametro de expansao. So e usado se `dhl` e `dpot` forem escalares
 
+* `gradecolina` tem parametros `byhl` e `bypot`. Estes argumentos sao interpretados como o intervalo
+de separacao entre cada divisao de queda e potencia na grade. Para manter a consistencia, a faixa de
+quedas e potencias usada nessa construcao nao sao exatamente aquelas contidas na colina, como quando
+gerando grades a partir de `dhl` e `dpot` (pois muito provavelmente uma sequencia
+comecando em min(hl) andando de byhl em byhl nao terminaria em max(hl)). Os minimos e maximos das
+faixas serao obtidos segundo as regras:
+
+    * minimo: o maior multiplo de `byX` menor que min(X)
+    * maximo: o menor multiplo de `byX` maior que max(X)
+
 # curvacolina 1.0.1
 
 ## Bug fixes
