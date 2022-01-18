@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Users/lucas/OneDrive/Documentos/R/win-library/4.1/Rcpp/include/**",
+                "C:/Users/lucas/OneDrive/Documentos/R/win-library/4.1/RcppArmadillo/include/**",
+                "C:/Program Files/R/R-4.1.0/include/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "C:\\Rtools\\mingw_64\\bin\\gcc.exe",
+            "cStandard": "c89",
+            "cppStandard": "gnu++98",
+            "intelliSenseMode": "windows-gcc-x64"
+        }
+    ],
+    "version": 4
+}
