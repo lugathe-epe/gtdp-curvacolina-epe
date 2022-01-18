@@ -1,3 +1,8 @@
+# master (dev)
+
+* `plot.interpolador` agora usa `...` para passar argumentos a `geragrade`, permitindo maior 
+  controle sobre a superficie gerada
+
 # curvacolina 1.0.1
 
 ## Bug fixes
