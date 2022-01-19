@@ -3,6 +3,9 @@
 * `plot.interpolador` agora usa `...` para passar argumentos a `geragrade`, permitindo maior 
   controle sobre a superficie gerada
 
+* classe `retamindist` incluida. Proporciona retrocompatibilidade com arquivos de colina interpolada
+  gerados a partir da interpolacao por reta de menor distancia implementada na macro
+
 # curvacolina 1.0.1
 
 ## Bug fixes
