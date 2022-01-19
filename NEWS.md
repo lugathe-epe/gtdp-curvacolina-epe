@@ -1,4 +1,6 @@
-# gradecolina (dev)
+# curvacolina 1.3
+
+## New features
 
 * `gradecolina` agora aceita parametro de expansao. So e usado se `dhl` e `dpot` forem escalares
 
@@ -14,8 +16,6 @@ faixas serao obtidos segundo as regras:
 
 * adiciona generica `interpolagrade`, com metodos para `data.frame(table)` e `curvacolina`. Esta
   funcao facilita o processo de interpolacao bilinear de pontos arbitrarios numa grade regular
-
-# master (dev)
 
 * `plot.interpolador` agora usa `...` para passar argumentos a `geragrade`, permitindo maior 
   controle sobre a superficie gerada
