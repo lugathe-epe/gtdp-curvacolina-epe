@@ -118,7 +118,7 @@ plot.interpolador <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print 
     if(add_colina) colina <- copy(getcolina(x)$CC) else colina <- data.table(hl = NA, pot = NA, rend = 0)
 
     dsurf <- do.call(geragrade, c(list(colina = getcolina(x)), ggargs))
-    dsurf[, rend := predict(x, dsurf)]
+    dsurf <- predict(x, dsurf, TRUE)
 
     if(tipo == "3d") {
         p <- plot_ly() %>%
