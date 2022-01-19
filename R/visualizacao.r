@@ -88,7 +88,6 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
 #' @param x objeto \code{interpolador} retornado pela funcao homonima
 #' @param tipo um de \code{c("3d", "2d")} indicando o tipo de grafico desejado
 #' @param add_colina booleano indicando se os pontos da colina original tambem devem ser plotados
-#' @param hl,pot vetores definindo grade amostrada. Ver Detalhes
 #' @param print booleano indicando se o plot deve ser exibido. Caso \code{print = FALSE} o objeto
 #'     sera retornado silenciosamente
 #' @param ... parametros passados para \code{\link{geragrade}} para amostragem da superficie. Se 

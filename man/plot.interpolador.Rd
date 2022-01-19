@@ -18,8 +18,6 @@ sera retornado silenciosamente}
 
 \item{...}{parametros passados para \code{\link{geragrade}} para amostragem da superficie. Se
 deixado vazio e gerada uma grade 200 x 200. Ver Detalhes}
-
-\item{hl, pot}{vetores definindo grade amostrada. Ver Detalhes}
 }
 \value{
 Se \code{tipo = "3d"} um objeto \code{plotly} contendo o plot 3d; se \code{tipo = "2d"}
