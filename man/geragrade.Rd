@@ -36,7 +36,7 @@ aquelas contidas na colina, como quando gerando grades a partir de \code{dhl} e 
 muito provavelmente uma sequencia comecando em min(hl) andando de byhl em byhl nao terminaria em
 max(hl)). Os minimos e maximos das faixas serao obtidos segundo as regras:
 
-\intemize{
+\itemize{
 \item{minimo: o maior multiplo de \code{byX} menor que min(X)}
 \item{maximo: o menor multiplo de \code{byX} maior que max(X)}
 }
