@@ -12,6 +12,9 @@ faixas serao obtidos segundo as regras:
     * minimo: o maior multiplo de `byX` menor que min(X)
     * maximo: o menor multiplo de `byX` maior que max(X)
 
+* adiciona generica `interpolagrade`, com metodos para `data.frame(table)` e `curvacolina`. Esta
+  funcao facilita o processo de interpolacao bilinear de pontos arbitrarios numa grade regular
+
 # master (dev)
 
 * `plot.interpolador` agora usa `...` para passar argumentos a `geragrade`, permitindo maior 
