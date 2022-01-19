@@ -108,7 +108,7 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
 
 plot.interpolador <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print = TRUE, ...) {
 
-    rend <- NULL
+    hl <- pot <- rend <- NULL
 
     tipo <- match.arg(tipo)
 

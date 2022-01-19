@@ -21,6 +21,9 @@
 #' @export 
 
 retamindist <- function(arq) {
+
+    rend <- NULL
+
     dat <- fread(arq)
     colnames(dat) <- c("hl", "pot", "rend")
     dat[, rend := rend * 100]
