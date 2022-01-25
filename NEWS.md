@@ -5,6 +5,11 @@
 * objetos `curvacolina` agora carregam attr `g`, `rho` e `max`; `colinadummy` atualizada para o novo
   padrao
 
+### Minor
+
+* homogeinizacao das legendas e parametros graficos gerais nas funcoes de `plot`, tando em 2d quanto
+  em 3d
+
 # curvacolina 1.3
 
 ## New features

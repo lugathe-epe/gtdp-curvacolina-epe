@@ -52,20 +52,19 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
             colors = viridisLite::viridis(attr(x, "ncurvas")),
             type = "scatter3d", mode = "markers") %>%
             layout(scene = list(
-                xaxis = list(title = list(text = "Queda Liquida")),
-                yaxis = list(title = list(text = "Potencia")),
-                zaxis = list(title = list(text = "Rendimento")))
+                xaxis = list(title = list(text = "Queda L\U00EDquida (m)")),
+                yaxis = list(title = list(text = "Pot\U00EAncia (MW)")),
+                zaxis = list(title = list(text = "Rendimento (%)")))
             )
 
         if(print) print(p)
 
         invisible(p)
     } else {
-        dplot[, rend_label := paste0(rend_label, "%")]
 
         p <- ggplot(dplot, aes(hl, pot, color = rend_label)) + geom_point() +
-            scale_color_viridis_d(name = "Rendimento") +
-            labs(x = "Queda Liquida", y = "Potencia") +
+            scale_color_viridis_d(name = "Rendimento (%)") +
+            labs(x = "Queda L\U00EDquida (m)", y = "Pot\U00EAncia (MW)") +
             theme_bw() +
             guides(color = guide_legend(ncol = 1))
 
@@ -128,12 +127,10 @@ plot.interpolador <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print 
                 z = t(data.matrix(dcast(dsurf, hl ~ pot, value.var = "rend"))),
                 name = "interpolacao") %>%
             layout(scene = list(
-                xaxis = list(title = list(text = "Queda Liquida")),
-                yaxis = list(title = list(text = "Potencia")),
-                zaxis = list(title = list(text = "Rendimento")))
-            ) %>%
-            hide_legend() %>%
-            hide_colorbar()
+                xaxis = list(title = list(text = "Queda L\U00EDquida (m)")),
+                yaxis = list(title = list(text = "Pot\U00EAncia (MW)")),
+                zaxis = list(title = list(text = "Rendimento (%)")))
+            )
 
         if(print) print(p)
 
@@ -144,8 +141,8 @@ plot.interpolador <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print 
         p <- ggplot() +
             geom_raster(data = dsurf, aes(hl, pot, fill = rend)) +
             geom_point(data = colina, aes(hl, pot), color = "blue") +
-            scale_fill_viridis_c(name = "Rendimento", na.value = NA) +
-            labs(x = "Queda Liquida", y = "Potencia") +
+            scale_fill_viridis_c(name = "Rendimento (%)", na.value = NA) +
+            labs(x = "Queda L\U00EDquida (m)", y = "Pot\U00EAncia (MW)") +
             theme_bw() +
             guides(color = guide_legend(ncol = 1))
 
