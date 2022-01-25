@@ -1,16 +1,4 @@
-# Leitura de colinas
-
-    21
-
----
-
-    {
-      "type": "double",
-      "attributes": {},
-      "value": [40, 50, 60, 70, 76, 78, 80, 82, 84, 86, 88, 90, 91, 92, 93, 93.5, 94, 94.5, 95, 95.5, 95.78]
-    }
-
----
+# Leitura de colinas pura
 
     {
       "type": "list",
@@ -55,12 +43,12 @@
           "value": [119.31506783, 215.50136238, 303.01305558, 288.04855817, 351.10011948, 450.56603315]
         },
         {
-          "type": "character",
+          "type": "double",
           "attributes": {
             "names": {
               "type": "character",
               "attributes": {},
-              "value": ["Mode", "NA's"]
+              "value": ["Min.", "1st Qu.", "Median", "Mean", "3rd Qu.", "Max.", "NA's"]
             },
             "class": {
               "type": "character",
@@ -68,7 +56,7 @@
               "value": ["summaryDefault", "table"]
             }
           },
-          "value": ["logical", "1888"]
+          "value": ["NA", "NA", "NA", "NaN", "NA", "NA", 1888]
         },
         {
           "type": "double",
@@ -89,11 +77,140 @@
       ]
     }
 
-# Leitura de processo iterativo (CC Original)
+---
 
-    10
+    {
+      "type": "double",
+      "attributes": {},
+      "value": [40, 50, 60, 70, 76, 78, 80, 82, 84, 86, 88, 90, 91, 92, 93, 93.5, 94, 94.5, 95, 95.5, 95.78]
+    }
+
+# Leitura de colinas fornecendo rho e g
+
+    {
+      "type": "double",
+      "attributes": {
+        "dim": {
+          "type": "integer",
+          "attributes": {},
+          "value": [6, 4]
+        },
+        "dimnames": {
+          "type": "list",
+          "attributes": {},
+          "value": [
+            {
+              "type": "character",
+              "attributes": {},
+              "value": ["Min.", "1st Qu.", "Median", "Mean", "3rd Qu.", "Max."]
+            },
+            {
+              "type": "character",
+              "attributes": {},
+              "value": ["hl", "pot", "vaz", "rend"]
+            }
+          ]
+        }
+      },
+      "value": [34.02108687, 42.19738279, 48.92162336, 48.50145585, 55.08523903, 61.21128591, 119.31506783, 215.50136238, 303.01305558, 288.04855817, 351.10011948, 450.56603315, 334.18735319, 581.38483531, 694.76229735, 706.68733242, 825.06883022, 1246.44463541, 40, 82, 90, 86.28960805, 93.5, 95.78]
+    }
 
 ---
+
+    {
+      "type": "double",
+      "attributes": {},
+      "value": [40, 50, 60, 70, 76, 78, 80, 82, 84, 86, 88, 90, 91, 92, 93, 93.5, 94, 94.5, 95, 95.5, 95.78]
+    }
+
+# Colina dummy
+
+    {
+      "type": "list",
+      "attributes": {
+        "names": {
+          "type": "character",
+          "attributes": {},
+          "value": ["hl", "pot", "vaz", "rend"]
+        }
+      },
+      "value": [
+        {
+          "type": "double",
+          "attributes": {
+            "names": {
+              "type": "character",
+              "attributes": {},
+              "value": ["Min.", "1st Qu.", "Median", "Mean", "3rd Qu.", "Max."]
+            },
+            "class": {
+              "type": "character",
+              "attributes": {},
+              "value": ["summaryDefault", "table"]
+            }
+          },
+          "value": [34.02108687, 42.19738279, 48.92162336, 48.50145585, 55.08523903, 61.21128591]
+        },
+        {
+          "type": "double",
+          "attributes": {
+            "names": {
+              "type": "character",
+              "attributes": {},
+              "value": ["Min.", "1st Qu.", "Median", "Mean", "3rd Qu.", "Max."]
+            },
+            "class": {
+              "type": "character",
+              "attributes": {},
+              "value": ["summaryDefault", "table"]
+            }
+          },
+          "value": [119.31506783, 215.50136238, 303.01305558, 288.04855817, 351.10011948, 450.56603315]
+        },
+        {
+          "type": "double",
+          "attributes": {
+            "names": {
+              "type": "character",
+              "attributes": {},
+              "value": ["Min.", "1st Qu.", "Median", "Mean", "3rd Qu.", "Max.", "NA's"]
+            },
+            "class": {
+              "type": "character",
+              "attributes": {},
+              "value": ["summaryDefault", "table"]
+            }
+          },
+          "value": ["NA", "NA", "NA", "NaN", "NA", "NA", 1888]
+        },
+        {
+          "type": "double",
+          "attributes": {
+            "names": {
+              "type": "character",
+              "attributes": {},
+              "value": ["Min.", "1st Qu.", "Median", "Mean", "3rd Qu.", "Max."]
+            },
+            "class": {
+              "type": "character",
+              "attributes": {},
+              "value": ["summaryDefault", "table"]
+            }
+          },
+          "value": [40, 82, 90, 86.28960805, 93.5, 95.78]
+        }
+      ]
+    }
+
+---
+
+    {
+      "type": "double",
+      "attributes": {},
+      "value": [40, 50, 60, 70, 76, 78, 80, 82, 84, 86, 88, 90, 91, 92, 93, 93.5, 94, 94.5, 95, 95.5, 95.78]
+    }
+
+# Leitura de processo iterativo (CC Original)
 
     {
       "type": "double",
@@ -130,10 +247,6 @@
       },
       "value": [78.41827979, 83.85440021, 88.81442561, 88.65522468, 93.35540506, 98.9439005, 55.14135632, 79.21691422, 114.27914645, 116.50048808, 152.74079837, 186.37203931, 73.78176039, 102.11988511, 139.00960717, 148.21870172, 197.62532341, 231.08488887, 85, 89, 91, 90.71635311, 93, 94]
     }
-
----
-
-    14
 
 ---
 
@@ -175,10 +288,6 @@
 
 # Leitura de processo iterativo (CC Alterada)
 
-    21
-
----
-
     {
       "type": "double",
       "attributes": {},
@@ -214,10 +323,6 @@
       },
       "value": [34.02108687, 42.19738279, 48.92162336, 48.50145585, 55.08523903, 61.21128591, 17.10754967, 82.66555405, 124.37537384, 122.1010839, 158.94749832, 229.8928833, 119.31506868, 215.50135856, 303.01305044, 288.04855838, 351.10011974, 450.56604022, 40, 82, 90, 86.28960805, 93.5, 95.78]
     }
-
----
-
-    22
 
 ---
 

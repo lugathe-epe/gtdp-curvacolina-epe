@@ -1,3 +1,10 @@
+# dev (master)
+
+## New features
+
+* objetos `curvacolina` agora carregam attr `g`, `rho` e `max`; `colinadummy` atualizada para o novo
+  padrao
+
 # curvacolina 1.3
 
 ## New features

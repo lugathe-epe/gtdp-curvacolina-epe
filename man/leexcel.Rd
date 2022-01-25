@@ -5,7 +5,7 @@
 \alias{learqprocit}
 \title{Le Planilha de Curva Colina}
 \usage{
-learqcolina(arq, aba = 1)
+learqcolina(arq, aba = 1, g, rho)
 
 learqprocit(arq)
 }
@@ -14,6 +14,8 @@ learqprocit(arq)
 
 \item{aba}{aba a ser lida. Por padrao igual a \code{1}, geralmente nao deve ser informado pelo
 usuario}
+
+\item{g, rho}{parametros opcionais contendo gravidade e densidade da agua no local. Ver Detalhes}
 }
 \value{
 objetos \code{curvacolina}: lista de um elemento \code{data.table} contendo as colunas
@@ -21,11 +23,21 @@ objetos \code{curvacolina}: lista de um elemento \code{data.table} contendo as c
 \describe{
 \item{\code{hl}}{queda liquida}
 \item{\code{pot}}{potencia gerada}
+\item{\code{vaz}}{vazao turbinada}
 \item{\code{rend}}{rendimento correspondente}
 }
 
+Adicionalmente tem os atributos:
+
+\describe{
+\item{\code{ncurvas}}{numero de curvas na colina}
+\item{\code{rends}}{vetor de rendimentos contidos na curva colina}
+\item{\code{max}}{rendimento no "olho" da colina}
+\item{\code{rho}}{densidade da agua associada}
+\item{\code{g}}{gravidade associada}
+
 \code{leaqrcolina} retorna apenas um objeto, enquanto \code{learqprocit} retornara uma lista de
-tantos elementos quanto abas de curva colina existem na planilha
+tantos elementos quanto abas de curva colina existem na planilha \code{arq}
 }
 \description{
 Funcoes para leitura de arquivos xlsx e extracao da curva colina em formato padronizado
@@ -34,6 +46,10 @@ Funcoes para leitura de arquivos xlsx e extracao da curva colina em formato padr
 \code{learqcolina} deve ser utilizada para leitura de arquivos especificos de curva colina, nos
 quais existe apenas uma aba contendo a informacao das curvas. \code{learqprocit} e especifica
 para uso com planilhas de processo iterativo, nas quais pode haver mais de uma curva colina.
+
+Para \code{learqcolina}, \code{g} e \code{rho} permitem que sejam passados por fora a densidade e
+gravidade no local. \code{learqprocit} ja busca esses valores por padrao na planilha de processo
+iterativo, nao sendo necessario passa-los.
 }
 \examples{
 

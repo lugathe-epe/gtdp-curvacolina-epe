@@ -8,9 +8,14 @@
 #' quais existe apenas uma aba contendo a informacao das curvas. \code{learqprocit} e especifica 
 #' para uso com planilhas de processo iterativo, nas quais pode haver mais de uma curva colina.
 #' 
+#' Para \code{learqcolina}, \code{g} e \code{rho} permitem que sejam passados por fora a densidade e
+#' gravidade no local. \code{learqprocit} ja busca esses valores por padrao na planilha de processo
+#' iterativo, nao sendo necessario passa-los.
+#' 
 #' @param arq caminho da planilha
 #' @param aba aba a ser lida. Por padrao igual a \code{1}, geralmente nao deve ser informado pelo 
 #'     usuario
+#' @param g,rho parametros opcionais contendo gravidade e densidade da agua no local. Ver Detalhes
 #' 
 #' @examples 
 #' 
@@ -27,11 +32,21 @@
 #' \describe{
 #' \item{\code{hl}}{queda liquida}
 #' \item{\code{pot}}{potencia gerada}
+#' \item{\code{vaz}}{vazao turbinada}
 #' \item{\code{rend}}{rendimento correspondente}
 #' }
 #' 
+#' Adicionalmente tem os atributos:
+#' 
+#' \describe{
+#' \item{\code{ncurvas}}{numero de curvas na colina}
+#' \item{\code{rends}}{vetor de rendimentos contidos na curva colina}
+#' \item{\code{max}}{rendimento no "olho" da colina}
+#' \item{\code{rho}}{densidade da agua associada}
+#' \item{\code{g}}{gravidade associada}
+#' 
 #' \code{leaqrcolina} retorna apenas um objeto, enquanto \code{learqprocit} retornara uma lista de
-#' tantos elementos quanto abas de curva colina existem na planilha
+#' tantos elementos quanto abas de curva colina existem na planilha \code{arq}
 #' 
 #' @rdname leexcel
 #' 
@@ -39,28 +54,28 @@
 #' 
 #' @export
 
-learqcolina <- function(arq, aba = 1) {
+learqcolina <- function(arq, aba = 1, g, rho) {
 
     plan <- as.data.frame(readxl::read_xlsx(arq, aba, col_names = FALSE, .name_repair = "minimal"))
 
     if(nrow(plan) == 0) return(NULL)
 
-    rends <- unname(unlist(plan[1, ]))
-    rends <- rends[!is.na(rends)]
-    rends <- as.numeric(regmatches(rends, regexpr("[[:digit:]]+(\\.[[:digit:]]+)?", rends)))
-
     ncurvas <- (ncol(plan) + 1) / 3
     curvas  <- lapply(seq(ncurvas), function(i) {
         col1 <- 1 + (i - 1) * 3
         col2 <- col1 + 1
-        out <- plan[, col1:col2]
-        out <- out[complete.cases(out), ]
-        out[] <- lapply(out, as.numeric)
-        colnames(out) <- c("hl", "pot")
-        out
+
+        rend <- plan[1, col1]
+
+        curva <- plan[, col1:col2]
+        curva <- curva[complete.cases(curva), ]
+        curva[] <- lapply(curva, as.numeric)
+        colnames(curva) <- c("hl", "pot")
+
+        list(rend, curva)
     })
 
-    new_curvacolina(rends, curvas)
+    new_curvacolina(curvas, g, rho)
 }
 
 #' @rdname leexcel
@@ -78,29 +93,27 @@ learqprocit <- function(arq) {
     alterada <- grepl("Alterada", abas_colina)
     if(any(alterada)) abas_colina <- abas_colina[alterada]
 
-    colinas <- lapply(abas_colina, function(a) learqcolina(arq, aba = a))
-
-    # pode ser que alguma planilha tenha sido montada errado, com abas 'Alterada' vazias
-    # nesse caso refaz a leitura das abas 'Original' mesmo, emitindo um aviso
-    all_null <- all(sapply(colinas, is.null))
-    if(all_null) {
-        abas_colina <- abas[grepl("Colina Original", abas)]
-        colinas <- lapply(abas_colina, function(a) learqcolina(arq, aba = a))
-
-        warning("Abas 'Alterada' em '", arq, "' foram encontradas vazias -- leitura realizada das 'Original'")
-    }
-
     rho_g <- lapply(abas_abertura, function(a) {
         plan <- as.data.table(readxl::read_xlsx(arq, a, col_names = FALSE, .name_repair = "minimal"))
         plan <- as.numeric(plan[14:18, 7][[1]])
         if(all(is.na(plan[4:5]))) return(plan[1:2]) else return(plan[4:5])
     })
 
-    colinas <- mapply(colinas, rho_g, FUN = function(colina, r_g) {
-        if(is.null(colina)) return(NULL)
-        colina$CC[, vaz := pot / (hl * rend / 100 * r_g[1] * r_g[2]) * 1e6]
-        colina
+    colinas <- mapply(abas_colina, rho_g, FUN = function(a, r_g) {
+        learqcolina(arq, a, r_g[1], r_g[2])
     }, SIMPLIFY = FALSE)
+
+    # pode ser que alguma planilha tenha sido montada errado, com abas 'Alterada' vazias
+    # nesse caso refaz a leitura das abas 'Original' mesmo, emitindo um aviso
+    all_null <- all(sapply(colinas, is.null))
+    if(all_null) {
+        abas_colina <- abas[grepl("Colina Original", abas)]
+        colinas <- mapply(abas_colina, rho_g, FUN = function(a, r_g) {
+            learqcolina(arq, a, r_g[1], r_g[2])
+        }, SIMPLIFY = FALSE)
+
+        warning("Abas 'Alterada' em '", arq, "' foram encontradas vazias -- leitura realizada das 'Original'")
+    }
 
     colinas <- colinas[!sapply(colinas, is.null)]
 
@@ -111,21 +124,34 @@ learqprocit <- function(arq) {
 
 #' @import data.table
 
-new_curvacolina <- function(rends, curvas) {
+new_curvacolina <- function(curvas, g, rho) {
 
     vaz <- NULL
+
+    if(missing(rho)) rho <- NA
+    if(missing(g)) g <- NA
+
+    rends <- lapply(curvas, "[[", 1)
+    rends <- sapply(rends, function(x) as.numeric(regmatches(x, regexpr("[[:digit:]]+(\\.[[:digit:]]+)?", x))))
+
+    curvas <- lapply(curvas, "[[", 2)
 
     colina <- mapply(rends, curvas, FUN = function(r, c) cbind(c, rend = r), SIMPLIFY = FALSE)
     colina <- do.call(rbind, colina)
     colina <- as.data.table(colina)
-    colina[, vaz := rep(NA, .N)]
+    colina[, vaz := pot / (hl * rend / 100 * rho * g) * 1e6]
     setcolorder(colina, c("hl", "pot", "vaz", "rend"))
 
     colina <- list(CC = colina)
 
+    temmax <- colina$CC[rend == max(rend), .N == 1]
+
     class(colina) <- c("curvacolina")
     attr(colina, "rends") <- rends
+    attr(colina, "max") <- ifelse(temmax, colina$CC[which.max(rend), rend], NA)
     attr(colina, "ncurvas") <- length(rends)
+    attr(colina, "rho") <- rho
+    attr(colina, "g")   <- g
 
     return(colina)
 }
