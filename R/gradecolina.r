@@ -58,6 +58,7 @@ interpolagrade.data.frame <- function(pontos, gradecolina, full.output = FALSE) 
     potGrade <- gradecolina[, unique(pot)]
     rendGrade <- data.matrix(dcast(gradecolina, hl ~ pot, value.var = "rend")[, -1])
 
+    pontos[, ordem0 := seq_len(.N)]
     setorder(pontos, pot)
     hlPred  <- pontos[, hl]
     potPred <- pontos[, pot]
@@ -70,6 +71,8 @@ interpolagrade.data.frame <- function(pontos, gradecolina, full.output = FALSE) 
         # a funcao em cpp retorna um vetor coluna (pro R, uma matriz N x 1)
         interp <- as.numeric(interp)
     }
+
+    interp <- interp[order(pontos$ordem0)]
 
     return(interp)
 }

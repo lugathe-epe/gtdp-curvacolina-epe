@@ -10,6 +10,11 @@
 * homogeinizacao das legendas e parametros graficos gerais nas funcoes de `plot`, tando em 2d quanto
   em 3d
 
+## Bug fixes
+
+* corrige erro em `interpolagrade`. A implementacao original reordenava os pontos para entrar no
+  interpolador de grade em cpp, mas nao retornava a ordem original depois, gerando um erro.
+
 # curvacolina 1.3
 
 ## New features
