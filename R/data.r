@@ -17,5 +17,8 @@
 #' \describe{
 #' \item{\code{ncurvas}}{numero de curvas na colina}
 #' \item{\code{rends}}{vetor de rendimentos contidos na curva colina}
+#' \item{\code{max}}{rendimento no "olho" da colina}
+#' \item{\code{rho}}{densidade da agua associada}
+#' \item{\code{g}}{gravidade associada}
 #' }
 "colinadummy"
