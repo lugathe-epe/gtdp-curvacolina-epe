@@ -119,12 +119,49 @@ plot.interpolador <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print 
     dsurf <- do.call(geragrade, c(list(colina = getcolina(x)), ggargs))
     dsurf <- predict(x, dsurf, TRUE)
 
+    plot.gradecolina(dsurf, tipo, add_colina, print)
+}
+
+#' Visualizacao De \code{gradecolina}
+#' 
+#' Funcao para visualizacao das grades regulares extraidas de interpoladores
+#' 
+#' @param x objeto \code{gradecolina} retornado pela funcao homonima
+#' @param tipo um de \code{c("3d", "2d")} indicando o tipo de grafico desejado
+#' @param add_colina booleano indicando se os pontos da colina original tambem devem ser plotados
+#' @param print booleano indicando se o plot deve ser exibido. Caso \code{print = FALSE} o objeto
+#'     sera retornado silenciosamente
+#' @param ... existe somente para consistencia de metodos. Nao possui utilidade
+#' 
+#' @return Se \code{tipo = "3d"} um objeto \code{plotly} contendo o plot 3d; se \code{tipo = "2d"}
+#'     um objeto \code{ggplot} contendo o plot 2d. Em ambos os casos o grafico so sera exibido ao
+#'     usuario caso \code{print = TRUE} (o padrao).
+#' 
+#' @family gradecolina
+#' 
+#' @import data.table
+#' @importFrom plotly plot_ly `%>%` add_markers add_surface layout hide_colorbar hide_legend
+#' @importFrom ggplot2 ggplot aes geom_point scale_color_viridis_d labs theme_bw guides guide_legend
+#'     geom_raster scale_fill_viridis_c
+#' 
+#' @export 
+
+plot.gradecolina <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print = TRUE, ...) {
+
+    hl <- pot <- rend <- NULL
+
+    tipo <- match.arg(tipo)
+
+    if(add_colina) colina <- copy(x$colina$CC) else colina <- data.table(hl = NA, pot = NA, rend = 0)
+
+    grade <- x$grade
+
     if(tipo == "3d") {
         p <- plot_ly() %>%
             add_markers(x = colina$hl, y = colina$pot, z = colina$rend,
                 type = "scatter3d", name = "colina") %>%
-            add_surface(x = unique(dsurf$hl), y = unique(dsurf$pot),
-                z = t(data.matrix(dcast(dsurf, hl ~ pot, value.var = "rend"))),
+            add_surface(x = unique(grade$hl), y = unique(grade$pot),
+                z = t(data.matrix(dcast(grade, hl ~ pot, value.var = "rend"))),
                 name = "interpolacao") %>%
             layout(scene = list(
                 xaxis = list(title = list(text = "Queda L\U00EDquida (m)")),
@@ -137,9 +174,9 @@ plot.interpolador <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print 
         invisible(p)
     } else {
         colina[, rend := factor(paste0(formatC(rend, format = "f", digits = 3), "%"))]
-        dsurf <- dsurf[complete.cases(dsurf)]
+        grade <- grade[complete.cases(grade)]
         p <- ggplot() +
-            geom_raster(data = dsurf, aes(hl, pot, fill = rend)) +
+            geom_raster(data = grade, aes(hl, pot, fill = rend)) +
             geom_point(data = colina, aes(hl, pot), color = "blue") +
             scale_fill_viridis_c(name = "Rendimento (%)", na.value = NA) +
             labs(x = "Queda L\U00EDquida (m)", y = "Pot\U00EAncia (MW)") +
