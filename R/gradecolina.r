@@ -1,5 +1,75 @@
 ########################### FUNCOES RELATIVAS AO USO E EXTRACAO DE GRADES ##########################
 
+#' Objetos \code{gradecolina}
+#' 
+#' Tabelas regulares amostradas de um objeto \code{\link{interpolador}}.
+#' 
+#' A chamada do metodo \code{predict} em objetos da classe \code{interpolador} e suas subclasses
+#' pode ser retornada de forma mais completa. Esta forma consiste na tabela regularmente espacada
+#' para representacao discreta da curva colina.
+#' 
+#' Objetos do tipo \code{gradecolina} sao uma lista de dois elementos, o primeiro dos quais um
+#'     data.table com as colunas
+#' 
+#' \describe{
+#' \item{\code{hl}}{queda liquida}
+#' \item{\code{pot}}{potencia gerada}
+#' \item{\code{rend}}{rendimento interpolado}
+#' \item{\code{inhull}}{booleano indicando se o ponto foi interpolado (\code{TRUE}) ou extrapolado (\code{FALSE})}
+#' }
+#' 
+#' O segundo elemento e um objeto \code{curvacolina}, contendo a colina original.
+#' 
+#' @name gradecolina
+#' 
+#' @family gradecolina
+NULL
+
+#' Construtor Interno De \code{gradecolina}
+#' 
+#' Funcao interna do pacote, nao deve ser chamada pelo usuario
+#' 
+#' @param pontos data.frame-like contendo coordenadas interpoladas
+#' @param rends vetor numerico de rendimentos interpolados
+#' @param interpolador tipo de interpolador de onde foi extraida
+#' 
+#' @return objeto da classe \code{gradecolina}; lista de dois elementos, o primeiro dos quais um
+#'     data.table com as colunas
+#' 
+#' \describe{
+#' \item{\code{hl}}{queda liquida}
+#' \item{\code{pot}}{potencia gerada}
+#' \item{\code{rend}}{rendimento interpolado}
+#' \item{\code{inhull}}{booleano indicando se o ponto foi interpolado (\code{TRUE}) ou extrapolado (\code{FALSE})}
+#' }
+#' 
+#' O segundo elemento e um objeto \code{curvacolina}, contendo a colina original
+#' 
+#' @importFrom geometry inhulln convhulln
+
+new_gradecolina <- function(pontos, rends, interpolador) {
+
+    colina <- getcolina(interpolador)
+
+    nhl  <- length(unique(pontos[, "hl"]))
+    npot <- length(unique(pontos[, "pot"]))
+
+    grade <- as.data.table(cbind(pontos, rend = rends))
+
+    inhull <- inhulln(convhulln(colina$CC[, list(hl, pot)]), data.matrix(pontos))
+    grade$inhull <- inhull
+
+    out <- list(grade = grade, colina = colina)
+    class(out) <- "gradecolina"
+    attr(out, "interp") <- class(interpolador)[1]
+    attr(out, "nhl")  <- nhl
+    attr(out, "npot") <- npot
+
+    return(out)
+}
+
+# METODOS ------------------------------------------------------------------------------------------
+
 #' Interpolacao Bilinear
 #' 
 #' Interpola \code{pontos} na grade bivariada \code{gradecolina}
