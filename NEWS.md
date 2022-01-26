@@ -1,3 +1,16 @@
+# dev (gradecolina)
+
+## New features
+
+* introducao de objetos da classe `gradecolina`.
+* metodo de plot para `gradecolina`
+* argumento `full.output` de `predict` passou a ser `as.curvacolina`, e agora o que se retorna 
+  quando este argumento e verdadeiro e um objeto `gradecolina`
+
+### Minor
+
+* plot de `interpolador` agora e so um wrapper em torno do de `gradecolina`
+
 # dev (master)
 
 ## New features
