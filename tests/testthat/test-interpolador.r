@@ -13,9 +13,10 @@ test_that("Modelagem por Triangulacao", {
     expect_snapshot_value(pred_vec, style = "json2")
 
     pred_full <- predict(interp, gg, TRUE)
-    expect_equal(class(pred_full), c("data.table", "data.frame"))
-    expect_equal(colnames(pred_full), c("hl", "pot", "rend", "inhull"))
-    expect_equal(pred_full$rend, pred_vec)
+    expect_equal(class(pred_full), "gradecolina")
+    expect_equal(class(pred_full[[2]]), "curvacolina")
+    expect_equal(colnames(pred_full[[1]]), c("hl", "pot", "rend", "inhull"))
+    expect_equal(pred_full[[1]]$rend, pred_vec)
 
     p3d <- plot(interp, print = FALSE, dhl = 10, dpot = 10)
     expect_equal(class(p3d), c("plotly", "htmlwidget"))
@@ -39,9 +40,10 @@ test_that("Modelagem por Tensor Product", {
     expect_snapshot_value(pred_vec, style = "json2")
 
     pred_full <- predict(interp, gg, TRUE)
-    expect_equal(class(pred_full), c("data.table", "data.frame"))
-    expect_equal(colnames(pred_full), c("hl", "pot", "rend", "inhull"))
-    expect_equal(pred_full$rend, pred_vec)
+    expect_equal(class(pred_full), "gradecolina")
+    expect_equal(class(pred_full[[2]]), "curvacolina")
+    expect_equal(colnames(pred_full[[1]]), c("hl", "pot", "rend", "inhull"))
+    expect_equal(pred_full[[1]]$rend, pred_vec)
 
     p3d <- plot(interp, print = FALSE, dhl = 10, dpot = 10)
     expect_equal(class(p3d), c("plotly", "htmlwidget"))
@@ -65,9 +67,10 @@ test_that("Modelagem por Thin Plate", {
     expect_snapshot_value(pred_vec, style = "json2")
 
     pred_full <- predict(interp, gg, TRUE)
-    expect_equal(class(pred_full), c("data.table", "data.frame"))
-    expect_equal(colnames(pred_full), c("hl", "pot", "rend", "inhull"))
-    expect_equal(pred_full$rend, pred_vec)
+    expect_equal(class(pred_full), "gradecolina")
+    expect_equal(class(pred_full[[2]]), "curvacolina")
+    expect_equal(colnames(pred_full[[1]]), c("hl", "pot", "rend", "inhull"))
+    expect_equal(pred_full[[1]]$rend, pred_vec)
 
     p3d <- plot(interp, print = FALSE, dhl = 10, dpot = 10)
     expect_equal(class(p3d), c("plotly", "htmlwidget"))

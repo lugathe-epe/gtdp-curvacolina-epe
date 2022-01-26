@@ -46,16 +46,16 @@ getcolina.thinplate <- function(object) object$colina
 #' @param object objeto da classe \code{thinplate} retornado pela funcao homonima
 #' @param pontos data.frame ou matriz contendo coordenadas \code{(hl, pot)} dos pontos onde 
 #'     interpolar
-#' @param full.output booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
-#'     interpolados nas coordenadas \code{pontos}; se \code{TRUE} um data.table de \code{pontos} com
-#'     as coluna \code{rend} e \code{inhull}
+#' @param as.gradecolina booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
+#'     interpolados nas coordenadas \code{pontos}; se \code{TRUE} um objeto \code{gradecolina}. Veja
+#'     \code{\link{gradecolina}}
 #' @param ... existe somente para consistencia de metodos. Nao possui utilidade
 #' 
 #' @return vetor de rendimentos interpolados
 #' 
 #' @export
 
-predict.thinplate <- function(object, pontos, full.output = FALSE, ...) {
+predict.thinplate <- function(object, pontos, as.gradecolina = FALSE, ...) {
 
     pontos <- pontos[complete.cases(pontos), ]
 
@@ -63,16 +63,13 @@ predict.thinplate <- function(object, pontos, full.output = FALSE, ...) {
 
     pontos <- as.data.frame(pontos)
 
-    interp <- unname(predict(object$superficie, x = pontos))
+    rends <- unname(predict(object$superficie, x = pontos))
 
-    if(full.output) {
-        interp <- as.data.table(cbind(pontos, rend = interp))
-        inhull <- geometry::inhulln(geometry::convhulln(getcolina(object)$CC[, 1:2]), data.matrix(pontos))
-        interp$inhull <- inhull
+    if(as.gradecolina) {
+        out <- new_gradecolina(pontos, rends, object)
     } else {
-        # o as.numeric e necessario porque predict.gam retorna 'array' e nao vetor normal
-        interp <- as.numeric(interp)
+        out <- as.numeric(rends)
     }
 
-    return(interp)
+    return(out)
 }

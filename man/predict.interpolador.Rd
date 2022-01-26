@@ -4,14 +4,14 @@
 \alias{predict.interpolador}
 \title{Previsao Com Modelos Interpoladores}
 \usage{
-\method{predict}{interpolador}(object, pontos, full.output, ...)
+\method{predict}{interpolador}(object, pontos, as.gradecolina, ...)
 }
 \arguments{
 \item{object}{objeto da classe \code{interpolador} retornado pela funcao homonima}
 
 \item{pontos}{data.frame ou matriz contendo pontos nos quais amostrar o rendimento}
 
-\item{full.output}{booleano indicando o nivel de detalhe na saida da funcao. Ver Detalhes}
+\item{as.gradecolina}{booleano indicando o nivel de detalhe na saida da funcao. Ver Detalhes}
 
 \item{...}{demais parametros que possam ser passados aos metodos de \code{predict} especificos}
 }
@@ -22,16 +22,9 @@ vetor de rendimentos nas coordenadas especificadas em \code{pontos}
 Metodo para interpolar curva colina a partir de um objeto gerado por \code{interpolador}
 }
 \details{
-O argumento \code{full.output} permite alterar a saida da interpolacao. Se
-\code{full.output = FALSE}, o padrao, apenas o vetor de rendimentos interpolados sera retornado.
-Caso \code{full.output = TRUE}, a saida sera um data.table com as colunas
-
-\describe{
-\item{\code{hl}}{queda liquida no ponto interpolado}
-\item{\code{pot}}{potencia no ponto interpolado}
-\item{\code{rend}}{rendimento interpolado}
-\item{\code{inhull}}{booleano indicando se o ponto foi interpolado (\code{TRUE}) ou extrapolado (\code{FALSE})}
-}
+O argumento \code{as.gradecolina} permite alterar a saida da interpolacao. Se
+\code{as.gradecolina = FALSE}, o padrao, apenas o vetor de rendimentos interpolados sera
+retornado. Caso \code{as.gradecolina = TRUE}, a saida sera um objeto \code{\link{gradecolina}}.
 }
 \seealso{
 Other interpolador: 

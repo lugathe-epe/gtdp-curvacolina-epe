@@ -4,7 +4,7 @@
 \alias{predict.thinplate}
 \title{Amostragem De Pontos Na Suavizacao}
 \usage{
-\method{predict}{thinplate}(object, pontos, full.output = FALSE, ...)
+\method{predict}{thinplate}(object, pontos, as.gradecolina = FALSE, ...)
 }
 \arguments{
 \item{object}{objeto da classe \code{thinplate} retornado pela funcao homonima}
@@ -12,9 +12,9 @@
 \item{pontos}{data.frame ou matriz contendo coordenadas \code{(hl, pot)} dos pontos onde
 interpolar}
 
-\item{full.output}{booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
-interpolados nas coordenadas \code{pontos}; se \code{TRUE} um data.table de \code{pontos} com
-as coluna \code{rend} e \code{inhull}}
+\item{as.gradecolina}{booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
+interpolados nas coordenadas \code{pontos}; se \code{TRUE} um objeto \code{gradecolina}. Veja
+\code{\link{gradecolina}}}
 
 \item{...}{existe somente para consistencia de metodos. Nao possui utilidade}
 }
