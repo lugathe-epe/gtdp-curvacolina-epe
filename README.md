@@ -14,20 +14,13 @@ colina, visualizacao e modelagem das mesmas para interpolacao.
 
 ## Instalacao
 
-Este pacote e privado, para uso exclusivo internamente no ONS. Desta
-forma, nao se encontra no CRAN e deve ser instalado diretamente a partir
-do github atraves de:
+Este pacote ainda nao se encontra disponibilizado no CRAN, de modo que
+deve ser instalado diretamente a partir do repositorio utilizando:
 
 ``` r
 # Caso a biblioteca devtools nao esteja instalada, execute install.packages("devtools") primeiro
 devtools::install_github("lkhenayfis/gtdp-curvacolina")
 ```
-
-**\!\!\! IMPORTANTE \!\!\!**
-
-Como o repositorio e privado, e necessario configurar o R com o token de
-acesso correspondente. Veja `?devtools::install_github` para mais
-detalhes.
 
 ## Exemplo de uso
 
@@ -67,9 +60,9 @@ plot(superf, "2d")
 pontos <- geragrade(colina, dhl = 40:60, dpot = seq(200, 400, by = 10))
 
 # calcula rendimentos interpolados nos pontos de grade
-grade <- predict(superf, pontos, full.output = TRUE)
+grade <- predict(superf, pontos, as.gradecolina = TRUE)
 
-grade
+grade[[1]]
 #>      hl pot     rend inhull
 #>   1: 40 200 78.67424   TRUE
 #>   2: 41 200 78.92752   TRUE
