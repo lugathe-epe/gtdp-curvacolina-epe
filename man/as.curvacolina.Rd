@@ -4,13 +4,34 @@
 \alias{as.curvacolina}
 \title{Conversor Para \code{curvacolina}}
 \usage{
-as.curvacolina(x)
+as.curvacolina(x, g = NA, rho = NA, force = FALSE)
 }
 \arguments{
-\item{x}{\code{data.frame}-like a ser convertido}
+\item{x}{\code{data.frame}-like a ser convertido. Ver Detalhes}
+
+\item{g, rho}{aceleracao da gravidade e densidade da agua}
+
+\item{force}{booleano indicando se o objeto deve ser forcado ao formato padrao. Pode gerar
+resultados inconsistentes. Ver Detalhes}
+}
+\value{
+objeto da classe \code{curvacolina}
 }
 \description{
 Forca um objeto tipo \code{data.frame} para classe \code{curvacolina}
+}
+\details{
+Por padrao a conversao de \code{x} so sera executada caso este dado possua as tres colunas
+nomeadas \code{hl}, \code{pot} e \code{rend} contendo os dados descritivos de uma curva colina no
+formato Queda Liquida x Potencia, sendo \code{rend} em formato numerico nao decimal. Caso algum
+destes requisitos nao seja atendido, a conversao sera abotada com erro.
+
+Existe a possibilidade de forcar a continuidade da execucao mesmo nesta ultima condicao, embora
+seja pouco recomendavel sem que haja absoluta certeza do resultado. Se \code{force = TRUE},
+\bold{as tres primeiras colunas de \code(x) serao assumidas como \code{hl}, \code{pot} e
+\code{rend}}. As tres serao forcadas para formato numerico e o nome das colunas sera alterado.
+Durante este processo existem inumeras possibilidades para erro e geracao de resultados sem
+sentido, portanto esta opcao deve ser utilizada com extrema cautela.
 }
 \seealso{
 Other curvacolina: 

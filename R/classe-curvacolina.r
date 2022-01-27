@@ -159,39 +159,6 @@ new_curvacolina <- function(curvas, g, rho) {
 
 # METODOS ------------------------------------------------------------------------------------------
 
-#' Conversor Para \code{curvacolina}
-#' 
-#' Forca um objeto tipo \code{data.frame} para classe \code{curvacolina}
-#' 
-#' @param x \code{data.frame}-like a ser convertido
-#' 
-#' @family curvacolina
-#' 
-#' @import data.table
-#' 
-#' @export
-
-as.curvacolina <- function(x) {
-
-    hl <- pot <- vaz <- rend <- NULL
-
-    if(!("data.frame" %in% class(x))) stop("Argumento deve ser um data.frame ou data.table")
-
-    if(!all(c("hl", "pot", "vaz", "rend") %in% colnames(x))) {
-        stop("Verifique se as colunas 'hl', 'pot', 'vaz', 'rend' constam no dado")
-    }
-
-    x <- as.data.table(x)
-    x <- x[, list(hl, pot, vaz, rend)]
-    x <- list(CC = x)
-
-    class(x) <- "curvacolina"
-    attr(x, "rends") <- unique(x$CC$rend)
-    attr(x, "ncurvas") <- length(attr(x, "rends"))
-
-    return(x)
-}
-
 #' @export 
 
 print.curvacolina <- function(x, ...) summary(x)
@@ -237,6 +204,101 @@ summary.curvacolina <- function(object, ...) {
 write.curvacolina <- function(x, file) fwrite(x$CC, file, quote = FALSE, sep = ";")
 
 # HELPERS ------------------------------------------------------------------------------------------
+
+#' Parser De Dados Para \code{as.curvacolina}
+#' 
+#' Funcao interna, nao deve ser chamada pelo usuario
+#' 
+#' Esta funcao executa todos os checks e coercoes necessarias para execucao da transformacao 
+#' \code{as.curvacolina}
+#' 
+#' @inheritParams as.curvacolina
+#' 
+#' @return dado parsed para transformacao
+
+parsedadocolina <- function(x, force) {
+
+    if(!("data.frame" %in% class(x))) stop("Argumento deve ser um data.frame ou data.table")
+
+    x <- as.data.frame(x)
+
+    cols <- c("hl", "pot", "rend")
+
+    ncolsx <- ncol(x)
+    temcolnames <- all(cols %in% colnames(x))
+
+    if(force) {
+        if(ncolsx > 3) {
+            x <- x[, 1:3]
+            warning("'x' possui numero de colunas diferente de 3 -- reduzido as 3 primeiras")
+        } else if(ncolsx < 3) {
+            stop("'x' possui menos de tres colunas -- abortando operacao")
+        }
+        colnames(x) <- cols
+
+        x[] <- lapply(x, as.numeric)
+
+        if(!all(x$rend > 1)) x$rend <- x$rend * 100
+
+    } else {
+        if(!temcolnames) {
+            stop("Verifique se as colunas 'hl', 'pot', 'rend' constam no dado")
+        }
+
+        x <- x[, cols]
+
+        classes <- lapply(x, class)
+
+        if(!all(classes == "numeric")) {
+            stop("Alguma coluna de 'x' nao e numerica")
+        }
+
+        if(!all(x$rend > 1)) stop("Rendimentos estao em formato decimal -- multiplique por 100")
+    }
+
+    return(x)
+}
+
+#' Conversor Para \code{curvacolina}
+#' 
+#' Forca um objeto tipo \code{data.frame} para classe \code{curvacolina}
+#' 
+#' Por padrao a conversao de \code{x} so sera executada caso este dado possua as tres colunas
+#' nomeadas \code{hl}, \code{pot} e \code{rend} contendo os dados descritivos de uma curva colina no
+#' formato Queda Liquida x Potencia, sendo \code{rend} em formato numerico nao decimal. Caso algum  
+#' destes requisitos nao seja atendido, a conversao sera abotada com erro.
+#' 
+#' Existe a possibilidade de forcar a continuidade da execucao mesmo nesta ultima condicao, embora
+#' seja pouco recomendavel sem que haja absoluta certeza do resultado. Se \code{force = TRUE}, 
+#' \bold{as tres primeiras colunas de \code(x) serao assumidas como \code{hl}, \code{pot} e 
+#' \code{rend}}. As tres serao forcadas para formato numerico e o nome das colunas sera alterado. 
+#' Durante este processo existem inumeras possibilidades para erro e geracao de resultados sem 
+#' sentido, portanto esta opcao deve ser utilizada com extrema cautela.
+#' 
+#' @param x \code{data.frame}-like a ser convertido. Ver Detalhes
+#' @param g,rho aceleracao da gravidade e densidade da agua
+#' @param force booleano indicando se o objeto deve ser forcado ao formato padrao. Pode gerar 
+#'     resultados inconsistentes. Ver Detalhes
+#' 
+#' @return objeto da classe \code{curvacolina}
+#' 
+#' @family curvacolina
+#' 
+#' @import data.table
+#' 
+#' @export
+
+as.curvacolina <- function(x, g = NA, rho = NA, force = FALSE) {
+
+    hl <- pot <- rend <- NULL
+
+    x <- parsedadocolina(x, force)
+
+    x <- as.data.table(x)
+    x <- mapply(split(x, x$rend), unique(x$rend), FUN = function(c, r) list(r, c[, 1:2]), SIMPLIFY = FALSE)
+
+    new_curvacolina(x, g, rho)
+}
 
 #' Redutor De \code{curvacolina}
 #' 
