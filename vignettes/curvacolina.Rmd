@@ -1,6 +1,8 @@
 ---
 title: "curvacolina"
-output: rmarkdown::html_vignette
+output: 
+    rmarkdown::html_vignette: 
+        toc: true
 vignette: >
   %\VignetteIndexEntry{curvacolina}
   %\VignetteEngine{knitr::rmarkdown}
@@ -20,7 +22,7 @@ library(curvacolina)
 
 ## Introdução
 
-O pacote ```curvacolina``` contém funções amplamente categorizadas em:
+O pacote `curvacolina` contém funções amplamente categorizadas em:
 
 1. Curvas colina
     * leitura e estruturação dos dados da a partir de planilhas exportadas pelo GetData ou aquelas
@@ -41,5 +43,143 @@ tabelas regulares a partir da curva colina.
 
 ## Curvas Colina
 
-Qualquer anaálise realizada com este pacote começa no mesmo ponto: a importação de curvas colina. 
-Como mencionado na introdução, estes dados podem ser distribuídos pelo ONS de duas maneiras 
+Qualquer análise realizada com este pacote começa na importação de curvas colina. Como mencionado na
+introdução, estes dados podem ser distribuídos pelo ONS de duas maneiras: através das planilhas 
+exportadas pelo programa GetData, utilizado para digitalização dos desenhos de curva colina, ou via
+planilhas resultado do processo iterativo para cálculo da vazão turbinada.
+
+### Leitura de planilhas de curva colina
+
+Começando pelo caso mais simples, as planilhas exportadas pelo GetData podem ser lidas através da 
+função `learqcolina()`, fornecendo como argumento o caminho da planilha.
+
+```{r learqcolina}
+# arquivo embutido no pacote
+arq <- system.file("extdata/colina.xlsx", package = "curvacolina")
+
+colina <- learqcolina(arq)
+
+print(colina)
+```
+
+Esta função retorna um objeto da classe `curvacolina`, uma lista cujo único elemento é um 
+`data.table` nomeado `CC` contendo as colunas
+
+* `hl`: queda líquida
+* `pot`: potência na turbina
+* `vaz`: vazão turbinada
+* `rend`: rendimento
+
+```{r elemento_CC}
+colina$CC
+```
+
+Adicionalmente, esta classe de objeto contém os attributos específicos
+
+* `rends`: vetor de rendimentos contemplados na curva colina
+* `max`: o rendimento no "olho" da colina, se existe. Caso não exista este argumento é `NA`
+* `ncurvas`: número de curvas na colina
+* `rho`: densidade da água no local da turbina
+* `g`: aceleração da gravidade no local da turbina
+
+```{r attr_curvacolina}
+attributes(colina)[3:7]
+```
+
+Observando as saídas apresentadas acima, vemos que tanto a coluna `vaz` do dado quanto os atributos
+`g` e `rho` são `NA`. Estes dois atributos são valores utilizados no cálculo iterativo das vazões 
+turbinadas e não estão presentes nas planilhas exportadas pelo GetData, dado que são características
+do local da usina e não da turbina especificamente. Em consequência da ausência destes valores, a 
+vazão turbinada não pode ser calculada. Veremos mais adiante que quando as colinas são lidas a 
+partir da planilha de processo iterativo estes dois valores serão localizados automaticamente nas
+abas pertinentes, porém ainda é possível preenchê-los num objeto `curvacolina` lido com 
+`learqcolina()` utilizando a funcao `set_grho()`
+
+```{r set_grho}
+colina2 <- set_grho(colina, g = 9.81, rho = 1000)
+
+# agora temos vazao turbinada calculada
+print(colina2$CC)
+
+# atributos nao sao mais NA
+print(attributes(colina2)[3:7])
+```
+
+### Leitura de planilhas de processo iterativo
+
+A extração de curvas colina embutidas em planilhas de processo iterativo pode ser realizada através
+da função `learqprocit()`, informando novamente o caminho da planilha
+
+```{r learqprocit}
+# arquivo embutido no pacote instalado diretamente do GitHub
+arq <- system.file("extdata/procit_cc_original.xlsx", package = "curvacolina")
+
+lista_colinas <- learqprocit(arq)
+
+print(lista_colinas)
+```
+
+Esta função varre as abas da planilha buscando aquelas contendo curvas colina e retorna uma lista 
+de objetos `curvacolina` na ordem em que os dados foram encontrados. Como mencionado na seção 
+anterior, estas planilhas possuem as informações associadas à localização da usina, de modo que é
+possível obter `rho` e `g` automaticamente.
+
+```{r colinas_procit}
+lapply(lista_colinas, "[[", "CC")
+
+lapply(lista_colinas, function(x) attributes(x)[c("g", "rho")])
+```
+
+Deve ser notado que algumas planilhas de processo iterativo possuem dois conjuntos de abas contendo
+dados de curvas colina: "Colina Original (X)" e "Colina Alterada (X)". Isto acontece quando o 
+desenho fornecido pelo agente representa uma curva colina com eixos queda líquida e vazão turbinada,
+de modo que é necessário primeiro transformá-la para o formato queda líquida por potência. Em casos 
+nos quais existe o conjunto "Colina Alterada (X)", é delas que serão lidas as curvas colina.
+
+### Transformando `data.frame` em `curvacolina` 
+
+Para fins de generalidade, o pacote também possui o ferramental necessário para conversão de objetos
+em `curvacolina`. Isto é feito através da função `as.curvacolina`, que recebe um `data.frame` como 
+primeiro argumento e, opcionalmente, `g` e `rho`. Para que a conversão seja executada corretamente,
+este `data.frame` precisa atender três critérios:
+
+* contenha as colunas `hl`, `pot` e `rend`
+* todas as colunas estejam em formato numérico
+* rendimentos não estejam em formato decimal (ex: 0.91)
+
+Caso um ou mais destes critérios sejam violados, a função será abortada. É possível forçar sua 
+execução com o argumento `force = TRUE`, porém a função precisará exercer manipulações extensas no
+dado passado, possivelmente concluindo num resultado incoerente. Para mais detalhes, veja 
+`help("as.curvacolina")`.
+
+```{r as.curvacolina}
+# gerando um dado arbitrario
+dado <- data.frame(hl = runif(100), pot = runif(100), rend = rep(11:20, each = 10))
+
+colina_transf <- as.curvacolina(dado)
+print(colina_transf)
+```
+
+### Visualização de `curvacolina`
+
+Para concluir a seção de curvas colina deste manual, resta discutir as ferramentas de visualização.
+O pacote provê um método de `plot` para objetos `curvacolina` que permite a geração de gráficos em 
+duas ou três dimensões, através do argumento `tipo`.
+
+Por padrão o plot de `curvacolina` é o scatter 3D
+
+```{r plotcolina3d, eval=FALSE}
+plot(colina)
+```
+
+```{r, echo=FALSE, fig.width=8, fig.height=8}
+p <- plot(colina, print = FALSE)
+p
+```
+
+Alternativamente, é possível gerar um plot da colina projetada no plano queda-potência (tal qual os
+desenhos)
+
+```{r plotcolina2d, fig.width=7, fig.height=7}
+plot(colina, "2d")
+```
