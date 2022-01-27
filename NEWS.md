@@ -5,7 +5,14 @@
 * introducao de objetos da classe `gradecolina`.
 * metodo de plot para `gradecolina`
 * argumento `full.output` de `predict` passou a ser `as.curvacolina`, e agora o que se retorna 
-  quando este argumento e verdadeiro e um objeto `gradecolina`
+quando este argumento e verdadeiro e um objeto `gradecolina`
+* `interpolagrade` foi reformulado como metodos da classe `gradecolina`
+
+    * `interpolagrade.curvacolina` -> `fitted.gradecolina`
+    * `interpolagrade.data.frame` -> `predict.gradecolina`
+
+A ordem e nome dos argumentos passados tambem foi invertida para consistencia com os metodos S3 da 
+linguagem -- consulte a pagina de ajuda para mais detalhes `?interpolacao_bilin`
 
 ### Minor
 

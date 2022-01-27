@@ -72,19 +72,20 @@ new_gradecolina <- function(pontos, rends, interpolador) {
 
 #' Interpolacao Bilinear
 #' 
-#' Interpola \code{pontos} na grade bivariada \code{gradecolina}
+#' Interpolacao bilinear de \code{pontos} na grade bivariada \code{gradecolina}
 #' 
-#' \code{pontos} permite que seja passado um objeto \code{curvacolina} para facilitar a interpolacao
-#' dos pontos originais numa tabela gerada por algum dos metodos de interpolacao. Do contratio, 
-#' \code{pontos} deve ser um data.frame ou data.table com as colunas \code{hl} e \code{pot} contendo
-#' as coordenadas para interpolar.
+#' \code{predict.gradecolina} interpola pontos arbitrarios especificados atraves do argumento
+#' \code{pontos}. \code{fitted.gradecolina} interpola os pontos da propria curva colina original
+#' na grade. \code{residuals.gradecolina} retorna os erros de interpolacao dos pontos da colina
+#' original na grade.
 #' 
-#' @param gradecolina data.frame-like contendo colunas \code{hl}, \code{pot} e \code{rend}
-#' @param pontos \code{curvacolina} ou data.frame-like contendo as coordenadas \code{hl} \code{pot} 
-#'     dos pontos a interpolar. Ver Detalhes
+#' @param object objeto da classe \code{gradecolina}
+#' @param pontos data.frame-like contendo as coordenadas \code{hl} e \code{pot} dos pontos a 
+#'     interpolar.
 #' @param full.output booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
 #'     interpolados nas coordenadas \code{pontos}; se \code{TRUE} um data.table de \code{pontos} com
 #'     a coluna \code{rend} adicionada
+#' @param ... existe somente para consistencia de metodos. Nao possui utilidade
 #' 
 #' @examples
 #' 
@@ -93,35 +94,36 @@ new_gradecolina <- function(pontos, rends, interpolador) {
 #' 
 #' # extrai uma grade dele
 #' coord <- geragrade(colinadummy, 10, 10)
-#' gradecolina <- predict(tri, coord, full.output = TRUE)
+#' gradecolina <- predict(tri, coord, as.gradecolina = TRUE)
 #' 
-#' \dontrun{
-#' # interpolacao de pontos da colina na grade
-#' interpolagrade(colinadummy, gradecolina)
+#' # interpolando pontos arbitrarios
+#' coord_interp <- geragrade(colinadummy, 25, 25)
+#' pred <- predict(gradecolina, coord_interp)
+#' pred <- predict(gradecolina, coord_interp, full.output = TRUE)
 #' 
-#' # interpolacao retornando dado cheio
-#' interpolagrade(colinadummy, gradecolina, full.output = TRUE)
-#' }
+#' # interpolando a propria curva colina
+#' fitt <- fitted(gradecolina)
+#' 
+#' # residuos
+#' resid <- residuals(gradecolina)
 #' 
 #' @return set \code{full.output = FALSE} vetor de rendimentos interpolados, do contrario um 
 #'     \code{data.table} contendo \code{pontos} adicionado da coluna \code{rend} com resultado da
 #'     interpolacao
 #' 
+#' @name interpolacao_bilinear
+#' 
+#' @family gradecolina
+#' 
 #' @import data.table
 #' 
 #' @export
 
-interpolagrade <- function(pontos, gradecolina, full.output) UseMethod("interpolagrade", pontos)
-
-#' @rdname interpolagrade
-#' 
-#' @export
-
-interpolagrade.data.frame <- function(pontos, gradecolina, full.output = FALSE) {
+predict.gradecolina <- function(object, pontos, full.output = FALSE, ...) {
 
     hl <- pot <- NULL
 
-    gradecolina <- as.data.table(gradecolina)
+    gradecolina <- as.data.table(object[[1]])
     pontos      <- as.data.table(pontos)
 
     hlGrade  <- gradecolina[, unique(hl)]
@@ -147,11 +149,28 @@ interpolagrade.data.frame <- function(pontos, gradecolina, full.output = FALSE) 
     return(interp)
 }
 
-#' @rdname interpolagrade
+#' @rdname interpolacao_bilinear
 #' 
 #' @export
 
-interpolagrade.curvacolina <- function(pontos, gradecolina, full.output = FALSE) {
+fitted.gradecolina <- function(object, full.output = FALSE, ...) {
+
     hl <- pot <- NULL
-    interpolagrade(pontos$CC[, list(hl, pot)], gradecolina, full.output)
+
+    fitt <- predict(object, object$colina$CC[, list(hl, pot)], full.output)
+
+    return(fitt)
+}
+
+#' @rdname interpolacao_bilinear
+#' 
+#' @export
+
+residuals.gradecolina <- function(object, ...) {
+
+    obs  <- object$colina$CC$rend
+    prev <- fitted(object)
+    res <- obs - prev
+
+    return(res)
 }
