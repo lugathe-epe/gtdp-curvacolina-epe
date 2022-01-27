@@ -125,14 +125,27 @@ test_that("Leitura de processo iterativo (CC Alterada)", {
 test_that("as.curvacolina", {
     cc <- colinadummy$CC
 
-    cc2 <- colinadummy$CC[, list(hl, pot, rend, vaz)]
-    colnames(cc2) <- paste0("V", 1:4)
+    cc.1 <- copy(cc)
+    cc.1[, rend := rend / 100]
+
+    cc.2 <- copy(cc)
+    cc.2[, rend := paste0(rend, "%")]
+
+    cc.4 <- colinadummy$CC[, list(hl, pot, rend, vaz)]
+    colnames(cc.4) <- paste0("V", 1:4)
+
+    cc.5 <- cc.4[, 1:2]
+
+    cc.6 <- copy(cc)
+    cc.6[, rend := rep("a", .N)]
 
     # SEM FORCE // SEM g E rho
 
     xx1 <- as.curvacolina(cc)
 
-    expect_error(as.curvacolina(cc2))
+    expect_error(as.curvacolina(cc.1)) # rendimentos decimais
+    expect_error(as.curvacolina(cc.2)) # coluna nao numerica
+    expect_error(as.curvacolina(cc.2)) # faltando nomes de colunas
 
     expect_equal(class(xx1), "curvacolina")
     expect_equal(colnames(xx1$CC), c("hl", "pot", "vaz", "rend"))
@@ -160,7 +173,12 @@ test_that("as.curvacolina", {
 
     # COM FORCE // SEM g E rho
 
-    expect_warning(xx3 <- as.curvacolina(cc2, force = TRUE))
+    expect_warning(xx3 <- as.curvacolina(cc.1, force = TRUE)) # rendimentos decimais
+    expect_warning(xx3 <- as.curvacolina(cc.2, force = TRUE)) # coluna nao numerica
+    expect_warning(xx3 <- as.curvacolina(cc.4, force = TRUE)) # colunas sem nome certo (ncol > 3)
+
+    expect_error(xx3 <- as.curvacolina(cc.5, force = TRUE)) # colunas sem nome certo (ncol < 3)
+    expect_error(xx3 <- as.curvacolina(cc.6, force = TRUE)) # rend nao pode ser convertido p num
 
     expect_equal(class(xx3), "curvacolina")
     expect_equal(colnames(xx3$CC), c("hl", "pot", "vaz", "rend"))
@@ -174,7 +192,7 @@ test_that("as.curvacolina", {
 
     # COM FORCE // COM g E rho
 
-    expect_warning(xx4 <- as.curvacolina(cc2, 9.81, 1000, force = TRUE))
+    expect_warning(xx4 <- as.curvacolina(cc.4, 9.81, 1000, force = TRUE))
 
     expect_equal(class(xx4), "curvacolina")
     expect_equal(colnames(xx4$CC), c("hl", "pot", "vaz", "rend"))
