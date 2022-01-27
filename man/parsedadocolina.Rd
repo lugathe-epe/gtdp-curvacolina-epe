@@ -7,7 +7,7 @@
 parsedadocolina(x, force)
 }
 \arguments{
-\item{x}{\code{data.frame}-like a ser convertido. Ver Detalhes}
+\item{x}{\code{data.frame}-like a ser convertido}
 
 \item{force}{booleano indicando se o objeto deve ser forcado ao formato padrao. Pode gerar
 resultados inconsistentes. Ver Detalhes}

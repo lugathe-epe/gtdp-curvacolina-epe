@@ -212,7 +212,9 @@ write.curvacolina <- function(x, file) fwrite(x$CC, file, quote = FALSE, sep = "
 #' Esta funcao executa todos os checks e coercoes necessarias para execucao da transformacao 
 #' \code{as.curvacolina}
 #' 
-#' @inheritParams as.curvacolina
+#' @param x \code{data.frame}-like a ser convertido
+#' @param force booleano indicando se o objeto deve ser forcado ao formato padrao. Pode gerar 
+#'     resultados inconsistentes. Ver Detalhes
 #' 
 #' @return dado parsed para transformacao
 
@@ -228,17 +230,38 @@ parsedadocolina <- function(x, force) {
     temcolnames <- all(cols %in% colnames(x))
 
     if(force) {
-        if(ncolsx > 3) {
-            x <- x[, 1:3]
-            warning("'x' possui numero de colunas diferente de 3 -- reduzido as 3 primeiras")
-        } else if(ncolsx < 3) {
-            stop("'x' possui menos de tres colunas -- abortando operacao")
+        if(!temcolnames) {
+            if(ncolsx >= 3) {
+                x <- x[, 1:3]
+                warning("'x' nao possui todas as colunas 'hl', 'pot' e 'rend' -- tomando as tres primeiras")
+                colnames(x) <- cols
+            } else if(ncolsx < 3) {
+                stop("'x' possui menos de tres colunas -- abortando operacao")
+            }
+        } else {
+            x <- x[, cols]
         }
-        colnames(x) <- cols
 
-        x[] <- lapply(x, as.numeric)
+        classes <- lapply(x, class)
+        numerica <- sapply(classes, function(x) (x == "numeric") | (x == "integer"))
 
-        if(!all(x$rend > 1)) x$rend <- x$rend * 100
+        if(!all(numerica)) {
+            for(i in which(!numerica)) {
+                v <- x[[i]]
+                match <- regexpr("[[:digit:]]+(\\.[[:digit:]]+)?", v)
+                match <- regmatches(v, match)
+                x[[i]] <- as.numeric(match)
+            }
+
+            if(any(is.na(sapply(x, is.na)))) stop("Nao foi possivel converter rendimentos para numerico")
+
+            warning("Transformando colunas para numerico")
+        }
+
+        if(!all(x$rend >= 1)) {
+            x$rend <- x$rend * 100
+            warning("Coluna de rendimento em formato decimal -- multiplicando por 100")
+        }
 
     } else {
         if(!temcolnames) {
@@ -248,12 +271,11 @@ parsedadocolina <- function(x, force) {
         x <- x[, cols]
 
         classes <- lapply(x, class)
+        numerica <- sapply(classes, function(x) (x == "numeric") | (x == "integer"))
 
-        if(!all(classes == "numeric")) {
-            stop("Alguma coluna de 'x' nao e numerica")
-        }
+        if(!all(numerica)) stop("Alguma coluna de 'x' nao e numerica")
 
-        if(!all(x$rend > 1)) stop("Rendimentos estao em formato decimal -- multiplique por 100")
+        if(!all(x$rend >= 1)) stop("Rendimentos estao em formato decimal -- multiplique por 100")
     }
 
     return(x)
