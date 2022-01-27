@@ -336,3 +336,51 @@ reduzcolina <- function(colina, taxa) {
 
     return(colreduzida)
 }
+
+#' Atribui \code{g} E \code{rho} A Objeto \code{curvacolina}
+#' 
+#' Adiciona os atributos e calcula vazao turbinada na transformacao de curva colina
+#' 
+#' @param x objeto da classe \code{curvacolina}
+#' @param g,rho aceleracao da gravidade e densidade da agua
+#' 
+#' @examples 
+#' 
+#' \dontrun{
+#' # o dado padrao do pacote nao possui g e rho
+#' is.na(attr(colinadummy, "g"))
+#' is.na(attr(colinadummy, "rho"))
+#' }
+#' 
+#' # adicionando os valores de literatura
+#' cc <- set_grho(colinadummy, 9.81, 1000)
+#' 
+#' \dontrun{
+#' # atributos adicionados
+#' attr(cc, "g")
+#' attr(cc, "rho")
+#' 
+#' # vazao calculada
+#' cc$CC$vaz
+#' }
+#' 
+#' @return objeto \code{curvacolina} passado com atributos \code{g} e \code{rho}, assim como vazao
+#'     turbinada caclulada
+#' 
+#' @export
+
+set_grho <- function(x, g, rho) {
+
+    if(class(x) != "curvacolina") stop("'x' nao e um objeto 'curvacolina'")
+
+    out <- x
+
+    # aqui nao e usado a mod inplace do data.table para evitar efeitos colaterais em x no ambiente
+    # global
+    out$CC$vaz <- out$CC$pot / (out$CC$hl * out$CC$rend / 100 * rho * g) * 1e6
+
+    attr(out, "g")   <- g
+    attr(out, "rho") <- rho
+
+    return(out)
+}
