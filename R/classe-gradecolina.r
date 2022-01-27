@@ -49,6 +49,8 @@ NULL
 
 new_gradecolina <- function(pontos, rends, interpolador) {
 
+    hl <- pot <- vaz <- rend <- NULL
+
     colina <- getcolina(interpolador)
 
     nhl  <- length(unique(pontos[, "hl"]))
@@ -121,7 +123,7 @@ new_gradecolina <- function(pontos, rends, interpolador) {
 
 predict.gradecolina <- function(object, pontos, full.output = FALSE, ...) {
 
-    hl <- pot <- NULL
+    hl <- pot <- ordem0 <- NULL
 
     gradecolina <- as.data.table(object[[1]])
     pontos      <- as.data.table(pontos)

@@ -44,6 +44,7 @@
 #' \item{\code{max}}{rendimento no "olho" da colina}
 #' \item{\code{rho}}{densidade da agua associada}
 #' \item{\code{g}}{gravidade associada}
+#' }
 #' 
 #' \code{leaqrcolina} retorna apenas um objeto, enquanto \code{learqprocit} retornara uma lista de
 #' tantos elementos quanto abas de curva colina existem na planilha \code{arq}
@@ -126,7 +127,7 @@ learqprocit <- function(arq) {
 
 new_curvacolina <- function(curvas, g, rho) {
 
-    vaz <- NULL
+    hl <- pot <- vaz <- rend <- NULL
 
     if(missing(rho)) rho <- NA
     if(missing(g)) g <- NA
