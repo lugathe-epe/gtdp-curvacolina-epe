@@ -29,8 +29,11 @@ Imports:
     geometry (>= 0.4.5),
     Rcpp
 Suggests: 
+    rmarkdown,
+    knitr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 LinkingTo: 
     RcppArmadillo,
     Rcpp
+VignetteBuilder: knitr

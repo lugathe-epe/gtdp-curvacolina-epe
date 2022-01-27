@@ -1,0 +1,45 @@
+---
+title: "curvacolina"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{curvacolina}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r opts, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(curvacolina)
+```
+
+## Introdução
+
+O pacote ```curvacolina``` contém funções amplamente categorizadas em:
+
+1. Curvas colina
+    * leitura e estruturação dos dados da a partir de planilhas exportadas pelo GetData ou aquelas
+    de processo iterativo utilizadas pelo GTDP
+    * Visualização deste dado em duas ou três dimensões
+
+1. Modelagem
+    * Ajuste de modelos para interpolação e/ou extrapolação da colina
+    * Vizualização dos ajustes em duas ou três dimensões
+    * Extração de grades regulares a partir destes ajustes
+
+1. Grades regulares
+    * Interpolação bilinear de pontos arbitrários na grade extraída
+    * Vizualização das grades em duas ou três dimensões
+
+Esta *vignette* corresponde a um manual de uso do pacote, desde a importação até geração e uso de
+tabelas regulares a partir da curva colina.
+
+## Curvas Colina
+
+Qualquer anaálise realizada com este pacote começa no mesmo ponto: a importação de curvas colina. 
+Como mencionado na introdução, estes dados podem ser distribuídos pelo ONS de duas maneiras 
