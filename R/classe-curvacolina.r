@@ -159,39 +159,6 @@ new_curvacolina <- function(curvas, g, rho) {
 
 # METODOS ------------------------------------------------------------------------------------------
 
-#' Conversor Para \code{curvacolina}
-#' 
-#' Forca um objeto tipo \code{data.frame} para classe \code{curvacolina}
-#' 
-#' @param x \code{data.frame}-like a ser convertido
-#' 
-#' @family curvacolina
-#' 
-#' @import data.table
-#' 
-#' @export
-
-as.curvacolina <- function(x) {
-
-    hl <- pot <- vaz <- rend <- NULL
-
-    if(!("data.frame" %in% class(x))) stop("Argumento deve ser um data.frame ou data.table")
-
-    if(!all(c("hl", "pot", "vaz", "rend") %in% colnames(x))) {
-        stop("Verifique se as colunas 'hl', 'pot', 'vaz', 'rend' constam no dado")
-    }
-
-    x <- as.data.table(x)
-    x <- x[, list(hl, pot, vaz, rend)]
-    x <- list(CC = x)
-
-    class(x) <- "curvacolina"
-    attr(x, "rends") <- unique(x$CC$rend)
-    attr(x, "ncurvas") <- length(attr(x, "rends"))
-
-    return(x)
-}
-
 #' @export 
 
 print.curvacolina <- function(x, ...) summary(x)
@@ -238,6 +205,146 @@ write.curvacolina <- function(x, file) fwrite(x$CC, file, quote = FALSE, sep = "
 
 # HELPERS ------------------------------------------------------------------------------------------
 
+#' Parser De Dados Para \code{as.curvacolina}
+#' 
+#' Funcao interna, nao deve ser chamada pelo usuario
+#' 
+#' Esta funcao executa todos os checks e coercoes necessarias para execucao da transformacao 
+#' \code{as.curvacolina}
+#' 
+#' @param x \code{data.frame}-like a ser convertido
+#' @param force booleano indicando se o objeto deve ser forcado ao formato padrao. Pode gerar 
+#'     resultados inconsistentes. Ver Detalhes
+#' 
+#' @return dado parsed para transformacao
+
+parsedadocolina <- function(x, force) {
+
+    if(!("data.frame" %in% class(x))) stop("Argumento deve ser um data.frame ou data.table")
+
+    x <- as.data.frame(x)
+
+    cols <- c("hl", "pot", "rend")
+
+    ncolsx <- ncol(x)
+    temcolnames <- all(cols %in% colnames(x))
+
+    if(force) {
+        if(!temcolnames) {
+            if(ncolsx >= 3) {
+                x <- x[, 1:3]
+                warning("'x' nao possui todas as colunas 'hl', 'pot' e 'rend' -- tomando as tres primeiras")
+                colnames(x) <- cols
+            } else if(ncolsx < 3) {
+                stop("'x' possui menos de tres colunas -- abortando operacao")
+            }
+        } else {
+            x <- x[, cols]
+        }
+
+        classes <- lapply(x, class)
+        numerica <- sapply(classes, function(x) (x == "numeric") | (x == "integer"))
+
+        if(!all(numerica)) {
+            for(i in which(!numerica)) {
+                v <- x[[i]]
+                match <- regexpr("[[:digit:]]+(\\.[[:digit:]]+)?", v)
+                match <- regmatches(v, match)
+                x[[i]] <- as.numeric(match)
+            }
+
+            if(any(is.na(sapply(x, is.na)))) stop("Nao foi possivel converter rendimentos para numerico")
+
+            warning("Transformando colunas para numerico")
+        }
+
+        if(!all(x$rend >= 1)) {
+            x$rend <- x$rend * 100
+            warning("Coluna de rendimento em formato decimal -- multiplicando por 100")
+        }
+
+    } else {
+        if(!temcolnames) {
+            stop("Verifique se as colunas 'hl', 'pot', 'rend' constam no dado")
+        }
+
+        x <- x[, cols]
+
+        classes <- lapply(x, class)
+        numerica <- sapply(classes, function(x) (x == "numeric") | (x == "integer"))
+
+        if(!all(numerica)) stop("Alguma coluna de 'x' nao e numerica")
+
+        if(!all(x$rend >= 1)) stop("Rendimentos estao em formato decimal -- multiplique por 100")
+    }
+
+    return(x)
+}
+
+#' Conversor Para \code{curvacolina}
+#' 
+#' Forca um objeto tipo \code{data.frame} para classe \code{curvacolina}
+#' 
+#' Por padrao a conversao de \code{x} so sera executada caso tres criterios sejam atendidos
+#' 
+#' \itemize{
+#' \item{contenha as colunas \code{hl}, \code{pot} e \code{rend}}
+#' \item{alguma das colunas nao esteja em formato numerico (ex: rendimento como "91%" ou "0.9%")}
+#' \item{rendimentos nao estejam em formato decimal (ex: 0.91)}
+#' }
+#' 
+#' Caso um ou mais destes requisitos nao seja atendido, por padrao a conversao sera abotada. Nestes 
+#' casos, o argumento \code{force} permite forcar a transformacao do dado para \code{curvacolina}. A
+#' seguir sao detalhados os comportamentos caso \code{force = TRUE} e algum criterio e violado.
+#' 
+#' Na falta \bold{de todas as tres colunas nomeadas}, o programa considera as tres primeiras colunas
+#' do dado como \code{hl}, \code{pot} e \code{rend}, caso haja pelo menos tres colunas. Do contrario
+#' aborta com um erro.
+#' 
+#' Se alguma coluna nao e numerica, sera tentada uma extracao de valores a partir do texto contido 
+#' na coluna. Isto e feito buscando um padrao \code{"[[:digit:]]+(\\.[[:digit:]]+)?"} em cada 
+#' elemento da coluna nao numerica. Desta forma, contanto que exista um numero dentro do texto (ex:
+#' "91.5%" ou "rend_91.1"), sera possivel converter. Caso a conversao falhe, a funcao sera aborta.
+#' 
+#' Finalmente, se os rendimentos forem detectados como formato decimal, serao multiplicados por
+#' 100. A identificacao e baseada em \bold{todos} os elementos da coluna serem menores do que 1.
+#' 
+#' E possivel que em algum momento desta coacao para o formato padrao ocorra algum erro, pois o 
+#' programa nao esta preparado para lidar com todas as possibilidades de dado de entrada. Pelo mesmo
+#' motivo, e possivel que a execucao termine sem erro, porem com resultados incoerentes. Desta forma
+#' o uso da opcao \code{force = TRUE} e pouco recomendado, exceto em casos especificos.
+#' 
+#' @param x \code{data.frame}-like a ser convertido. Ver Detalhes
+#' @param g,rho aceleracao da gravidade e densidade da agua
+#' @param force booleano indicando se o objeto deve ser forcado ao formato padrao. Pode gerar 
+#'     resultados inconsistentes. Ver Detalhes
+#' 
+#' @examples 
+#' 
+#' # gerando um dado totalmente aleatorio (nao condiz com uma colina de fato)
+#' dd <- data.frame(hl = runif(100), pot = runif(100), rend = rep(1:10, each = 10))
+#' cc <- as.curvacolina(dd, g = 9.81, rho = 1000)
+#' 
+#' @return objeto da classe \code{curvacolina}
+#' 
+#' @family curvacolina
+#' 
+#' @import data.table
+#' 
+#' @export
+
+as.curvacolina <- function(x, g = NA, rho = NA, force = FALSE) {
+
+    hl <- pot <- rend <- NULL
+
+    x <- parsedadocolina(x, force)
+
+    x <- as.data.table(x)
+    x <- mapply(split(x, x$rend), unique(x$rend), FUN = function(c, r) list(r, c[, 1:2]), SIMPLIFY = FALSE)
+
+    new_curvacolina(x, g, rho)
+}
+
 #' Redutor De \code{curvacolina}
 #' 
 #' Retorna o objeto \code{curvacolina} com um numero reduzido de observacoes
@@ -273,4 +380,52 @@ reduzcolina <- function(colina, taxa) {
     colreduzida <- as.curvacolina(rbindlist(colreduzida))
 
     return(colreduzida)
+}
+
+#' Atribui \code{g} E \code{rho} A Objeto \code{curvacolina}
+#' 
+#' Adiciona os atributos e calcula vazao turbinada na transformacao de curva colina
+#' 
+#' @param x objeto da classe \code{curvacolina}
+#' @param g,rho aceleracao da gravidade e densidade da agua
+#' 
+#' @examples 
+#' 
+#' \dontrun{
+#' # o dado padrao do pacote nao possui g e rho
+#' is.na(attr(colinadummy, "g"))
+#' is.na(attr(colinadummy, "rho"))
+#' }
+#' 
+#' # adicionando os valores de literatura
+#' cc <- set_grho(colinadummy, 9.81, 1000)
+#' 
+#' \dontrun{
+#' # atributos adicionados
+#' attr(cc, "g")
+#' attr(cc, "rho")
+#' 
+#' # vazao calculada
+#' cc$CC$vaz
+#' }
+#' 
+#' @return objeto \code{curvacolina} passado com atributos \code{g} e \code{rho}, assim como vazao
+#'     turbinada caclulada
+#' 
+#' @export
+
+set_grho <- function(x, g, rho) {
+
+    if(class(x) != "curvacolina") stop("'x' nao e um objeto 'curvacolina'")
+
+    out <- x
+
+    # aqui nao e usado a mod inplace do data.table para evitar efeitos colaterais em x no ambiente
+    # global
+    out$CC$vaz <- out$CC$pot / (out$CC$hl * out$CC$rend / 100 * rho * g) * 1e6
+
+    attr(out, "g")   <- g
+    attr(out, "rho") <- rho
+
+    return(out)
 }

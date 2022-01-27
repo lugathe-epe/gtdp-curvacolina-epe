@@ -4,13 +4,58 @@
 \alias{as.curvacolina}
 \title{Conversor Para \code{curvacolina}}
 \usage{
-as.curvacolina(x)
+as.curvacolina(x, g = NA, rho = NA, force = FALSE)
 }
 \arguments{
-\item{x}{\code{data.frame}-like a ser convertido}
+\item{x}{\code{data.frame}-like a ser convertido. Ver Detalhes}
+
+\item{g, rho}{aceleracao da gravidade e densidade da agua}
+
+\item{force}{booleano indicando se o objeto deve ser forcado ao formato padrao. Pode gerar
+resultados inconsistentes. Ver Detalhes}
+}
+\value{
+objeto da classe \code{curvacolina}
 }
 \description{
 Forca um objeto tipo \code{data.frame} para classe \code{curvacolina}
+}
+\details{
+Por padrao a conversao de \code{x} so sera executada caso tres criterios sejam atendidos
+
+\itemize{
+\item{contenha as colunas \code{hl}, \code{pot} e \code{rend}}
+\item{alguma das colunas nao esteja em formato numerico (ex: rendimento como "91\%" ou "0.9\%")}
+\item{rendimentos nao estejam em formato decimal (ex: 0.91)}
+}
+
+Caso um ou mais destes requisitos nao seja atendido, por padrao a conversao sera abotada. Nestes
+casos, o argumento \code{force} permite forcar a transformacao do dado para \code{curvacolina}. A
+seguir sao detalhados os comportamentos caso \code{force = TRUE} e algum criterio e violado.
+
+Na falta \bold{de todas as tres colunas nomeadas}, o programa considera as tres primeiras colunas
+do dado como \code{hl}, \code{pot} e \code{rend}, caso haja pelo menos tres colunas. Do contrario
+aborta com um erro.
+
+Se alguma coluna nao e numerica, sera tentada uma extracao de valores a partir do texto contido
+na coluna. Isto e feito buscando um padrao \code{"[[:digit:]]+(\\.[[:digit:]]+)?"} em cada
+elemento da coluna nao numerica. Desta forma, contanto que exista um numero dentro do texto (ex:
+"91.5\%" ou "rend_91.1"), sera possivel converter. Caso a conversao falhe, a funcao sera aborta.
+
+Finalmente, se os rendimentos forem detectados como formato decimal, serao multiplicados por
+100. A identificacao e baseada em \bold{todos} os elementos da coluna serem menores do que 1.
+
+E possivel que em algum momento desta coacao para o formato padrao ocorra algum erro, pois o
+programa nao esta preparado para lidar com todas as possibilidades de dado de entrada. Pelo mesmo
+motivo, e possivel que a execucao termine sem erro, porem com resultados incoerentes. Desta forma
+o uso da opcao \code{force = TRUE} e pouco recomendado, exceto em casos especificos.
+}
+\examples{
+
+# gerando um dado totalmente aleatorio (nao condiz com uma colina de fato)
+dd <- data.frame(hl = runif(100), pot = runif(100), rend = rep(1:10, each = 10))
+cc <- as.curvacolina(dd, g = 9.81, rho = 1000)
+
 }
 \seealso{
 Other curvacolina: 
