@@ -121,3 +121,80 @@ test_that("Leitura de processo iterativo (CC Alterada)", {
         expect_snapshot_value(summ, style = "json2")
     }
 })
+
+test_that("as.curvacolina", {
+    cc <- colinadummy$CC
+
+    cc2 <- colinadummy$CC[, list(hl, pot, rend, vaz)]
+    colnames(cc2) <- paste0("V", 1:4)
+
+    # SEM FORCE // SEM g E rho
+
+    xx1 <- as.curvacolina(cc)
+
+    expect_error(as.curvacolina(cc2))
+
+    expect_equal(class(xx1), "curvacolina")
+    expect_equal(colnames(xx1$CC), c("hl", "pot", "vaz", "rend"))
+    expect_true(all(xx1$CC$hl == cc$CC$hl))
+    expect_true(all(xx1$CC$pot == cc$CC$pot))
+    expect_true(all(xx1$CC$rend == cc$CC$rend))
+    expect_true(all(is.na(xx1$CC$vaz) & is.na(cc$CC$vaz)))
+
+    expect_true(is.na(attr(xx1, "g")))
+    expect_true(is.na(attr(xx1, "rho")))
+
+    # SEM FORCE // COM g E rho
+
+    xx2 <- as.curvacolina(cc, 9.81, 1000)
+
+    expect_equal(class(xx2), "curvacolina")
+    expect_equal(colnames(xx2$CC), c("hl", "pot", "vaz", "rend"))
+    expect_true(all(xx2$CC$hl == cc$CC$hl))
+    expect_true(all(xx2$CC$pot == cc$CC$pot))
+    expect_true(all(xx2$CC$rend == cc$CC$rend))
+    expect_true(all(!is.na(xx2$CC$vaz)))
+
+    expect_equal(attr(xx2, "g"), 9.81)
+    expect_equal(attr(xx2, "rho"), 1000)
+
+    # COM FORCE // SEM g E rho
+
+    expect_warning(xx3 <- as.curvacolina(cc2, force = TRUE))
+
+    expect_equal(class(xx3), "curvacolina")
+    expect_equal(colnames(xx3$CC), c("hl", "pot", "vaz", "rend"))
+    expect_true(all(xx3$CC$hl == cc$CC$hl))
+    expect_true(all(xx3$CC$pot == cc$CC$pot))
+    expect_true(all(xx3$CC$rend == cc$CC$rend))
+    expect_true(all(is.na(xx3$CC$vaz) & is.na(cc$CC$vaz)))
+
+    expect_true(is.na(attr(xx3, "g")))
+    expect_true(is.na(attr(xx3, "rho")))
+
+    # COM FORCE // COM g E rho
+
+    expect_warning(xx4 <- as.curvacolina(cc2, 9.81, 1000, force = TRUE))
+
+    expect_equal(class(xx4), "curvacolina")
+    expect_equal(colnames(xx4$CC), c("hl", "pot", "vaz", "rend"))
+    expect_true(all(xx4$CC$hl == cc$CC$hl))
+    expect_true(all(xx4$CC$pot == cc$CC$pot))
+    expect_true(all(xx4$CC$rend == cc$CC$rend))
+    expect_true(all(!is.na(xx4$CC$vaz)))
+
+    expect_equal(attr(xx4, "g"), 9.81)
+    expect_equal(attr(xx4, "rho"), 1000)
+})
+
+test_that("set_grho", {
+    cc <- set_grho(colinadummy, 9.81, 1000)
+
+    expect_equal(class(cc), "curvacolina")
+    expect_equal(colnames(cc$CC), c("hl", "pot", "vaz", "rend"))
+
+    expect_true(all(!is.na(cc$CC$vaz)))
+
+    expect_equal(attr(cc, "g"), 9.81)
+    expect_equal(attr(cc, "rho"), 1000)
+})
