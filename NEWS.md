@@ -1,7 +1,9 @@
-# dev (gradecolina)
+# curvacolina 1.5
 
 ## New features
 
+* objetos `curvacolina` agora carregam attr `g`, `rho` e `max`; `colinadummy` atualizada para o novo
+  padrao
 * introducao de objetos da classe `gradecolina`.
 * metodo de plot para `gradecolina`
 * argumento `full.output` de `predict` passou a ser `as.curvacolina`, e agora o que se retorna 
@@ -16,19 +18,9 @@ linguagem -- consulte a pagina de ajuda para mais detalhes `?interpolacao_bilin`
 
 ### Minor
 
-* plot de `interpolador` agora e so um wrapper em torno do de `gradecolina`
-
-# dev (master)
-
-## New features
-
-* objetos `curvacolina` agora carregam attr `g`, `rho` e `max`; `colinadummy` atualizada para o novo
-  padrao
-
-### Minor
-
 * homogeinizacao das legendas e parametros graficos gerais nas funcoes de `plot`, tando em 2d quanto
   em 3d
+* plot de `interpolador` agora e so um wrapper em torno do de `gradecolina`
 
 ## Bug fixes
 
