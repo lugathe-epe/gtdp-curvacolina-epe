@@ -95,11 +95,11 @@ new_gradecolina <- function(pontos, rends, interpolador) {
 #' tri <- interpolador(colinadummy, "tri")
 #' 
 #' # extrai uma grade dele
-#' coord <- geragrade(colinadummy, 10, 10)
+#' coord <- coordgrade(colinadummy, 10, 10)
 #' gradecolina <- predict(tri, coord, as.gradecolina = TRUE)
 #' 
 #' # interpolando pontos arbitrarios
-#' coord_interp <- geragrade(colinadummy, 25, 25)
+#' coord_interp <- coordgrade(colinadummy, 25, 25)
 #' pred <- predict(gradecolina, coord_interp)
 #' pred <- predict(gradecolina, coord_interp, full.output = TRUE)
 #' 

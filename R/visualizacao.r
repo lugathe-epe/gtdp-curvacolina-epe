@@ -80,7 +80,7 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
 #' 
 #' Para plotar uma superficie e necessario amostrar pontos numa grade regular. A definicao desta 
 #' grade e realizada atraves do argumento \code{...}, que sera utilizado numa chamada de 
-#' \code{\link{geragrade}} e esta grade amostrada do interpolador \code{x}. E possivel deixa-lo nao
+#' \code{\link{coordgrade}} e esta grade amostrada do interpolador \code{x}. E possivel deixa-lo nao
 #' especificado; neste caso sera usado o padrao \code{list(dhl = 200, dpot = 200)}, que deve ser
 #' suficiente para um plot suave na maioria das circunstancias.
 #' 
@@ -89,7 +89,7 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
 #' @param add_colina booleano indicando se os pontos da colina original tambem devem ser plotados
 #' @param print booleano indicando se o plot deve ser exibido. Caso \code{print = FALSE} o objeto
 #'     sera retornado silenciosamente
-#' @param ... parametros passados para \code{\link{geragrade}} para amostragem da superficie. Se 
+#' @param ... parametros passados para \code{\link{coordgrade}} para amostragem da superficie. Se 
 #'     deixado vazio e gerada uma grade 200 x 200. Ver Detalhes
 #' 
 #' @return Se \code{tipo = "3d"} um objeto \code{plotly} contendo o plot 3d; se \code{tipo = "2d"}
@@ -116,7 +116,7 @@ plot.interpolador <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print 
 
     if(add_colina) colina <- copy(getcolina(x)$CC) else colina <- data.table(hl = NA, pot = NA, rend = 0)
 
-    dsurf <- do.call(geragrade, c(list(colina = getcolina(x)), ggargs))
+    dsurf <- do.call(coordgrade, c(list(colina = getcolina(x)), ggargs))
     dsurf <- predict(x, dsurf, TRUE)
 
     plot.gradecolina(dsurf, tipo, add_colina, print)

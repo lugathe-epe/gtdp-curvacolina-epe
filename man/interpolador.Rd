@@ -56,7 +56,7 @@ isto, e, tipo de spline (\code{bs}) e dimensao da base (\code{k}). Ver (\code{\l
 interp_tri <- interpolador(colinadummy, "tri")
 
 # interpolando uma grade 20x20 no dominio da colina
-pontos <- geragrade(colinadummy, 20, 20)
+pontos <- coordgrade(colinadummy, 20, 20)
 interp <- predict(interp_tri, pontos)
 
 \dontrun{
