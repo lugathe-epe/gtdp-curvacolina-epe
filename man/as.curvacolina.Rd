@@ -59,7 +59,7 @@ cc <- as.curvacolina(dd, g = 9.81, rho = 1000)
 }
 \seealso{
 Other curvacolina: 
-\code{\link{geragrade}()},
+\code{\link{coordgrade}()},
 \code{\link{learqcolina}()},
 \code{\link{plot.curvacolina}()},
 \code{\link{summary.curvacolina}()},

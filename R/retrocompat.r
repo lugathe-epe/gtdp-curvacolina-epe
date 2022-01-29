@@ -61,7 +61,6 @@ new_retamindist <- function(grade, colina) {
 
 # METODOS ------------------------------------------------------------------------------------------
 
-
 #' @rdname getcolina
 
 getcolina.retamindist <- function(object) object$colina
@@ -77,25 +76,24 @@ getcolina.retamindist <- function(object) object$colina
 #' 
 #' @param object objeto da classe \code{retamindist} retornado pela funcao homonima
 #' @param pontos nao tem uso neste metodo, existe apenas para consistencia com os outros
-#' @param full.output booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
-#'     interpolados nas coordenadas \code{pontos}; se \code{TRUE} um data.table de \code{pontos} com
-#'     as coluna \code{rend} e \code{inhull}
+#' @param as.gradecolina booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
+#'     interpolados nas coordenadas \code{pontos}; se \code{TRUE} um objeto \code{gradecolina}. Veja
+#'     \code{\link{gradecolina}}
 #' @param ... existe somente para consistencia de metodos. Nao possui utilidade
 #' 
 #' @return vetor de rendimentos interpolados
 #' 
 #' @export
- 
-predict.retamindist <- function(object, pontos, full.output = FALSE, ...) {
 
-    if(full.output) {
-        interp <- object$superficie
-        inhull <- geometry::inhulln(geometry::convhulln(getcolina(object)$CC[, 1:2]),
-            data.matrix(interp[, 1:2]))
-        interp$inhull <- inhull
+predict.retamindist <- function(object, pontos, as.gradecolina = FALSE, ...) {
+
+    if(as.gradecolina) {
+        out <- new_gradecolina(object$superficie[, list(hl, pot)],
+                               object$superficie$rend,
+                               object)
     } else {
-        interp <- as.numeric(object$superficie$rend)
+        out <- as.numeric(object$superficie$rend)
     }
 
-    return(interp)
+    return(out)
 }

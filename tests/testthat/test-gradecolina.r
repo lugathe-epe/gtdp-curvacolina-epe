@@ -12,7 +12,7 @@ test_that("Interpolacao Bilinear", {
 
     rr2 <- predict(gradecolina, pontos1, full.output = TRUE)
     expect_equal(class(rr2), c("data.table", "data.frame"))
-    expect_equal(dim(rr2), dim(pontos1) + c(0, 1))
+    expect_equal(dim(rr2), dim(pontos1) + c(0, 2))
     expect_equal(sort(rr2$hl), sort(pontos1$hl))
     expect_equal(sort(rr2$pot), sort(pontos1$pot))
     expect_equal(rr2$rend, rr1)
@@ -25,7 +25,7 @@ test_that("Interpolacao Bilinear", {
 
     rr4 <- fitted(gradecolina, full.output = TRUE)
     expect_equal(class(rr4), c("data.table", "data.frame"))
-    expect_equal(dim(rr4), c(nrow(colinadummy$CC), 3))
+    expect_equal(dim(rr4), c(nrow(colinadummy$CC), 4))
     expect_equal(sort(rr4$hl), sort(colinadummy$CC$hl))
     expect_equal(sort(rr4$pot), sort(colinadummy$CC$pot))
     expect_equal(rr4$rend, rr3)

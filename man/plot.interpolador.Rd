@@ -16,7 +16,7 @@
 \item{print}{booleano indicando se o plot deve ser exibido. Caso \code{print = FALSE} o objeto
 sera retornado silenciosamente}
 
-\item{...}{parametros passados para \code{\link{geragrade}} para amostragem da superficie. Se
+\item{...}{parametros passados para \code{\link{coordgrade}} para amostragem da superficie. Se
 deixado vazio e gerada uma grade 200 x 200. Ver Detalhes}
 }
 \value{
@@ -30,7 +30,7 @@ Funcao para visualizacao dos modelos ajustados atraves de \code{interpolador}
 \details{
 Para plotar uma superficie e necessario amostrar pontos numa grade regular. A definicao desta
 grade e realizada atraves do argumento \code{...}, que sera utilizado numa chamada de
-\code{\link{geragrade}} e esta grade amostrada do interpolador \code{x}. E possivel deixa-lo nao
+\code{\link{coordgrade}} e esta grade amostrada do interpolador \code{x}. E possivel deixa-lo nao
 especificado; neste caso sera usado o padrao \code{list(dhl = 200, dpot = 200)}, que deve ser
 suficiente para um plot suave na maioria das circunstancias.
 }

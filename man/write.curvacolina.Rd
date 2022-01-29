@@ -20,7 +20,7 @@ Metodo para facilitacao de escrita de \code{curvacolina} lida pelas funcoes do p
 \seealso{
 Other curvacolina: 
 \code{\link{as.curvacolina}()},
-\code{\link{geragrade}()},
+\code{\link{coordgrade}()},
 \code{\link{learqcolina}()},
 \code{\link{plot.curvacolina}()},
 \code{\link{summary.curvacolina}()}

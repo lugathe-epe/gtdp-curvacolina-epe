@@ -43,7 +43,7 @@ print(p)
 \seealso{
 Other curvacolina: 
 \code{\link{as.curvacolina}()},
-\code{\link{geragrade}()},
+\code{\link{coordgrade}()},
 \code{\link{learqcolina}()},
 \code{\link{summary.curvacolina}()},
 \code{\link{write.curvacolina}()}

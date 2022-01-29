@@ -10,6 +10,19 @@
 * foi incluida a funcao `set_grho` que permite a definicao de aceleracao da gravidade e densidade
   da agua diretamente a um objeto `curvacolina`, sem precisar gerar o objeto mais uma vez
 
+* `geragrade` renomeada como `coordgrade` (#7)
+
+## Bug fixes
+
+* `predict.retamindist` adequada para usar argumento `as.gradecolina` (#6)
+
+# dev (gradecolina)
+
+## New features
+
+* `predict.gradecolina` agora retorna coluna `inhull` quando `full.output = TRUE`
+* adicionada funcao `write.gradecolina` para escrita das grades extraidas
+
 # curvacolina 1.5
 
 ## New features

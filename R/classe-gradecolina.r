@@ -95,11 +95,11 @@ new_gradecolina <- function(pontos, rends, interpolador) {
 #' tri <- interpolador(colinadummy, "tri")
 #' 
 #' # extrai uma grade dele
-#' coord <- geragrade(colinadummy, 10, 10)
+#' coord <- coordgrade(colinadummy, 10, 10)
 #' gradecolina <- predict(tri, coord, as.gradecolina = TRUE)
 #' 
 #' # interpolando pontos arbitrarios
-#' coord_interp <- geragrade(colinadummy, 25, 25)
+#' coord_interp <- coordgrade(colinadummy, 25, 25)
 #' pred <- predict(gradecolina, coord_interp)
 #' pred <- predict(gradecolina, coord_interp, full.output = TRUE)
 #' 
@@ -118,6 +118,7 @@ new_gradecolina <- function(pontos, rends, interpolador) {
 #' @family gradecolina
 #' 
 #' @import data.table
+#' @importFrom geometry inhulln convhulln
 #' 
 #' @export
 
@@ -140,15 +141,22 @@ predict.gradecolina <- function(object, pontos, full.output = FALSE, ...) {
     interp <- INTERPBILIN(hlGrade, potGrade, rendGrade, hlPred, potPred)
 
     if(full.output) {
-        interp <- cbind(pontos[, list(hl, pot)], rend = as.numeric(interp))
+        out    <- cbind(pontos[, list(hl, pot)], rend = as.numeric(interp))
+
+        # o inhulln reclama se receber uma matriz de inteiros (inacreditavelmente), entao precisa
+        # somar um 0.0 para converter a matriz em floats
+        pts    <- data.matrix(pontos[, list(hl, pot)]) + .0
+        inhull <- inhulln(convhulln(object$colina$CC[, list(hl, pot)]), pts)
+
+        out[, inhull := inhull]
     } else {
         # a funcao em cpp retorna um vetor coluna (pro R, uma matriz N x 1)
-        interp <- as.numeric(interp)
+        out <- as.numeric(interp)
     }
 
-    interp <- interp[order(pontos$ordem0)]
+    out <- out[order(pontos$ordem0)]
 
-    return(interp)
+    return(out)
 }
 
 #' @rdname interpolacao_bilinear
@@ -176,3 +184,20 @@ residuals.gradecolina <- function(object, ...) {
 
     return(res)
 }
+
+#' Escrita De \code{gradecolina}
+#' 
+#' Metodo para facilitacao de escrita de \code{gradecolina} lida pelas funcoes do pacote
+#' 
+#' @param x objeto \code{gradecolina} a ser escrito
+#' @param file caminho para escrita com extensao de aquivo
+#' 
+#' @return Escreve grade em \code{x} no caminho especificado
+#' 
+#' @family gradecolina
+#' 
+#' @import data.table
+#' 
+#' @export
+
+write.gradecolina <- function(x, file) fwrite(x$grade, file, quote = FALSE, sep = ";")

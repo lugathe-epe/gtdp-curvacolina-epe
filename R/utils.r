@@ -45,13 +45,13 @@
 #' @examples
 #' 
 #' # grade contemplando toda a faixa de quedas e potencias da colina, cada uma divida em 20 partes
-#' grade1 <- geragrade(colinadummy, 20, 20)
+#' grade1 <- coordgrade(colinadummy, 20, 20)
 #' 
 #' # grade com coordenadas especificadas diretamente
-#' grade2 <- geragrade(colinadummy, 40:60, seq(150, 400, by = 10))
+#' grade2 <- coordgrade(colinadummy, 40:60, seq(150, 400, by = 10))
 #' 
 #' # grade com intervalos de 1 cm em queda e 10 MW em potencia
-#' # grade3 <- geragrade(colinadummy, byhl = .1, bypot = 10)
+#' # grade3 <- coordgrade(colinadummy, byhl = .1, bypot = 10)
 #' 
 #' \dontrun{
 #' plot(colinadummy, "2d") + ggplot2::geom_point(data = grade, aes(hl, pot), col = 2)
@@ -65,11 +65,11 @@
 #' 
 #' @export
 
-geragrade <- function(colina, dhl, dpot, byhl, bypot, expande) UseMethod("geragrade", colina)
+coordgrade <- function(colina, dhl, dpot, byhl, bypot, expande) UseMethod("coordgrade", colina)
 
 #' @export
 
-geragrade.data.table <- function(colina, dhl, dpot, byhl, bypot, expande = c(0, 0)) {
+coordgrade.data.table <- function(colina, dhl, dpot, byhl, bypot, expande = c(0, 0)) {
 
     hl <- pot <- NULL
 
@@ -110,18 +110,18 @@ geragrade.data.table <- function(colina, dhl, dpot, byhl, bypot, expande = c(0, 
 
 #' @export
 
-geragrade.data.frame <- function(colina, dhl, dpot, byhl, bypot, expande = c(0, 0)) {
+coordgrade.data.frame <- function(colina, dhl, dpot, byhl, bypot, expande = c(0, 0)) {
 
-    grade <- geragrade.data.table(as.data.table(colina), dhl, dpot, byhl, bypot, expande)
+    grade <- coordgrade.data.table(as.data.table(colina), dhl, dpot, byhl, bypot, expande)
 
     return(grade)
 }
 
 #' @export
 
-geragrade.curvacolina <- function(colina, dhl, dpot, byhl, bypot, expande = c(0, 0)) {
+coordgrade.curvacolina <- function(colina, dhl, dpot, byhl, bypot, expande = c(0, 0)) {
 
-    grade <- geragrade(colina$CC, dhl, dpot, byhl, bypot, expande)
+    grade <- coordgrade(colina$CC, dhl, dpot, byhl, bypot, expande)
 
     return(grade)
 }

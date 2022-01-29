@@ -20,7 +20,7 @@ Produz um breve sumario da curva colina
 \seealso{
 Other curvacolina: 
 \code{\link{as.curvacolina}()},
-\code{\link{geragrade}()},
+\code{\link{coordgrade}()},
 \code{\link{learqcolina}()},
 \code{\link{plot.curvacolina}()},
 \code{\link{write.curvacolina}()}
