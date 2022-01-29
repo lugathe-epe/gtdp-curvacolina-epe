@@ -4,16 +4,16 @@
 \alias{predict.retamindist}
 \title{Amostragem De Pontos Na \code{retamindist}}
 \usage{
-\method{predict}{retamindist}(object, pontos, full.output = FALSE, ...)
+\method{predict}{retamindist}(object, pontos, as.gradecolina = FALSE, ...)
 }
 \arguments{
 \item{object}{objeto da classe \code{retamindist} retornado pela funcao homonima}
 
 \item{pontos}{nao tem uso neste metodo, existe apenas para consistencia com os outros}
 
-\item{full.output}{booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
-interpolados nas coordenadas \code{pontos}; se \code{TRUE} um data.table de \code{pontos} com
-as coluna \code{rend} e \code{inhull}}
+\item{as.gradecolina}{booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
+interpolados nas coordenadas \code{pontos}; se \code{TRUE} um objeto \code{gradecolina}. Veja
+\code{\link{gradecolina}}}
 
 \item{...}{existe somente para consistencia de metodos. Nao possui utilidade}
 }
