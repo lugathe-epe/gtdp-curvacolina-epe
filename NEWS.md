@@ -1,3 +1,10 @@
+# dev (gradecolina)
+
+## New features
+
+* `predict.gradecolina` agora retorna coluna `inhull` quando `full.output = TRUE`
+* adicionada funcao `write.gradecolina` para escrita das grades extraidas
+
 # curvacolina 1.5
 
 ## New features
