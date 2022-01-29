@@ -116,6 +116,7 @@ new_gradecolina <- function(pontos, rends, interpolador) {
 #' @family gradecolina
 #' 
 #' @import data.table
+#' @importFrom geometry inhulln convhulln
 #' 
 #' @export
 
@@ -138,15 +139,22 @@ predict.gradecolina <- function(object, pontos, full.output = FALSE, ...) {
     interp <- INTERPBILIN(hlGrade, potGrade, rendGrade, hlPred, potPred)
 
     if(full.output) {
-        interp <- cbind(pontos[, list(hl, pot)], rend = as.numeric(interp))
+        out    <- cbind(pontos[, list(hl, pot)], rend = as.numeric(interp))
+
+        # o inhulln reclama se receber uma matriz de inteiros (inacreditavelmente), entao precisa
+        # somar um 0.0 para converter a matriz em floats
+        pts    <- data.matrix(pontos[, list(hl, pot)]) + .0
+        inhull <- inhulln(convhulln(object$colina$CC[, list(hl, pot)]), pts)
+
+        out[, inhull := inhull]
     } else {
         # a funcao em cpp retorna um vetor coluna (pro R, uma matriz N x 1)
-        interp <- as.numeric(interp)
+        out <- as.numeric(interp)
     }
 
-    interp <- interp[order(pontos$ordem0)]
+    out <- out[order(pontos$ordem0)]
 
-    return(interp)
+    return(out)
 }
 
 #' @rdname interpolacao_bilinear
