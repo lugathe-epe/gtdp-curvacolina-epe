@@ -26,6 +26,7 @@ O segundo elemento e um objeto \code{curvacolina}, contendo a colina original.
 \seealso{
 Other gradecolina: 
 \code{\link{interpolacao_bilinear}},
-\code{\link{plot.gradecolina}()}
+\code{\link{plot.gradecolina}()},
+\code{\link{write.gradecolina}()}
 }
 \concept{gradecolina}

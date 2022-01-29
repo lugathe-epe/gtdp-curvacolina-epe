@@ -174,3 +174,20 @@ residuals.gradecolina <- function(object, ...) {
 
     return(res)
 }
+
+#' Escrita De \code{gradecolina}
+#' 
+#' Metodo para facilitacao de escrita de \code{gradecolina} lida pelas funcoes do pacote
+#' 
+#' @param x objeto \code{gradecolina} a ser escrito
+#' @param file caminho para escrita com extensao de aquivo
+#' 
+#' @return Escreve grade em \code{x} no caminho especificado
+#' 
+#' @family gradecolina
+#' 
+#' @import data.table
+#' 
+#' @export
+
+write.gradecolina <- function(x, file) fwrite(x$grade, file, quote = FALSE, sep = ";")

@@ -63,6 +63,7 @@ resid <- residuals(gradecolina)
 \seealso{
 Other gradecolina: 
 \code{\link{gradecolina}},
-\code{\link{plot.gradecolina}()}
+\code{\link{plot.gradecolina}()},
+\code{\link{write.gradecolina}()}
 }
 \concept{gradecolina}

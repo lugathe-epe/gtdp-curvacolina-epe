@@ -29,6 +29,7 @@ Funcao para visualizacao das grades regulares extraidas de interpoladores
 \seealso{
 Other gradecolina: 
 \code{\link{gradecolina}},
-\code{\link{interpolacao_bilinear}}
+\code{\link{interpolacao_bilinear}},
+\code{\link{write.gradecolina}()}
 }
 \concept{gradecolina}
