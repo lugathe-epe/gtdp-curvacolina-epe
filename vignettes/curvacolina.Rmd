@@ -39,7 +39,26 @@ O pacote `curvacolina` contém funções amplamente categorizadas em:
     * Vizualização das grades em duas ou três dimensões
 
 Esta *vignette* corresponde a um manual de uso do pacote, desde a importação até geração e uso de
-tabelas regulares a partir da curva colina.
+tabelas regulares a partir da curva colina. Uma análise de colina típica é apresentada no bloco de
+código abaixo
+
+```{r exemplo, eval=FALSE}
+# Importando e visualizando uma curva colina
+arq    <- system.file("extdata/colina.xlsx", package = "curvacolina")
+colina <- learqcolina(arq)
+plot(colina)
+
+# Ajuste de interpolador e visualizacao do resultado
+mod_interp <- interpolador(colina, metodo = "thinplate")
+plot(mod_interp)
+
+# Extracao de grade 0.1 m por 1 MW
+coord_grade <- geragrade(colina, byhl = .1, bypot = 1)
+grade <- predict(mod_interp, coord_grade)
+plot(grade)
+```
+
+Nas seções a seguir, cada parte do exemplo será descrita em maiores detalhes.
 
 ## Curvas Colina
 
