@@ -111,12 +111,17 @@ plot.interpolador <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print 
 
     tipo <- match.arg(tipo)
 
-    ggargs <- list(...)
-    if(length(ggargs) == 0) ggargs <- list(dhl = 200, dpot = 200)
+    coord_args  <- list(...)
+
+    minargs <- list(c("dhl", "byhl"), c("dpot", "bypot"))
+    tem_minargs <- sapply(minargs, function(x) any(x %in% names(coord_args)))
+
+    if(!tem_minargs[1]) coord_args <- c(coord_args, list(dhl = 200))
+    if(!tem_minargs[2]) coord_args <- c(coord_args, list(dpot = 200))
 
     if(add_colina) colina <- copy(getcolina(x)$CC) else colina <- data.table(hl = NA, pot = NA, rend = 0)
 
-    dsurf <- do.call(coordgrade, c(list(colina = getcolina(x)), ggargs))
+    dsurf <- do.call(coordgrade, c(list(colina = getcolina(x)), coord_args))
     dsurf <- predict(x, dsurf, TRUE)
 
     plot.gradecolina(dsurf, tipo, add_colina, print)
@@ -161,7 +166,7 @@ plot.gradecolina <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print =
             add_markers(x = colina$hl, y = colina$pot, z = colina$rend,
                 type = "scatter3d", name = "colina") %>%
             add_surface(x = unique(grade$hl), y = unique(grade$pot),
-                z = t(data.matrix(dcast(grade, hl ~ pot, value.var = "rend"))),
+                z = t(data.matrix(dcast(grade, hl ~ pot, value.var = "rend"))[, -1]),
                 name = "interpolacao") %>%
             layout(scene = list(
                 xaxis = list(title = list(text = "Queda L\U00EDquida (m)")),
