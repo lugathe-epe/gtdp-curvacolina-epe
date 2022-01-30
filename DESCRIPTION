@@ -36,4 +36,4 @@ Config/testthat/edition: 3
 LinkingTo: 
     RcppArmadillo,
     Rcpp
-VignetteBuilder: knitr
+VignetteBuilder: knitr, rmarkdown
