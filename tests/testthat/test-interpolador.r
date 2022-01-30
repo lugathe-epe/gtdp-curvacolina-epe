@@ -7,7 +7,7 @@ test_that("Modelagem por Triangulacao", {
 
     expect_equal(getcolina.triangulacao(interp), colinadummy)
 
-    gg <- geragrade(colinadummy, 20, 20)
+    gg <- coordgrade(colinadummy, 20, 20)
 
     pred_vec <- predict(interp, gg)
     expect_snapshot_value(pred_vec, style = "json2")
@@ -34,7 +34,7 @@ test_that("Modelagem por Tensor Product", {
 
     expect_equal(getcolina.tensorprod(interp), colinadummy)
 
-    gg <- geragrade(colinadummy, 20, 20)
+    gg <- coordgrade(colinadummy, 20, 20)
 
     pred_vec <- predict(interp, gg)
     expect_snapshot_value(pred_vec, style = "json2")
@@ -61,7 +61,7 @@ test_that("Modelagem por Thin Plate", {
 
     expect_equal(getcolina.thinplate(interp), colinadummy)
 
-    gg <- geragrade(colinadummy, 20, 20)
+    gg <- coordgrade(colinadummy, 20, 20)
 
     pred_vec <- predict(interp, gg)
     expect_snapshot_value(pred_vec, style = "json2")

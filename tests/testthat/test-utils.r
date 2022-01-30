@@ -1,9 +1,9 @@
 test_that("Gerador de grades", {
 
     # metodos entregam mesmo resultado
-    grade_1 <- geragrade(colinadummy, 20, 20)
-    grade_2 <- geragrade(colinadummy$CC, 20, 20)
-    grade_3 <- geragrade(as.data.frame(colinadummy$CC), 20, 20)
+    grade_1 <- coordgrade(colinadummy, 20, 20)
+    grade_2 <- coordgrade(colinadummy$CC, 20, 20)
+    grade_3 <- coordgrade(as.data.frame(colinadummy$CC), 20, 20)
     expect_true(all(grade_1 == grade_2))
     expect_true(all(grade_2 == grade_3))
 
@@ -16,7 +16,7 @@ test_that("Gerador de grades", {
     expect_equal(min(grade_1$pot), min(colinadummy$CC$pot))
     expect_equal(max(grade_1$pot), max(colinadummy$CC$pot))
 
-    grade_2 <- geragrade(colinadummy, 30, 30, expande = c(.1, .1))
+    grade_2 <- coordgrade(colinadummy, 30, 30, expande = c(.1, .1))
 
     deltahl  <- .1 * diff(range(colinadummy$CC$hl))
     deltapot <- .1 * diff(range(colinadummy$CC$pot))
@@ -31,12 +31,12 @@ test_that("Gerador de grades", {
 
     # grade gerada com dhl e dpot vetores
 
-    grade_5 <- geragrade(colinadummy, 20:40, 200:300)
+    grade_5 <- coordgrade(colinadummy, 20:40, 200:300)
 
     expect_equal(unique(grade_5$hl), 20:40)
     expect_equal(unique(grade_5$pot), 200:300)
 
-    grade_5 <- geragrade(colinadummy, 20:40, 200:300, expand = c(.1, .1))
+    grade_5 <- coordgrade(colinadummy, 20:40, 200:300, expand = c(.1, .1))
 
     expect_equal(unique(grade_5$hl), 20:40)
     expect_equal(unique(grade_5$pot), 200:300)
@@ -44,7 +44,7 @@ test_that("Gerador de grades", {
     # grade gerada com byhl e bypot
     # os limites dos expect_equal aqui e no proximo teste foram pre calculados
 
-    grade_3 <- geragrade(colinadummy, byhl = .5, bypot = 5)
+    grade_3 <- coordgrade(colinadummy, byhl = .5, bypot = 5)
 
     expect_equal(min(grade_3$hl), 34)
     expect_equal(max(grade_3$hl), 61.5)
@@ -56,7 +56,7 @@ test_that("Gerador de grades", {
 
     # grade gerada com byhl e bypot e expand
 
-    grade_4 <- geragrade(colinadummy, byhl = .5, bypot = 5, expand = c(.1, .1))
+    grade_4 <- coordgrade(colinadummy, byhl = .5, bypot = 5, expand = c(.1, .1))
 
     expect_equal(min(grade_4$hl), 31)
     expect_equal(max(grade_4$hl), 64)

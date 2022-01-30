@@ -1,6 +1,6 @@
 test_that("Interpolacao Bilinear", {
     tri <- interpolador(colinadummy, "tri")
-    gradecolina <- predict(tri, geragrade(colinadummy, 100, 100), as.gradecolina = TRUE)
+    gradecolina <- predict(tri, coordgrade(colinadummy, 100, 100), as.gradecolina = TRUE)
 
     # METODO DE DATA.FRAME
 
