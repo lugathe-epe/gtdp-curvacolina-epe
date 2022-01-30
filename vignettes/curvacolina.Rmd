@@ -1,8 +1,8 @@
 ---
 title: "curvacolina"
+date: "`r Sys.Date()`"
 output: 
-    rmarkdown::html_vignette: 
-        toc: true
+    rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{curvacolina}
   %\VignetteEngine{knitr::rmarkdown}
@@ -62,6 +62,8 @@ write.gradecolina(grade, "caminho/para/escrita/grade.csv")
 ```
 
 Nas seções a seguir, cada parte do exemplo será descrita em maiores detalhes.
+
+***
 
 ## Curvas Colina
 
@@ -264,7 +266,7 @@ rends <- predict(mod, pontos)
 head(rends)
 ```
 
-A função `coodgrade` é uma facilitadora para definição de coordenadas em respeito à uma curva colina
+A função `coordgrade` é uma facilitadora para definição de coordenadas em respeito à uma curva colina
 específica. Existe uma variedade de formas pelas quais se especificar o posicionamento das 
 segmentações de queda e potência, detalhadas em `?coordgrade`.
 
@@ -280,3 +282,36 @@ Quando o argmento `as.gradecolina = TRUE`, o objeto retornado é uma instância 
 `gradecolina`. Estes objetos consistem de dois elementos: a grade regular extraída da superfície em
 `mod` e a colina original que essa aproxima. Adicionalmente contém os atributos `nhl` e `npot` 
 representando o número de divisões de queda e potência na grade, respectivamente.
+
+## Grades regulares
+
+Assim como objetos da classe `interpolador`, instâncias de `gradecolina` são tratados no pacote como
+modelos, tal que também possuem um método `predict` próprio. A interpolação bilinear de pontos 
+arbitrários numa grade regular é feita com
+
+```{r interp_bilin}
+
+# pontos quaisquer para interpolar
+pontos <- expand.grid(hl = 40:60, pot = 200:230)
+
+interp <- predict(rends, pontos)
+head(interp)
+```
+
+Este método também possui um argumento controlando o nível de detalhe da saída, chamado 
+`full.output`. Quando `TRUE`, a saída consiste de um `data.table` de quatro colunas
+
+```{r interp_bilin2}
+
+# pontos quaisquer para interpolar
+pontos <- expand.grid(hl = 40:50, pot = 200:210)
+
+predict(rends, pontos, full.output = TRUE)
+```
+
+Finalmente, assim como todas as outras classes contidas neste pacote, `gradecolina` também possui um
+método de `plot` (em 2d e 3d)
+
+```{r plot_grade}
+plot(rends)
+```
