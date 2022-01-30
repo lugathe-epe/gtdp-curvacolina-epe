@@ -157,7 +157,7 @@ plot.gradecolina <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print =
 
     tipo <- match.arg(tipo)
 
-    if(add_colina) colina <- copy(x$colina$CC) else colina <- data.table(hl = NA, pot = NA, rend = 0)
+    if(add_colina) colina <- copy(x$colina$CC) else colina <- data.table(hl = NA_real_, pot = NA_real_, rend = 0)
 
     grade <- x$grade
 
