@@ -28,9 +28,9 @@ retamindist <- function(arq) {
     colnames(dat) <- c("hl", "pot", "rend")
     dat[, rend := rend * 100]
 
-    indice <- regmatches(arq, regexpr("(_[[:digit:]]{1})", arq))
+    indice <- regmatches(arq, regexpr("(_[[:digit:]]{1})\\.csv$", arq))
 
-    arq_colina <- sub("Curva Colina Processada/.*", "Curva Colina Original", arq)
+    arq_colina <- sub("Processada/.*", "Original", arq)
     arq_colina <- list.files(arq_colina, full.names = TRUE)
 
     if((length(indice) == 0)) {
@@ -43,9 +43,9 @@ retamindist <- function(arq) {
             warning(warn)
         }
 
-        arq_colina <- arq_colina[grep(paste0(indice, "$"), arq_colina)]
     }
 
+    arq_colina <- arq_colina[grep(paste0(indice, "$"), arq_colina)]
     colina <- fread(arq_colina)
     colina <- as.curvacolina(colina)
 
