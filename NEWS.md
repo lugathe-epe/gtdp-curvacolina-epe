@@ -12,6 +12,10 @@
 
 * `geragrade` renomeada como `coordgrade` (#7)
 
+### Minor
+
+* melhora o processamento de argumentos de grade passados para `plot.interpolador`
+
 ## Bug fixes
 
 * `predict.retamindist` adequada para usar argumento `as.gradecolina` (#6)
