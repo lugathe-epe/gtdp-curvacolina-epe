@@ -1,3 +1,22 @@
+# master (dev)
+
+## New features
+
+### Minor
+
+* adicionados testes para funcoes de visualizacao e retrocompat
+* testes de interpolador mais robustos
+* testes de curva colina agora cobrem toda a variacao de comportamento das funcoes
+
+## Bug fixes
+
+* correcao da identificacao de erro em `parsedadoscolina` quando `force = TRUE`. A coacao de colunas 
+  para numerico dava um erro, como desejado, mas um erro nao controlado. O controle foi corrigido
+  para entrar em acao corretamente
+* correcao da identificacao de colina original nas leituras de `retamindist` era falha, so 
+  funcionava em casos simples quando nao havia indice no arquivo de interpolacao antiga. 
+* correcao de erro de execucao em `plot.gradecolina` quando `add_colina = FALSE`
+
 # curvacolina 1.6.1
 
 ## Bug fixes
