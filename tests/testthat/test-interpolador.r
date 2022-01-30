@@ -1,3 +1,10 @@
+test_that("Interpolador sem subclasse", {
+    interp <- structure(NA, class = "interpolador")
+
+    expect_error(getcolina.interpolador(interp))
+    expect_error(predict(interp, 1))
+})
+
 test_that("Modelagem por Triangulacao", {
     interp <- interpolador(colinadummy, "triangulacao")
 
@@ -6,6 +13,10 @@ test_that("Modelagem por Triangulacao", {
     expect_equal(names(interp), c("triangulos", "colina"))
 
     expect_equal(getcolina.triangulacao(interp), colinadummy)
+
+    # PREDICT VAZIO
+    gg <- expand.grid(hl = 1:10, pot = NA)
+    expect_equal(predict(interp, gg), numeric(0))
 
     gg <- coordgrade(colinadummy, 20, 20)
 
@@ -26,6 +37,15 @@ test_that("Modelagem por Triangulacao", {
 })
 
 test_that("Modelagem por Tensor Product", {
+
+    # PASSANDO ARGUMENTOS EXTRAS
+
+    interp <- interpolador(colinadummy, "tensorprod", k = 10)
+    expect_equal(interp$superficie$rank, 100)
+
+    interp <- interpolador(colinadummy, "tensorprod", bs = "cr")
+    expect_equal(sapply(interp$superficie$smooth[[1]]$margin, class), rep("cr.smooth", 2))
+
     interp <- interpolador(colinadummy, "tensorprod")
 
     expect_equal(class(interp), c("tensorprod", "interpolador"))
@@ -33,6 +53,10 @@ test_that("Modelagem por Tensor Product", {
     expect_equal(names(interp), c("superficie", "colina"))
 
     expect_equal(getcolina.tensorprod(interp), colinadummy)
+
+    # PREDICT VAZIO
+    gg <- expand.grid(hl = 1:10, pot = NA)
+    expect_equal(predict(interp, gg), numeric(0))
 
     gg <- coordgrade(colinadummy, 20, 20)
 
@@ -60,6 +84,10 @@ test_that("Modelagem por Thin Plate", {
     expect_equal(names(interp), c("superficie", "colina"))
 
     expect_equal(getcolina.thinplate(interp), colinadummy)
+
+    # PREDICT VAZIO
+    gg <- expand.grid(hl = 1:10, pot = NA)
+    expect_equal(predict(interp, gg), numeric(0))
 
     gg <- coordgrade(colinadummy, 20, 20)
 
