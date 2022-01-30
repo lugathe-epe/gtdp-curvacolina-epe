@@ -1,6 +1,6 @@
 Package: curvacolina
 Title: Interface Para Leitura, Interpolacao E Extrapolacao De Curvas Colina
-Version: 1.6
+Version: 1.6.1
 Authors@R: 
     person(given = "Lucas",
            family = "Khenayfis",

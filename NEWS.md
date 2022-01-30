@@ -1,3 +1,9 @@
+# curvacolina 1.6.1
+
+## Bug fixes
+
+* Corrige erro rebuilding vignettes em mac-os. `rmarkdown` adicionado a lista de vignettebuilders
+
 # curvacolina 1.6
 
 ## New features
