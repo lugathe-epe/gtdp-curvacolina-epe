@@ -1,20 +1,21 @@
-# dev (master)
+# curvacolina 1.6
 
 ## New features
 
+* adicionada uma vignette ao pacote ("curvacolina")
+* foi incluida a funcao `set_grho` que permite a definicao de aceleracao da gravidade e densidade
+  da agua diretamente a um objeto `curvacolina`, sem precisar gerar o objeto mais uma vez
+* adicionada funcao `write.gradecolina` para escrita das grades extraidas
 * `as.curvacolina` agora esta mais robusta, passando por `new_curvacolina`. Tambem foram adicionados
   diversos checks sobre o dado sendo transformado e uma opcao `force` que permite ignorar os checks 
   e coagir o dado passado para o formato `curvacolina`. A funcao tambem possui os argumentos `g` e 
-  `rho` 
-
-* foi incluida a funcao `set_grho` que permite a definicao de aceleracao da gravidade e densidade
-  da agua diretamente a um objeto `curvacolina`, sem precisar gerar o objeto mais uma vez
-
-* `geragrade` renomeada como `coordgrade` (#7)
+  `rho`
 
 ### Minor
 
+* `geragrade` renomeada como `coordgrade` (#7)
 * melhora o processamento de argumentos de grade passados para `plot.interpolador`
+* `predict.gradecolina` agora retorna coluna `inhull` quando `full.output = TRUE`
 
 ## Bug fixes
 
@@ -22,13 +23,6 @@
 * `plot.gradecolina` continha um bud no plot de superfície que gerava um artefato nas quedas mais 
   baixas. Isto era devido ao fato de que `dcast` retém a primeira coluna como a variável RHS da 
   transformação para formato amplo. Esta coluna agora é removida para plotagem
-
-# dev (gradecolina)
-
-## New features
-
-* `predict.gradecolina` agora retorna coluna `inhull` quando `full.output = TRUE`
-* adicionada funcao `write.gradecolina` para escrita das grades extraidas
 
 # curvacolina 1.5
 
