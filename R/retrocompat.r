@@ -87,6 +87,8 @@ getcolina.retamindist <- function(object) object$colina
 
 predict.retamindist <- function(object, pontos, as.gradecolina = FALSE, ...) {
 
+    hl <- pot <- NULL
+
     if(as.gradecolina) {
         out <- new_gradecolina(object$superficie[, list(hl, pot)],
                                object$superficie$rend,
