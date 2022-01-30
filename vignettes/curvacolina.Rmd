@@ -56,6 +56,9 @@ plot(mod_interp)
 coord_grade <- geragrade(colina, byhl = .1, bypot = 1)
 grade <- predict(mod_interp, coord_grade)
 plot(grade)
+
+# Escrita da grade como um csv
+write.gradecolina(grade, "caminho/para/escrita/grade.csv")
 ```
 
 Nas seções a seguir, cada parte do exemplo será descrita em maiores detalhes.
@@ -200,5 +203,80 @@ Alternativamente, é possível gerar um plot da colina projetada no plano queda-
 desenhos)
 
 ```{r plotcolina2d, fig.width=7, fig.height=7}
-plot(colina, "2d")
+plot(colina, tipo = "2d")
 ```
+
+## Modelagem
+
+O pacote fornece a função `interpolador()` para modelagem da curva colina. Atualmente há três 
+metodologias implementadas, selecionadas através do argumento `metodo`:
+
+* Triangulated Irregular Networks (`metodo = "triangulacao"`)
+* Thin Plate Splines (`metodo = "thinplate"`)
+* Tensor Product P-Splines (`metodo = "tensorprod"`)
+
+O nome `interpolador()` reflete o fato de que o objetivo principal é extrair rendimentos de uma
+colina, porém a extrapolação destes também é de interesse. De fato, dois dos três modelos (thin 
+plates e tensor product) são capazes de extrapolação da amostra naturalmente. Esta vignette não se 
+ocupará de detalhar cada modelo individualmente, estas informações podem ser obtidas em 
+`?interpolador`.
+
+O ajuste de um interpolador é executado através de
+
+```{r interpolador}
+# colinadummy e uma colina incluida no pacote para exemplificacao
+mod <- interpolador(colinadummy, metodo = "thinplate")
+```
+
+O objeto retornado é uma instância da classe `interpolador`, com subclasse correspondente ao método
+selecionado (neste caso, `thinplate`)
+
+```{r}
+class(mod)
+```
+
+Objetos `interpolador` são listas de dois elementos: o primeiro corresponde ao modelo ajustado e o 
+segundo à colina modelada. Com o modelo ajustado, podemos vizualizar o resultado utilizando o método
+de `plot` da classe
+
+```{r plot_interp, eval=FALSE}
+plot(mod)
+```
+
+```{r, echo=FALSE, fig.width=8, fig.height=8}
+p <- plot(mod, print = FALSE)
+p
+```
+
+Assim como objetos `curvacolina`, objetos `interpolador` também podem ser plotados em 2d com o 
+argumento `tipo = "2d"`. 
+
+A partir do ajuste de interpoladores, é possível amostrar o modelo em pontos específicos. De fato, 
+um `interpolador` é implementado no pacote como um modelo tal qual `lm`, de modo que a amostragem é 
+realizada através do método `predict.interpolador`
+
+```{r pred_interp}
+# primeiro, definem-se os pontos onde se desejam amostrar os rendimentos
+pontos <- coordgrade(colinadummy, byhl = 1, bypot = 1, expande = c(.05, .05))
+
+# amostragem da superficie em 'pontos'
+rends <- predict(mod, pontos)
+head(rends)
+```
+
+A função `coodgrade` é uma facilitadora para definição de coordenadas em respeito à uma curva colina
+específica. Existe uma variedade de formas pelas quais se especificar o posicionamento das 
+segmentações de queda e potência, detalhadas em `?coordgrade`.
+
+No exemplo acima a amostragem retornou apenas os valores de rendimento na superfície. Para extrair 
+uma grade de fato, deve ser fornecido o argumento `as.gradecolina = TRUE`
+
+```{r pred_grade}
+rends <- predict(mod, pontos, as.gradecolina = TRUE)
+rends
+```
+
+Quando o argmento `as.gradecolina = TRUE`, o objeto retornado é uma instância da classe 
+`gradecolina`. Estes objetos consistem de dois elementos: a grade regular extraída da superfície em
+`mod` e a colina original que essa aproxima. Adicionalmente contém os atributos `nhl` e `npot` 
+representando o número de divisões de queda e potência na grade, respectivamente.
