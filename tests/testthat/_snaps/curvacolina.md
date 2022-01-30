@@ -210,6 +210,44 @@
       "value": [40, 50, 60, 70, 76, 78, 80, 82, 84, 86, 88, 90, 91, 92, 93, 93.5, 94, 94.5, 95, 95.5, 95.78]
     }
 
+# Leitura de processo iterativo com 1 colina
+
+    {
+      "type": "double",
+      "attributes": {},
+      "value": [40, 50, 60, 70, 76, 78, 80, 82, 84, 86, 88, 90, 91, 92, 93, 93.5, 94, 94.5, 95, 95.5, 95.78]
+    }
+
+---
+
+    {
+      "type": "double",
+      "attributes": {
+        "dim": {
+          "type": "integer",
+          "attributes": {},
+          "value": [6, 4]
+        },
+        "dimnames": {
+          "type": "list",
+          "attributes": {},
+          "value": [
+            {
+              "type": "character",
+              "attributes": {},
+              "value": ["Min.", "1st Qu.", "Median", "Mean", "3rd Qu.", "Max."]
+            },
+            {
+              "type": "character",
+              "attributes": {},
+              "value": ["hl", "pot", "vaz", "rend"]
+            }
+          ]
+        }
+      },
+      "value": [34.02108687, 42.19738279, 48.92162336, 48.50145585, 55.08523903, 61.21128591, 17.10754967, 82.66555405, 124.37537384, 122.1010839, 158.94749832, 229.8928833, 119.31506868, 215.50135856, 303.01305044, 288.04855838, 351.10011974, 450.56604022, 40, 82, 90, 86.28960805, 93.5, 95.78]
+    }
+
 # Leitura de processo iterativo (CC Original)
 
     {
@@ -287,6 +325,82 @@
     }
 
 # Leitura de processo iterativo (CC Alterada)
+
+    {
+      "type": "double",
+      "attributes": {},
+      "value": [40, 50, 60, 70, 76, 78, 80, 82, 84, 86, 88, 90, 91, 92, 93, 93.5, 94, 94.5, 95, 95.5, 95.78]
+    }
+
+---
+
+    {
+      "type": "double",
+      "attributes": {
+        "dim": {
+          "type": "integer",
+          "attributes": {},
+          "value": [6, 4]
+        },
+        "dimnames": {
+          "type": "list",
+          "attributes": {},
+          "value": [
+            {
+              "type": "character",
+              "attributes": {},
+              "value": ["Min.", "1st Qu.", "Median", "Mean", "3rd Qu.", "Max."]
+            },
+            {
+              "type": "character",
+              "attributes": {},
+              "value": ["hl", "pot", "vaz", "rend"]
+            }
+          ]
+        }
+      },
+      "value": [34.02108687, 42.19738279, 48.92162336, 48.50145585, 55.08523903, 61.21128591, 17.10754967, 82.66555405, 124.37537384, 122.1010839, 158.94749832, 229.8928833, 119.31506868, 215.50135856, 303.01305044, 288.04855838, 351.10011974, 450.56604022, 40, 82, 90, 86.28960805, 93.5, 95.78]
+    }
+
+---
+
+    {
+      "type": "double",
+      "attributes": {},
+      "value": [10, 20, 30, 40, 50, 60, 70, 74, 76, 78, 80, 82, 84, 86, 88, 89, 90, 91, 91.5, 92, 92.5, 93]
+    }
+
+---
+
+    {
+      "type": "double",
+      "attributes": {
+        "dim": {
+          "type": "integer",
+          "attributes": {},
+          "value": [6, 4]
+        },
+        "dimnames": {
+          "type": "list",
+          "attributes": {},
+          "value": [
+            {
+              "type": "character",
+              "attributes": {},
+              "value": ["Min.", "1st Qu.", "Median", "Mean", "3rd Qu.", "Max."]
+            },
+            {
+              "type": "character",
+              "attributes": {},
+              "value": ["hl", "pot", "vaz", "rend"]
+            }
+          ]
+        }
+      },
+      "value": [34.50076825, 39.09044891, 42.91908389, 42.77829384, 46.55940315, 50.30142312, 3.00055623, 53.82693481, 98.90673828, 88.28732951, 123.55450439, 168.50483704, 80.03007538, 174.10224438, 282.30728519, 251.84485138, 324.83286247, 420.61260243, 10, 76, 86, 77.81847042, 90, 93]
+    }
+
+# Leitura de processo iterativo (CC Alterada) montada errada
 
     {
       "type": "double",

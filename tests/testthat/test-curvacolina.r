@@ -17,6 +17,13 @@ test_that("Leitura de colinas pura", {
     expect_true(is.na(attr(colina, "g")))
 
     expect_snapshot_value(attr(colina, "rends"), style = "json2")
+
+    # COLINA VAZIA
+
+    arq <- system.file("extratestdata/colina_vazia.xlsx", package = "curvacolina")
+    colina <- learqcolina(arq)
+
+    expect_true(is.null(colina))
 })
 
 test_that("Leitura de colinas fornecendo rho e g", {
@@ -58,6 +65,32 @@ test_that("Colina dummy", {
     expect_true(is.na(attr(colina, "g")))
 
     expect_snapshot_value(attr(colina, "rends"), style = "json2")
+})
+
+test_that("Leitura de processo iterativo com 1 colina", {
+    arq <- system.file("extratestdata/procit_cc_alterada_1colina.xlsx", package = "curvacolina")
+    colina <- learqprocit(arq)
+
+    expect_equal(class(colina), "curvacolina")
+    expect_equal(colnames(colina$CC), c("hl", "pot", "vaz", "rend"))
+
+    k_ncurvas <- 21
+    k_max <- 95.78
+    k_rho <- 997.026
+    k_g   <- 9.7877
+
+    expect_snapshot_value(attr(colina, "rends"), style = "json2")
+
+    expect_equal(attr(colina, "ncurvas"), k_ncurvas)
+    expect_equal(attr(colina, "max"), k_max)
+    expect_equal(attr(colina, "rho"), k_rho)
+    expect_equal(attr(colina, "g"), k_g)
+
+    expect_true(!is.na(attr(colina, "rho")))
+    expect_true(!is.na(attr(colina, "g")))
+
+    summ <- sapply(colina$CC, summary)
+    expect_snapshot_value(summ, style = "json2")
 })
 
 test_that("Leitura de processo iterativo (CC Original)", {
@@ -122,6 +155,37 @@ test_that("Leitura de processo iterativo (CC Alterada)", {
     }
 })
 
+test_that("Leitura de processo iterativo (CC Alterada) montada errada", {
+    arq <- system.file("extratestdata/procit_alterada_orig.xlsx", package = "curvacolina")
+    expect_warning(colina <- learqprocit(arq))
+
+    expect_true(is.list(colina))
+    expect_equal(length(colina), 2)
+    expect_equal(names(colina), paste0("colina_", 1:2))
+
+    expect_equal(unname(sapply(colina, class)), rep("curvacolina", 2))
+
+    v_ncurvas <- c(21, 22)
+    v_max <- list(95.78, NA)
+    v_rho <- rep(997.026, 2)
+    v_g   <- rep(9.7877, 2)
+
+    for(i in seq(2)) {
+        expect_snapshot_value(attr(colina[[i]], "rends"), style = "json2")
+
+        expect_equal(attr(colina[[i]], "ncurvas"), v_ncurvas[i])
+        expect_equal(attr(colina[[i]], "max"), v_max[[i]])
+        expect_equal(attr(colina[[i]], "rho"), v_rho[i])
+        expect_equal(attr(colina[[i]], "g"), v_g[i])
+
+        expect_true(!is.na(attr(colina[[i]], "rho")))
+        expect_true(!is.na(attr(colina[[i]], "g")))
+
+        summ <- sapply(colina[[i]]$CC, summary)
+        expect_snapshot_value(summ, style = "json2")
+    }
+})
+
 test_that("as.curvacolina", {
     cc <- colinadummy$CC
 
@@ -139,13 +203,17 @@ test_that("as.curvacolina", {
     cc.6 <- copy(cc)
     cc.6[, rend := rep("a", .N)]
 
+    # TESTA ERRO
+
+    expect_error(as.curvacolina(1:100))
+
     # SEM FORCE // SEM g E rho
 
     xx1 <- as.curvacolina(cc)
 
     expect_error(as.curvacolina(cc.1)) # rendimentos decimais
     expect_error(as.curvacolina(cc.2)) # coluna nao numerica
-    expect_error(as.curvacolina(cc.2)) # faltando nomes de colunas
+    expect_error(as.curvacolina(cc.4)) # faltando nomes de colunas
 
     expect_equal(class(xx1), "curvacolina")
     expect_equal(colnames(xx1$CC), c("hl", "pot", "vaz", "rend"))
@@ -207,6 +275,8 @@ test_that("as.curvacolina", {
 
 test_that("set_grho", {
     cc <- set_grho(colinadummy, 9.81, 1000)
+
+    expect_error(set_grho(1:100, 10, 1000))
 
     expect_equal(class(cc), "curvacolina")
     expect_equal(colnames(cc$CC), c("hl", "pot", "vaz", "rend"))
