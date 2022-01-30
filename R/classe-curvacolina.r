@@ -250,10 +250,11 @@ parsedadocolina <- function(x, force) {
                 v <- x[[i]]
                 match <- regexpr("[[:digit:]]+(\\.[[:digit:]]+)?", v)
                 match <- regmatches(v, match)
+
+                if(length(match) == 0) stop("Nao foi possivel converter rendimentos para numerico")
+
                 x[[i]] <- as.numeric(match)
             }
-
-            if(any(is.na(sapply(x, is.na)))) stop("Nao foi possivel converter rendimentos para numerico")
 
             warning("Transformando colunas para numerico")
         }
