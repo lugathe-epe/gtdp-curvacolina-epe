@@ -166,7 +166,7 @@ plot.gradecolina <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print =
             add_markers(x = colina$hl, y = colina$pot, z = colina$rend,
                 type = "scatter3d", name = "colina") %>%
             add_surface(x = unique(grade$hl), y = unique(grade$pot),
-                z = t(data.matrix(dcast(grade, hl ~ pot, value.var = "rend"))),
+                z = t(data.matrix(dcast(grade, hl ~ pot, value.var = "rend"))[, -1]),
                 name = "interpolacao") %>%
             layout(scene = list(
                 xaxis = list(title = list(text = "Queda L\U00EDquida (m)")),

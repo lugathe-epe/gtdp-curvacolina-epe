@@ -19,6 +19,9 @@
 ## Bug fixes
 
 * `predict.retamindist` adequada para usar argumento `as.gradecolina` (#6)
+* `plot.gradecolina` continha um bud no plot de superfície que gerava um artefato nas quedas mais 
+  baixas. Isto era devido ao fato de que `dcast` retém a primeira coluna como a variável RHS da 
+  transformação para formato amplo. Esta coluna agora é removida para plotagem
 
 # dev (gradecolina)
 
