@@ -1,4 +1,4 @@
-# master (dev)
+# curvacolina 1.6.2
 
 ## New features
 
