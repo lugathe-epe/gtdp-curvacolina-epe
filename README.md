@@ -18,8 +18,8 @@ Este pacote ainda nao se encontra disponibilizado no CRAN, de modo que
 deve ser instalado diretamente a partir do repositorio utilizando:
 
 ``` r
-# Caso a biblioteca devtools nao esteja instalada, execute install.packages("devtools") primeiro
-devtools::install_github("lkhenayfis/gtdp-curvacolina")
+# Caso a biblioteca remotes nao esteja instalada, execute install.packages("remotes") primeiro
+remotes::install_github("lkhenayfis/gtdp-curvacolina", build_vignettes = TRUE)
 ```
 
 ## Exemplo de uso
