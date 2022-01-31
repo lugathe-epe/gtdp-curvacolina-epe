@@ -25,9 +25,9 @@ remotes::install_github("lkhenayfis/gtdp-curvacolina", build_vignettes = TRUE)
 ## Exemplo de uso
 
 Abaixo esta um trecho de codigo exemplificando de forma simplificada o
-uso das funcionalidades contidas neste pacote. Mais informacoes acerca
-das funcoes utilizadas estao disponiveis nas respectivas paginas de
-ajuda.
+uso das funcionalidades contidas neste pacote. Um manual de uso pode ser
+acessado através de `vignette("curvacolina")` e mais detalhes acerca das
+funcoes se encontram em suas respectivas paginas de ajuda.
 
 ``` r
 library(curvacolina)
