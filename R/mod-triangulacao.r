@@ -12,10 +12,10 @@
 #' 
 #' @export
 
-triangulacao <- function(colina) {
+triangulacao <- function(colina, tessfunc = tridelaunay) {
     hl <- pot <- NULL
 
-    tri <- geometry::delaunayn(colina$CC[, list(hl, pot)])
+    tri <- tessfunc(colina)
     new_triangulacao(tri, colina)
 }
 
@@ -37,6 +37,70 @@ print.triangulacao <- function(x, ...) {
     cat("-----\n")
     cat("* Curva colina \n")
     summary(x$colina)
+}
+
+# FUNCOES DE TRIANGULACAO --------------------------------------------------------------------------
+
+#' Triangulacao Delauney
+#' 
+#' Realiza triangulacao do espaco pelo metodo de Delauney via \code{geometry::delaunayn}
+#' 
+#' @param colina objeto \code{curvacolina} contendo curva a tesselar
+#' 
+#' @return matriz com tres colunas indicando, em cada linha, o indice em \code{colina$CC} dos pontos
+#'     correspondentes aos vertices de cada triangulo gerado
+
+tridelaunay <- function(colina) {
+    hl <- pot <- NULL
+    geometry::delaunayn(colina$CC[, list(hl, pot)])
+}
+
+#' Triangulacao Radial
+#' 
+#' Define os triangulos sempre usando o maximo como um dos vertices
+#' 
+#' Este e um metodo de triangulacao especifico para uso em torno do maximo. Cada triangulo e 
+#' definido usando sempre o maximo como um dos vertices. Os dois vertices restantes sao pontos 
+#' adjacentes entre si na curva de rendimento imediatamente inferior ao maximo, ou seja, o espaco 
+#' entre ultima curva e ponto maximo e fatiado em triangulos com arestas radiais, para todos os 
+#' pontos da ultima curva.
+#' 
+#' @param dat um data.frame ou data.table contendo queda liquida, potencia e rendimento
+#' 
+#' @return matriz de tres colunas indicando o indicie em \code{dat} dos pontos correspondentes aos
+#'     vertices de cada triangulo. Cada linha corresponde a um triangulo
+
+triradial <- function(colina) {
+
+    tri <- tridelaunay(colina)
+
+    # identifica triangulos da ultima curva de rend para dentro
+    ultrends <- tail(attr(colina, "rends"), 2)
+    innertri <- sapply(seq(ncol(tri)), function(i) colina$CC$rend[tri[, i]] %in% ultrends)
+    innertri <- rowMeans(innertri) == 1
+    tri <- tri[!innertri, ]
+
+    dat <- copy(colina$CC)
+
+    # centraliza o dado em torno do maximo -- isso e necessario pra que o angulo relativo a cada 
+    # ponto seja o angulo entre o eixo x e a linha que passa do maximo a cada ponto da ultim curva
+    dat$hl  <- dat$hl - dat[rend == ultrends[2], hl]
+    dat$pot <- dat$pot - dat[rend == ultrends[2], pot]
+
+    dat <- dat[rend %in% ultrends[1]]
+    dat[, ang := atan2(pot, hl)]
+
+    angord <- order(dat$ang)
+
+    N1 <- nrow(dat)
+    N2 <- nrow(colina$CC[!(rend %in% ultrends)])
+    N3 <- nrow(colina$CC)
+
+    out <- cbind(angord, c(angord[-1], angord[1])) + N2
+    out <- cbind(out, N3)
+    out <- rbind(tri, out)
+
+    return(out)
 }
 
 # METODOS ------------------------------------------------------------------------------------------
