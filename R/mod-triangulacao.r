@@ -12,7 +12,7 @@
 #' 
 #' @export
 
-triangulacao <- function(colina, tessfunc = tridelaunay) {
+triangulacao <- function(colina, tessfunc = tessdelaunay) {
     hl <- pot <- NULL
 
     tri <- tessfunc(colina)
@@ -50,7 +50,7 @@ print.triangulacao <- function(x, ...) {
 #' @return matriz com tres colunas indicando, em cada linha, o indice em \code{colina$CC} dos pontos
 #'     correspondentes aos vertices de cada triangulo gerado
 
-tridelaunay <- function(colina) {
+tessdelaunay <- function(colina) {
     hl <- pot <- NULL
     geometry::delaunayn(colina$CC[, list(hl, pot)])
 }
@@ -70,9 +70,9 @@ tridelaunay <- function(colina) {
 #' @return matriz de tres colunas indicando o indicie em \code{dat} dos pontos correspondentes aos
 #'     vertices de cada triangulo. Cada linha corresponde a um triangulo
 
-triradial <- function(colina) {
+tessradial <- function(colina) {
 
-    tri <- tridelaunay(colina)
+    tri <- tessdelaunay(colina)
 
     # identifica triangulos da ultima curva de rend para dentro
     ultrends <- tail(attr(colina, "rends"), 2)

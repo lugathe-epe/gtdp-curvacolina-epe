@@ -4,7 +4,7 @@
 \alias{triangulacao}
 \title{Triangulacao De \code{curvacolina}}
 \usage{
-triangulacao(colina, tessfunc = tridelaunay)
+triangulacao(colina, tessfunc = tessdelaunay)
 }
 \arguments{
 \item{colina}{objeto \code{curvacolina} retornado pelas funcoes de leitura}

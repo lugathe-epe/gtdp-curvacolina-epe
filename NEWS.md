@@ -1,3 +1,17 @@
+# newtri
+
+## New features
+
+* Adicionada as funcoes `tessdelaunay` e `tessradial` para realizacao da tesselacao dos dados na
+  interpolacao por triangulacao. `tessradial` implementa um algoritmo custom que garante o uso do 
+  ponto maximo em todos os triangulos internos a curva de maior rendimento
+* Conjuntamente com essas funcoes, `triangulacao` agora recebe o argumento `tessfunc`, atraves do
+  qual pode ser informada qual funcao de tesselacao usar
+
+### Minor
+
+* Objetos `curvacolina` agora possuem um metodo de subset por expressoes de data.table
+
 # curvacolina 1.6.2
 
 ## New features
