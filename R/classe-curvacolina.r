@@ -186,6 +186,22 @@ summary.curvacolina <- function(object, ...) {
     cat("Faixa de rendimentos: ", range(attr(object, "rends")), "\n")
 }
 
+#' @export
+
+`[.curvacolina` <- function(x, i, ...) {
+
+    i <- substitute(i)
+    i <- eval(i, envir = x$CC)
+    CC <- x$CC[i]
+
+    x$CC <- CC
+    attr(x, "rends")   <- unique(CC$rend)
+    attr(x, "max")     <- max(CC$rend)
+    attr(x, "ncurvas") <- length(unique(CC$rend))
+
+    return(x)
+}
+
 #' Escrita De \code{curvacolina}
 #' 
 #' Metodo para facilitacao de escrita de \code{curvacolina} lida pelas funcoes do pacote
