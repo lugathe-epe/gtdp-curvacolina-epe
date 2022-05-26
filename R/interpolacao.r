@@ -55,17 +55,32 @@
 #' 
 #' @export
 
-interpolador <- function(colina, metodo = c("triangulacao", "thinplate", "tensorprod"), ...) {
+interpolador <- function(colina, metodo, quebra, ...) {
 
-    metodo <- match.arg(metodo)
+    if(missing(quebra)) {
+        interp_func <- match.call()
+        interp_func[[1]] <- as.name(metodo)
+        interp_func$metodo <- NULL
 
-    interp_func <- match.call()
-    interp_func[[1]] <- as.name(metodo)
-    interp_func$metodo <- NULL
+        interp <- eval(interp_func, envir = parent.frame())
 
-    interp <- eval(interp_func, envir = parent.frame())
+        return(interp)
+    } else {
 
-    return(interp)
+        if(length(metodo) != 2) stop("Quando 'quebra' e fornecido, 'metodos' deve ter tamanho 2")
+
+        colinas <- list(colina[rend <= quebra], colina[rend >= quebra])
+
+        interp <- lapply(metodo, function(m) {
+            interp_func <- match.call()
+            interp_func[[1]] <- as.name(m)
+            interp_func$metodo <- NULL
+
+            interp <- eval(interp_func, envir = parent.frame())
+        })
+
+        new_interpoladorcomp(interp, quebra)
+    }
 }
 
 # METODOS ------------------------------------------------------------------------------------------

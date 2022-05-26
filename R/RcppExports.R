@@ -26,6 +26,10 @@
 #' 
 #' @return vetor de valores interpolados
 INTERPBILIN <- function(hlGrade, potGrade, rendGrade, hlPred, potPred) {
-    .Call('_curvacolina_INTERPBILIN', PACKAGE = 'curvacolina', hlGrade, potGrade, rendGrade, hlPred, potPred)
+    .Call(`_curvacolina_INTERPBILIN`, hlGrade, potGrade, rendGrade, hlPred, potPred)
+}
+
+PTINPOLY <- function(points, poly) {
+    .Call(`_curvacolina_PTINPOLY`, points, poly)
 }
 

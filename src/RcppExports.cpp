@@ -26,9 +26,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// PTINPOLY
+arma::Col<unsigned int> PTINPOLY(arma::mat& points, arma::mat& poly);
+RcppExport SEXP _curvacolina_PTINPOLY(SEXP pointsSEXP, SEXP polySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat& >::type points(pointsSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type poly(polySEXP);
+    rcpp_result_gen = Rcpp::wrap(PTINPOLY(points, poly));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_curvacolina_INTERPBILIN", (DL_FUNC) &_curvacolina_INTERPBILIN, 5},
+    {"_curvacolina_PTINPOLY", (DL_FUNC) &_curvacolina_PTINPOLY, 2},
     {NULL, NULL, 0}
 };
 
