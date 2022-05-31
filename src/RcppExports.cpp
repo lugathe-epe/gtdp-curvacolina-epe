@@ -27,7 +27,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // PTINPOLY
-arma::Col<unsigned int> PTINPOLY(arma::mat& points, arma::mat& poly);
+arma::uvec PTINPOLY(arma::mat& points, arma::mat& poly);
 RcppExport SEXP _curvacolina_PTINPOLY(SEXP pointsSEXP, SEXP polySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

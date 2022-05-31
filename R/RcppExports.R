@@ -29,6 +29,19 @@ INTERPBILIN <- function(hlGrade, potGrade, rendGrade, hlPred, potPred) {
     .Call(`_curvacolina_INTERPBILIN`, hlGrade, potGrade, rendGrade, hlPred, potPred)
 }
 
+#' Implementacao Do Algoritmo Raycasting
+#' 
+#' Identifica quais observacoes em \code{pontos} estao dentro do poligono \code{poly}
+#' 
+#' Esta funcao assume que linhas de \code{poly} representam vertices adjacentes. Nao importa onde
+#' o primeiro vertice esta, contanto que cada nova linha indique o proximo vertice do poligono em
+#' um mesmo sentido de deslocamento. Sera considerado que o primeiro vertice e o adjacente ao 
+#' ultimo no sentido de deslocamento.
+#' 
+#' @param points matriz contendo as coordenadas dos pontos a testar
+#' @param poly matriz contendo as coordenadas dos vertices do poligono. Ver Detalhes
+#' 
+#' @return vetor coluna de 0s e 1s indicando quais pontos estao dentro do poligono
 PTINPOLY <- function(points, poly) {
     .Call(`_curvacolina_PTINPOLY`, points, poly)
 }

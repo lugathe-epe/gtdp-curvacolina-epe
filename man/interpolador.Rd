@@ -4,11 +4,7 @@
 \alias{interpolador}
 \title{Modelo Para Interpolacao De Curva Colina}
 \usage{
-interpolador(
-  colina,
-  metodo = c("triangulacao", "thinplate", "tensorprod"),
-  ...
-)
+interpolador(colina, metodo, quebra, ...)
 }
 \arguments{
 \item{colina}{objeto da classe \code{curvacolina} (retornado pelas funcoes de leitura)}
