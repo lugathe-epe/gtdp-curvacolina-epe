@@ -286,3 +286,33 @@ test_that("set_grho", {
     expect_equal(attr(cc, "g"), 9.81)
     expect_equal(attr(cc, "rho"), 1000)
 })
+
+test_that("Subset de curvacolina", {
+
+    cc1 <- colinadummy[rend >= 95]
+
+    expect_equal(class(cc1), "curvacolina")
+    expect_equal(colnames(cc1$CC), c("hl", "pot", "vaz", "rend"))
+
+    diff <- cc1$CC[, .SD, .SDcols = c(1, 2, 4)] - colinadummy$CC[rend >= 95, .SD, .SDcols = c(1, 2, 4)]
+    expect_true(all(diff == 0))
+
+    expect_equal(attr(cc1, "ncurvas"), 3)
+    expect_equal(attr(cc1, "max"), 95.78)
+    expect_true(is.na(attr(cc1, "rho")))
+    expect_true(is.na(attr(cc1, "g")))
+
+    cc2 <- set_grho(colinadummy, 9.81, 1000)[rend >= 95]
+
+    expect_equal(attr(cc2, "ncurvas"), 3)
+    expect_equal(attr(cc2, "max"), 95.78)
+    expect_equal(attr(cc2, "rho"), 1000)
+    expect_equal(attr(cc2, "g"), 9.81)
+
+    cc3 <- colinadummy[rend <= 95]
+
+    expect_equal(attr(cc3, "ncurvas"), 19)
+    expect_true(is.na(attr(cc3, "max")))
+    expect_true(is.na(attr(cc3, "rho")))
+    expect_true(is.na(attr(cc3, "g")))
+})
