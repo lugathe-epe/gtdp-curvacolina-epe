@@ -71,16 +71,26 @@ interpolador <- function(colina, metodo, quebra, ...) {
 
         colinas <- list(colina[rend <= quebra], colina[rend >= quebra])
 
-        interp <- lapply(metodo, function(m) {
-            interp_func <- match.call()
+        interp_func <- match.call()
+        interp <- mapply(metodo, colinas, FUN = function(m, c) {
             interp_func[[1]] <- as.name(m)
+            interp_func$colina <- c
             interp_func$metodo <- NULL
 
-            interp <- eval(interp_func, envir = parent.frame())
-        })
+            eval(interp_func, envir = parent.frame())
+        }, SIMPLIFY = FALSE)
 
-        new_interpoladorcomp(interp, quebra)
+        new_interpoladorM(interp, quebra)
     }
+}
+
+new_interpoladorM <- function(modelos, quebra) {
+    obj <- list(superficies = modelos)
+
+    class(obj) <- "interpoladorM"
+    attr(obj, "quebra") <- quebra
+
+    return(obj)
 }
 
 # METODOS ------------------------------------------------------------------------------------------
