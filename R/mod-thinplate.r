@@ -9,6 +9,8 @@
 #' @param colina objeto \code{curvacolina} retornado pelas funcoes de leitura
 #' @param taxa_reducao inteiro indicando reducao do tamanho do historico em \code{taxa_reducao}
 #'     vezes. Ver Detalhes
+#' @param ... nao possui funcao, so existe para compatibilizacao com a chamada generica de 
+#'     \code{\link{interpolacao}}
 #' 
 #' @return objeto da classe \code{thinplate} contendo a suavizacao da curva colina
 #' 
@@ -16,7 +18,7 @@
 #' 
 #' @export
 
-thinplate <- function(colina, taxa_reducao = 1) {
+thinplate <- function(colina, taxa_reducao = 1, ...) {
 
     hl <- pot <- rend <- NULL
 

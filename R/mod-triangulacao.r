@@ -7,12 +7,15 @@
 #' Esta funcao nao deve ser chamada pelo usuario diretamente na maioria dos casos
 #' 
 #' @param colina objeto \code{curvacolina} retornado pelas funcoes de leitura
+#' @param tessfunc funcao pela qual executar a tesselacao do espaco. Ver Detalhes
+#' @param ... nao possui funcao, so existe para compatibilizacao com a chamada generica de 
+#'     \code{\link{interpolacao}}
 #' 
 #' @return objeto da classe \code{triangulacao} contendo a tesselacao da curva colina
 #' 
 #' @export
 
-triangulacao <- function(colina, tessfunc = tessdelaunay) {
+triangulacao <- function(colina, tessfunc = tessdelaunay, ...) {
     hl <- pot <- NULL
 
     tri <- tessfunc(colina)

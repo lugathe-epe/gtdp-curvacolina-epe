@@ -4,10 +4,15 @@
 \alias{triangulacao}
 \title{Triangulacao De \code{curvacolina}}
 \usage{
-triangulacao(colina, tessfunc = tessdelaunay)
+triangulacao(colina, tessfunc = tessdelaunay, ...)
 }
 \arguments{
 \item{colina}{objeto \code{curvacolina} retornado pelas funcoes de leitura}
+
+\item{tessfunc}{funcao pela qual executar a tesselacao do espaco. Ver Detalhes}
+
+\item{...}{nao possui funcao, so existe para compatibilizacao com a chamada generica de
+\code{\link{interpolacao}}}
 }
 \value{
 objeto da classe \code{triangulacao} contendo a tesselacao da curva colina

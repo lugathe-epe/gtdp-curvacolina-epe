@@ -4,13 +4,16 @@
 \alias{thinplate}
 \title{Suavizacao De \code{curvacolina} Thin Plate Regression Splines}
 \usage{
-thinplate(colina, taxa_reducao = 1)
+thinplate(colina, taxa_reducao = 1, ...)
 }
 \arguments{
 \item{colina}{objeto \code{curvacolina} retornado pelas funcoes de leitura}
 
 \item{taxa_reducao}{inteiro indicando reducao do tamanho do historico em \code{taxa_reducao}
 vezes. Ver Detalhes}
+
+\item{...}{nao possui funcao, so existe para compatibilizacao com a chamada generica de
+\code{\link{interpolacao}}}
 }
 \value{
 objeto da classe \code{thinplate} contendo a suavizacao da curva colina
