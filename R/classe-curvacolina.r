@@ -67,14 +67,17 @@ learqcolina <- function(arq, aba = 1, g, rho) {
         col2 <- col1 + 1
 
         rend <- plan[1, col1]
+        rend <- regmatches(rend, regexpr("[[:digit:]]+(\\.[[:digit:]]+)?", rend))
+        rend <- as.numeric(rend)
 
         curva <- plan[, col1:col2]
         curva <- curva[complete.cases(curva), ]
         curva[] <- lapply(curva, as.numeric)
         colnames(curva) <- c("hl", "pot")
 
-        list(rend, curva)
+        cbind(rend = rend, curva)
     })
+    curvas <- do.call(rbind, curvas)
 
     new_curvacolina(curvas, g, rho)
 }
@@ -132,18 +135,14 @@ new_curvacolina <- function(curvas, g, rho) {
     if(missing(rho)) rho <- NA
     if(missing(g)) g <- NA
 
-    rends <- lapply(curvas, "[[", 1)
-    rends <- sapply(rends, function(x) as.numeric(regmatches(x, regexpr("[[:digit:]]+(\\.[[:digit:]]+)?", x))))
+    setDT(curvas)
 
-    curvas <- lapply(curvas, "[[", 2)
+    rends <- curvas[, unique(rend)]
 
-    colina <- mapply(rends, curvas, FUN = function(r, c) cbind(c, rend = r), SIMPLIFY = FALSE)
-    colina <- do.call(rbind, colina)
-    colina <- as.data.table(colina)
-    colina[, vaz := pot / (hl * rend / 100 * rho * g) * 1e6]
-    setcolorder(colina, c("hl", "pot", "vaz", "rend"))
+    curvas[, vaz := pot / (hl * rend / 100 * rho * g) * 1e6]
+    setcolorder(curvas, c("hl", "pot", "vaz", "rend"))
 
-    colina <- list(CC = colina)
+    colina <- list(CC = curvas)
 
     temmax <- colina$CC[rend == max(rend), .N == 1]
 
@@ -191,13 +190,10 @@ summary.curvacolina <- function(object, ...) {
 `[.curvacolina` <- function(x, i, ...) {
 
     i <- substitute(i)
-    i <- eval(i, envir = x$CC)
+    i <- eval(i, envir = x$CC, enclos = parent.frame())
     CC <- x$CC[i]
 
-    x$CC <- CC
-    attr(x, "rends")   <- unique(CC$rend)
-    attr(x, "max")     <- max(CC$rend)
-    attr(x, "ncurvas") <- length(unique(CC$rend))
+    x <- as.curvacolina(CC, attr(x, "g"), attr(x, "rho"))
 
     return(x)
 }
@@ -355,9 +351,7 @@ as.curvacolina <- function(x, g = NA, rho = NA, force = FALSE) {
     hl <- pot <- rend <- NULL
 
     x <- parsedadocolina(x, force)
-
     x <- as.data.table(x)
-    x <- mapply(split(x, x$rend), unique(x$rend), FUN = function(c, r) list(r, c[, 1:2]), SIMPLIFY = FALSE)
 
     new_curvacolina(x, g, rho)
 }
