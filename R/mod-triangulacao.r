@@ -84,16 +84,10 @@ tessradial <- function(colina) {
     tri <- tri[!innertri, ]
 
     dat <- copy(colina$CC)
-
-    # centraliza o dado em torno do maximo -- isso e necessario pra que o angulo relativo a cada 
-    # ponto seja o angulo entre o eixo x e a linha que passa do maximo a cada ponto da ultim curva
-    dat$hl  <- dat$hl - dat[rend == ultrends[2], hl]
-    dat$pot <- dat$pot - dat[rend == ultrends[2], pot]
-
-    dat <- dat[rend %in% ultrends[1]]
-    dat[, ang := atan2(pot, hl)]
-
-    angord <- order(dat$ang)
+    chl  <- dat[rend == ultrends[2]]$hl
+    cpot <- dat[rend == ultrends[2]]$pot
+    dat <- dat[rend == ultrends[1]]
+    angord <- orderpoly(dat, chl, cpot)
 
     N1 <- nrow(dat)
     N2 <- nrow(colina$CC[!(rend %in% ultrends)])
