@@ -84,15 +84,6 @@ interpolador <- function(colina, metodo, quebra, ...) {
     }
 }
 
-new_interpoladorM <- function(modelos, quebra) {
-    obj <- list(superficies = modelos)
-
-    class(obj) <- "interpoladorM"
-    attr(obj, "quebra") <- quebra
-
-    return(obj)
-}
-
 # METODOS ------------------------------------------------------------------------------------------
 
 #' @rdname getcolina
