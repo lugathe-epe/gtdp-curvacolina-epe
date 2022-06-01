@@ -8,9 +8,9 @@
 #' quais interpolar a colina original. Atualmente ha tres abordagens implementadas:
 #' 
 #' \itemize{
-#' \item{\code{"triangulacao"}}
-#' \item{\code{"thinplate"}}
-#' \item{\code{"tensorprod"}}
+#' \item{\code{\link{triangulacao}}}
+#' \item{\code{\link{thinplate}}}
+#' \item{\code{\link{tensorprod}}}
 #' }
 #' 
 #' Se \code{metodo = "triangulacao"}, a colina fornecida e projetada no plano hl x pot e entao 
@@ -24,12 +24,23 @@
 #' interpolacao nesse caso consiste simplesmente da consulta a curva suavizada em pontos 
 #' selecionados.
 #' 
-#' O argumento \code{...} so tem uso quando \code{metodo} corresponde a uma suavizacao por splines.
-#' Nestes casos, \code{...} pode conter qualquer um dos argumentos passados ao construtor do modelo,
-#' isto, e, tipo de spline (\code{bs}) e dimensao da base (\code{k}). Ver (\code{\link[mgcv]{te}}).
+#' O argumento \code{...} permite passar os argumentos opcionais aos metodos especificos. As paginas
+#' de ajuda dos interpoladores proveem mais informacao a respeito destes argumentos extras.
+#' 
+#' \bold{Interpoladores Multiplos}:
+#' 
+#' Existe a possibilidade de estimar um interpolador combinando mais de um metodo. Isto pode ser
+#' feito passando um vetor de duas posicoes em \code{metodo} indicando os dois metodos a serem
+#' usados conjuntamente com o argumento \code{quebra}, um numero indicando o rendimento da curva
+#' a partir da qual o segundo metodo deve ser utilizado.
+#' 
+#' Nestes casos, o objeto retornado tera classe \code{"interpolador"} e subclasse 
+#' \code{"interpoladorM"}, com todos os mesmos metodos disponivies.
 #' 
 #' @param colina objeto da classe \code{curvacolina} (retornado pelas funcoes de leitura)
-#' @param metodo um de \code{c("triangulacao", "thinplate", "tensorpro")}. Ver Detalhes
+#' @param metodo um ou dois de \code{c("triangulacao", "thinplate", "tensorpro")}. Ver Detalhes
+#' @param quebra opcional, numerico indicando o rendimento da curva a partir da qual chavear
+#'     metodos. Ver Detalhes
 #' @param ... demais parametros que possam ser passados as funcoes de ajuste de cada \code{metodo}.
 #'     Ver Detalhes
 #' 
@@ -40,12 +51,25 @@
 #' 
 #' # interpolando uma grade 20x20 no dominio da colina
 #' pontos <- coordgrade(colinadummy, 20, 20)
-#' interp <- predict(interp_tri, pontos)
+#' grade <- predict(interp_tri, pontos)
 #' 
 #' \dontrun{
 #' # visualizacao 3d e 2d do resultado
-#' plot(interp)
-#' plot(interp, "2d")
+#' plot(grade)
+#' plot(grade, "2d")
+#' }
+#' 
+#' # INTERPOLADOR MULTIPLO
+#' interp_mult <- interpolador(colinadummy[rend > 92], c("thinplate", "triangulacao"), 95.5)
+#' 
+#' # interpolando uma grade 20x20 no dominio da colina
+#' pontos <- coordgrade(colinadummy, 20, 20)
+#' grade <- predict(interp_mult, pontos)
+#' 
+#' \dontrun{
+#' # visualizacao 3d e 2d do resultado
+#' plot(grade)
+#' plot(grade, "2d")
 #' }
 #' 
 #' @return objeto da classe \code{interpolador} e subclasse \code{metodo}, isto e, um modelo com o 
