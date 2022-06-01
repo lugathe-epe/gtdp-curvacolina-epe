@@ -83,7 +83,7 @@ tessdelaunay <- function(colina) {
 #' entre ultima curva e ponto maximo e fatiado em triangulos com arestas radiais, para todos os 
 #' pontos da ultima curva.
 #' 
-#' @param dat um data.frame ou data.table contendo queda liquida, potencia e rendimento
+#' @param colina um data.frame ou data.table contendo queda liquida, potencia e rendimento
 #' 
 #' @return matriz de tres colunas indicando o indicie em \code{dat} dos pontos correspondentes aos
 #'     vertices de cada triangulo. Cada linha corresponde a um triangulo

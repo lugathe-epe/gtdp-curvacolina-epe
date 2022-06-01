@@ -7,7 +7,7 @@
 tessradial(colina)
 }
 \arguments{
-\item{dat}{um data.frame ou data.table contendo queda liquida, potencia e rendimento}
+\item{colina}{um data.frame ou data.table contendo queda liquida, potencia e rendimento}
 }
 \value{
 matriz de tres colunas indicando o indicie em \code{dat} dos pontos correspondentes aos
