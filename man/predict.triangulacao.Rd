@@ -19,7 +19,8 @@ interpolados nas coordenadas \code{pontos}; se \code{TRUE} um objeto \code{grade
 \item{...}{existe somente para consistencia de metodos. Nao possui utilidade}
 }
 \value{
-vetor de rendimentos interpolados
+se \code{as.gradecolina = FALSE}, vetor de rendimentos interpolados, do contrario um
+objeto \code{\link{gradecolina}}
 }
 \description{
 Realiza interpolacao baricentrica de \code{pontos} nos triangulos da tesselacao

@@ -52,7 +52,8 @@ getcolina.tensorprod <- function(object) object$colina
 #'     \code{\link{gradecolina}}
 #' @param ... existe somente para consistencia de metodos. Nao possui utilidade
 #' 
-#' @return vetor de rendimentos interpolados
+#' @return se \code{as.gradecolina = FALSE}, vetor de rendimentos interpolados, do contrario um 
+#'     objeto \code{\link{gradecolina}}
 #' 
 #' @export
 

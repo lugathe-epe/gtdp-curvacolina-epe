@@ -1,3 +1,11 @@
+# master
+
+## New features
+
+### Minor
+
+* Pequenas melhorias de documentacao
+
 # newtri
 
 ## New features
