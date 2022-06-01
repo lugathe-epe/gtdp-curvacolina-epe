@@ -106,3 +106,48 @@ test_that("Modelagem por Thin Plate", {
     p2d <- plot(interp, tipo = "2d", print = FALSE, dhl = 10, dpot = 10)
     expect_equal(class(p2d), c("gg", "ggplot"))
 })
+
+test_that("Interolador Multiplo", {
+
+    colina <- colinadummy[rend > 92]
+    interp <- interpolador(colina, c("thinplate", "triangulacao"), 95.5, tessfunc = tessradial)
+
+    # primeira metade
+
+    expect_equal(class(interp$superficies[[1]]), c("thinplate", "interpolador"))
+    expect_equal(length(interp$superficies[[1]]), 2)
+    expect_equal(names(interp$superficies[[1]]), c("superficie", "colina"))
+
+    expect_equal(attr(interp$superficies[[1]]$colina, "rends"), c(93, 93.5, 94, 94.5, 95, 95.5))
+    expect_true(is.na(attr(interp$superficies[[1]]$colina, "max")))
+
+    # segunda metade
+
+    expect_equal(class(interp$superficies[[2]]), c("triangulacao", "interpolador"))
+    expect_equal(length(interp$superficies[[2]]), 2)
+    expect_equal(names(interp$superficies[[2]]), c("triangulos", "colina"))
+
+    expect_equal(attr(interp$superficies[[2]]$colina, "rends"), c(95.5, 95.78))
+    expect_equal(attr(interp$superficies[[2]]$colina, "max"), 95.78)
+
+    # PREDICT VAZIO
+    gg <- expand.grid(hl = 1:10, pot = NA)
+    expect_equal(predict(interp, gg), numeric(0))
+
+    gg <- coordgrade(colina, 20, 20)
+
+    pred_vec <- predict(interp, gg)
+    expect_snapshot_value(pred_vec, style = "json2")
+
+    pred_full <- predict(interp, gg, TRUE)
+    expect_equal(class(pred_full), "gradecolina")
+    expect_equal(class(pred_full[[2]]), "curvacolina")
+    expect_equal(colnames(pred_full[[1]]), c("hl", "pot", "rend", "inhull"))
+    expect_equal(pred_full[[1]]$rend, pred_vec)
+
+    p3d <- plot(interp, print = FALSE, dhl = 10, dpot = 10)
+    expect_equal(class(p3d), c("plotly", "htmlwidget"))
+
+    p2d <- plot(interp, tipo = "2d", print = FALSE, dhl = 10, dpot = 10)
+    expect_equal(class(p2d), c("gg", "ggplot"))
+})

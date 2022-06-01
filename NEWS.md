@@ -6,6 +6,17 @@
 
 * Pequenas melhorias de documentacao
 
+# interpM
+
+## New features
+
+* Adiciona opcao de uso de dois tipos diferentes de interpoladores em uma mesma colina, fornecendo
+  em `metodos` um vetor de duas posicoes, indicando os metodos, e o argumento `quebra`, indicando
+  o valor de rendimento da curva a partir da qual usar o segundo tipo de interpolador
+* Adiciona metodo `rbind.curvacolina`. Normalmente so tera uso interno em conjunto com os 
+  interpoladores multiplos. Deve ser notado que o objeto retornado remove quaisquer linhas 
+  duplicadas que possam resultar da combinacao
+
 # newtri
 
 ## New features

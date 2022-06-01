@@ -2,17 +2,35 @@
 
 #' Triangulacao De \code{curvacolina}
 #' 
-#' Funcao interna executada quando \code{metodo = "triangulacao"} em \code{interpolador}
+#' Funcao interna executada quando \code{metodo = "triangulacao"} em \code{interpolador}. O 
+#' argumento \code{tessfunc} permite controlar como o espaco projetado sera tesselado em triangulos. 
+#' Atualmente ha duas opcoes implementadas no pacote:ang
+#' 
+#' \itemize{
+#' \item{\code{\link{tessdelaunay}}}
+#' \item{\code{\link{tessradial}}}
+#' }
+#' 
+#' A primeira executa a tesselacao pelo metodo de Delaunay atraves da funcao 
+#' \code{\link[geometry]{delaunayn}}. A segunda e uma versao alternativa quase igual a primeira, com
+#' excessao dos triangulos definidos entre a ultima curva e o maximo. Pelo metodo de Delaunay e 
+#' possivel que acontecam platos, isto e, triangulos cujos tres vertices pertencem a mesma curva.
+#' \code{tessradial} interfere apenas nessa regiao, forcando para que todos os triangulos entre a 
+#' ultima curva e o maximo tenham este ponto como um vertice, deixando os dois restantes como pontos
+#' adjacentes na ultima curva.
 #' 
 #' Esta funcao nao deve ser chamada pelo usuario diretamente na maioria dos casos
 #' 
 #' @param colina objeto \code{curvacolina} retornado pelas funcoes de leitura
+#' @param tessfunc funcao pela qual executar a tesselacao do espaco. Ver Detalhes
+#' @param ... nao possui funcao, so existe para compatibilizacao com a chamada generica de 
+#'     \code{\link{interpolacao}}
 #' 
 #' @return objeto da classe \code{triangulacao} contendo a tesselacao da curva colina
 #' 
 #' @export
 
-triangulacao <- function(colina, tessfunc = tessdelaunay) {
+triangulacao <- function(colina, tessfunc = tessdelaunay, ...) {
     hl <- pot <- NULL
 
     tri <- tessfunc(colina)
@@ -81,16 +99,10 @@ tessradial <- function(colina) {
     tri <- tri[!innertri, ]
 
     dat <- copy(colina$CC)
-
-    # centraliza o dado em torno do maximo -- isso e necessario pra que o angulo relativo a cada 
-    # ponto seja o angulo entre o eixo x e a linha que passa do maximo a cada ponto da ultim curva
-    dat$hl  <- dat$hl - dat[rend == ultrends[2], hl]
-    dat$pot <- dat$pot - dat[rend == ultrends[2], pot]
-
-    dat <- dat[rend %in% ultrends[1]]
-    dat[, ang := atan2(pot, hl)]
-
-    angord <- order(dat$ang)
+    chl  <- dat[rend == ultrends[2]]$hl
+    cpot <- dat[rend == ultrends[2]]$pot
+    dat <- dat[rend == ultrends[1]]
+    angord <- orderpoly(dat, chl, cpot)
 
     N1 <- nrow(dat)
     N2 <- nrow(colina$CC[!(rend %in% ultrends)])

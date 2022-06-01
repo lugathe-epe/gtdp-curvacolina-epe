@@ -193,9 +193,20 @@ summary.curvacolina <- function(object, ...) {
     i <- eval(i, envir = x$CC, enclos = parent.frame())
     CC <- x$CC[i]
 
-    x <- as.curvacolina(CC, attr(x, "g"), attr(x, "rho"))
+    new_curvacolina(CC, attr(x, "g"), attr(x, "rho"))
+}
 
-    return(x)
+#' @export
+
+rbind.curvacolina <- function(...) {
+
+    colinas <- list(...)
+
+    comb <- lapply(colinas, "[[", "CC")
+    comb <- rbindlist(comb)
+    comb <- comb[!duplicated(comb)] # a curva associada a quebra existe nas duas colinas
+
+    new_curvacolina(comb, attr(colinas[[1]], "g"), attr(colinas[[1]], "rho"))
 }
 
 #' Escrita De \code{curvacolina}

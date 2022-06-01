@@ -138,3 +138,33 @@ coordgrade.curvacolina <- function(colina, dhl, dpot, byhl, bypot, expande = c(0
 #' @return \code{data.table} contendo a curva colina em formato padronizado
 
 getcolina <- function(object) UseMethod("getcolina")
+
+# --------------------------------------------------------------------------------------------------
+
+#' Ordem Dos Vertices De Poligono
+#' 
+#' Centraliza \code{dat} por referencia e retorna vetor de indices dos vertices em ordem adjacente
+#' 
+#' A determinacao de ordem dos vertices e feita com base no angulo entre cada um e o centro do
+#' poligono. Este centro pode ser infromado por meio dos argumentos \code{centro_hl} e 
+#' \code{centro_pot} ou, caso estes fiquem vazios, sera calculado como a media amostral.
+#' 
+#' @param dat \code{data.table} contendo vertices de um poligono cuja ordem sera determinada
+#' @param centro_hl opcional, valor para centralizar \code{dat$hl}. Caso vazio usa a media 
+#' @param centro_pot opcional, valor para centralizar \code{dat$pot}. Caso vazio usa a media 
+#' 
+#' @return vetor de inteiros indicando os indices dos vertices na ordenacao por angulo
+
+orderpoly <- function(dat, centro_hl, centro_pot) {
+
+    if(missing(centro_hl))  centro_hl  <- mean(dat$hl)
+    if(missing(centro_pot)) centro_pot <- mean(dat$pot)
+
+    dat$hl  <- dat$hl - centro_hl
+    dat$pot <- dat$pot - centro_pot
+    dat[, ang := atan2(pot, hl)]
+
+    angord <- order(dat$ang)
+
+    return(angord)
+}
