@@ -1,26 +1,10 @@
-# master
-
-## New features
-
-### Minor
-
-* Pequenas melhorias de documentacao
-
-# interpM
+# curvacolina 1.8.0
 
 ## New features
 
 * Adiciona opcao de uso de dois tipos diferentes de interpoladores em uma mesma colina, fornecendo
   em `metodos` um vetor de duas posicoes, indicando os metodos, e o argumento `quebra`, indicando
   o valor de rendimento da curva a partir da qual usar o segundo tipo de interpolador
-* Adiciona metodo `rbind.curvacolina`. Normalmente so tera uso interno em conjunto com os 
-  interpoladores multiplos. Deve ser notado que o objeto retornado remove quaisquer linhas 
-  duplicadas que possam resultar da combinacao
-
-# newtri
-
-## New features
-
 * Adicionada as funcoes `tessdelaunay` e `tessradial` para realizacao da tesselacao dos dados na
   interpolacao por triangulacao. `tessradial` implementa um algoritmo custom que garante o uso do 
   ponto maximo em todos os triangulos internos a curva de maior rendimento
@@ -29,7 +13,11 @@
 
 ### Minor
 
+* Adiciona metodo `rbind.curvacolina`. Normalmente so tera uso interno em conjunto com os 
+  interpoladores multiplos. Deve ser notado que o objeto retornado remove quaisquer linhas 
+  duplicadas que possam resultar da combinacao
 * Objetos `curvacolina` agora possuem um metodo de subset por expressoes de data.table
+* Pequenas melhorias de documentacao
 
 # curvacolina 1.6.2
 
