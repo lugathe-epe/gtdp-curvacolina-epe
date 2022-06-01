@@ -9,7 +9,8 @@ triangulacao(colina, tessfunc = tessdelaunay, ...)
 \arguments{
 \item{colina}{objeto \code{curvacolina} retornado pelas funcoes de leitura}
 
-\item{tessfunc}{funcao pela qual executar a tesselacao do espaco. Ver Detalhes}
+\item{tessfunc}{funcao ou string com nome da funcao pela qual executar a tesselacao do espaco.
+Ver Detalhes}
 
 \item{...}{nao possui funcao, so existe para compatibilizacao com a chamada generica de
 \code{\link{interpolacao}}}
