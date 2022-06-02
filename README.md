@@ -1,9 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/lkhenayfis/gtdp-curvacolina/workflows/R-CMD-check/badge.svg)](https://github.com/lkhenayfis/gtdp-curvacolina/actions)
+[![test-coverage](https://github.com/lkhenayfis/gtdp-curvacolina/workflows/test-coverage/badge.svg)](https://github.com/lkhenayfis/gtdp-curvacolina/actions)
 [![codecov](https://codecov.io/gh/lkhenayfis/gtdp-curvacolina/branch/master/graph/badge.svg?token=MY0Q95QSJL)](https://codecov.io/gh/lkhenayfis/gtdp-curvacolina)
 <!-- badges: end -->
 
