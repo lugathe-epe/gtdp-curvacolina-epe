@@ -1,5 +1,6 @@
 ////////////////// FUNCAO PARA IDENTIFICAR SE UM PONTO ESTA DENTRO DE UM POLIGONO //////////////////
 
+// [[Rcpp::depends(RcppArmadillo)]]
 #include <RcppArmadillo.h>
 
 //' Implementacao Do Algoritmo Raycasting

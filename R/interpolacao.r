@@ -47,7 +47,7 @@
 #' @examples
 #' 
 #' # usando dado dummy contido no pacote
-#' interp_tri <- interpolador(colinadummy, "tri")
+#' interp_tri <- interpolador(colinadummy, "triangulacao")
 #' 
 #' # interpolando uma grade 20x20 no dominio da colina
 #' pontos <- coordgrade(colinadummy, 20, 20)
@@ -80,6 +80,8 @@
 #' @export
 
 interpolador <- function(colina, metodo, quebra, ...) {
+
+    rend <- NULL
 
     if(missing(quebra)) {
         interp_func <- match.call()

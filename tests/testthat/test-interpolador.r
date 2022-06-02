@@ -110,7 +110,7 @@ test_that("Modelagem por Thin Plate", {
 test_that("Interolador Multiplo", {
 
     colina <- colinadummy[rend > 92]
-    interp <- interpolador(colina, c("thinplate", "triangulacao"), 95.5, tessfunc = tessradial)
+    interp <- interpolador(colina, c("thinplate", "triangulacao"), 95.5, tessfunc = "tessradial")
 
     # primeira metade
 

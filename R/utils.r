@@ -157,6 +157,8 @@ getcolina <- function(object) UseMethod("getcolina")
 
 orderpoly <- function(dat, centro_hl, centro_pot) {
 
+    ang <- pot <- hl <- NULL
+
     if(missing(centro_hl))  centro_hl  <- mean(dat$hl)
     if(missing(centro_pot)) centro_pot <- mean(dat$pot)
 

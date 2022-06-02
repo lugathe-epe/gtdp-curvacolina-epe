@@ -10,7 +10,7 @@
 #' @param taxa_reducao inteiro indicando reducao do tamanho do historico em \code{taxa_reducao}
 #'     vezes. Ver Detalhes
 #' @param ... nao possui funcao, so existe para compatibilizacao com a chamada generica de 
-#'     \code{\link{interpolacao}}
+#'     \code{\link{interpolador}}
 #' 
 #' @return objeto da classe \code{thinplate} contendo a suavizacao da curva colina
 #' 

@@ -42,7 +42,7 @@ original na grade.
 \examples{
 
 # usando o interpolador de triangulacao
-tri <- interpolador(colinadummy, "tri")
+tri <- interpolador(colinadummy, "triangulacao")
 
 # extrai uma grade dele
 coord <- coordgrade(colinadummy, 10, 10)

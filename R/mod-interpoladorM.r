@@ -47,6 +47,8 @@ getcolina.interpoladorM <- function(object) {
 
 predict.interpoladorM <- function(object, pontos, as.gradecolina = FALSE, ...) {
 
+    rend <- hl <- pot <- NULL
+
     pontos <- pontos[complete.cases(pontos), ]
 
     if(nrow(pontos) == 0) return(numeric(0))

@@ -25,7 +25,7 @@
 #' @param tessfunc funcao ou string com nome da funcao pela qual executar a tesselacao do espaco.
 #'     Ver Detalhes
 #' @param ... nao possui funcao, so existe para compatibilizacao com a chamada generica de 
-#'     \code{\link{interpolacao}}
+#'     \code{\link{interpolador}}
 #' 
 #' @return objeto da classe \code{triangulacao} contendo a tesselacao da curva colina
 #' 
@@ -90,8 +90,12 @@ tessdelaunay <- function(colina) {
 #' 
 #' @return matriz de tres colunas indicando o indicie em \code{dat} dos pontos correspondentes aos
 #'     vertices de cada triangulo. Cada linha corresponde a um triangulo
+#' 
+#' @importFrom utils tail
 
 tessradial <- function(colina) {
+
+    rend <- NULL
 
     tri <- tessdelaunay(colina)
 

@@ -61,7 +61,7 @@ Nestes casos, o objeto retornado tera classe \code{"interpolador"} e subclasse
 \examples{
 
 # usando dado dummy contido no pacote
-interp_tri <- interpolador(colinadummy, "tri")
+interp_tri <- interpolador(colinadummy, "triangulacao")
 
 # interpolando uma grade 20x20 no dominio da colina
 pontos <- coordgrade(colinadummy, 20, 20)

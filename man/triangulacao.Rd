@@ -13,7 +13,7 @@ triangulacao(colina, tessfunc = tessdelaunay, ...)
 Ver Detalhes}
 
 \item{...}{nao possui funcao, so existe para compatibilizacao com a chamada generica de
-\code{\link{interpolacao}}}
+\code{\link{interpolador}}}
 }
 \value{
 objeto da classe \code{triangulacao} contendo a tesselacao da curva colina
