@@ -126,6 +126,47 @@ coordgrade.curvacolina <- function(colina, dhl, dpot, byhl, bypot, expande = c(0
     return(grade)
 }
 
+#' Gera Vetor De Secoes Num Dominio
+#' 
+#' Funcao auxiliar para gerar uma sequencia de pontos de segmentacao num determinado vetor
+#' 
+#' @param vec um vetor numerico contendo o conjunto de pontos nos quais se gera a segmentacao
+#' @param divs inteiro indicando numero de divisoes. Ou este ou \code{by} deve ser informado
+#' @param by intervalo entre divisoes. Ou este ou \code{divs} deve ser informado
+#' @param expande vetor de duas posicoes indicando percentual de expansao do dominio
+#' 
+#' @examples 
+#' 
+#' gerarange(1:20, 5, expande = c(0, 0))
+#' # [1]  1.00  5.75 10.50 15.25 20.00
+#' 
+#' gerarange(1:20, by = 5, expande = c(0, 0))
+#' # [1]  0  5 10 15 20
+#' 
+#' gerarange(1:20, by = 5, expande = c(0.1, 0.1))
+#' # [1] -5  0  5 10 15 20 25
+#' 
+#' @return vetor de divisoes no dominio de \code{vec} de acordo com os parametros passados
+
+gerarange <- function(vec, divs, by, expande) {
+    xvec <- expande[1] * diff(range(vec))
+    xvec <- range(vec) + c(-1, 1) * xvec
+
+    if(!missing(by)) {
+        if(!missing(divs)) warning("Tanto 'divs' quanto 'by' foram fornecidos -- ignorando 'divs'")
+
+        minvec <- floor(xvec[1] / by) * by
+        maxvec <- ceiling(xvec[2] / by) * by
+        divs <- seq(minvec, maxvec, by = by)
+    }
+
+    divsvetor <- length(divs) > 1L
+
+    if(divsvetor) vec <- divs else vec <- seq(xvec[1], xvec[2], length.out = divs)
+
+    return(vec)
+}
+
 # --------------------------------------------------------------------------------------------------
 
 #' Generica Para Extrair Colina Original do Ajuste
