@@ -1,3 +1,7 @@
+# modvaz
+
+* `coordgrade` agora pode gerar discretizacao de dominios hl x vazao, alem de hl x potencia
+
 # curvacolina 1.8.0
 
 ## New features

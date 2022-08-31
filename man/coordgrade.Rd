@@ -4,16 +4,16 @@
 \alias{coordgrade}
 \title{Gera Grade \code{dhl} x \code{dpot} No Dominio Da Curva Colina}
 \usage{
-coordgrade(colina, dhl, dpot, byhl, bypot, expande)
+coordgrade(colina, dhl, dpot, dvaz, byhl, bypot, byvaz, expande)
 }
 \arguments{
 \item{colina}{objeto da classe \code{curvacolina} (retornado pelas funcoes de leitura)}
 
-\item{dhl, dpot}{numero de divisoes no eixo de queda liquida e potencia, respectivamente. Tambem
-podem ser fornecidos vetores indicando as posicoes das divisoes de queda e potencia}
+\item{dhl, dpot, dvaz}{numero de divisoes no eixo de queda liquida e potencia, respectivamente.
+Tambem podem ser fornecidos vetores indicando as posicoes das divisoes de queda e potencia}
 
-\item{byhl, bypot}{intervalo entre divisoes de queda e potencia, respectivamente; se forncecido
-\code{dhl} e \code{dpot} serao ignorados. Ver Detalhes}
+\item{byhl, bypot, byvaz}{intervalo entre divisoes de queda e potencia, respectivamente; se
+forncecido \code{dhl} e \code{dpot} serao ignorados. Ver Detalhes}
 
 \item{expande}{vetor de duas posicoes indicando percentual de expansao do dominio. Ver Detalhes}
 }
@@ -24,6 +24,10 @@ data.frame contendo coordenadas dos pontos na grade
 Funcao auxiliar para gerar grades de pontos nos quais interpolar a curva colina
 }
 \details{
+A descricao a seguir se concentra nos argumentos associados a divisoes em queda liquida e
+potencia. Para todo argumento de potencia existe um analogo de vazoes caso se deseje gerar uma
+grade neste eixo, i.e. exitem \code{dvaz} e \code{byvaz} assim como \code{dpot} e \code{bypot}.
+
 Os argumentos \code{dhl} e \code{dpot} especificam a grade de maneira mais simples: se forem
 inteiros, as coordenadas de queda e potencia da grade sao geradas segmentando a faixa de quedas
 e potencias contidas na colina em \code{dhl} e \code{dpot} respectivamente. Caso sejam vetores,

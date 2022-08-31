@@ -4,6 +4,10 @@
 #' 
 #' Funcao auxiliar para gerar grades de pontos nos quais interpolar a curva colina
 #' 
+#' A descricao a seguir se concentra nos argumentos associados a divisoes em queda liquida e 
+#' potencia. Para todo argumento de potencia existe um analogo de vazoes caso se deseje gerar uma
+#' grade neste eixo, i.e. exitem \code{dvaz} e \code{byvaz} assim como \code{dpot} e \code{bypot}.
+#' 
 #' Os argumentos \code{dhl} e \code{dpot} especificam a grade de maneira mais simples: se forem 
 #' inteiros, as coordenadas de queda e potencia da grade sao geradas segmentando a faixa de quedas
 #' e potencias contidas na colina em \code{dhl} e \code{dpot} respectivamente. Caso sejam vetores,
@@ -36,10 +40,10 @@
 #' \code{dhl} e \code{dpot} forem fornecidos como vetores, \code{expande} sera ignorado.
 #' 
 #' @param colina objeto da classe \code{curvacolina} (retornado pelas funcoes de leitura)
-#' @param dhl,dpot numero de divisoes no eixo de queda liquida e potencia, respectivamente. Tambem
-#'     podem ser fornecidos vetores indicando as posicoes das divisoes de queda e potencia
-#' @param byhl,bypot intervalo entre divisoes de queda e potencia, respectivamente; se forncecido
-#'     \code{dhl} e \code{dpot} serao ignorados. Ver Detalhes
+#' @param dhl,dpot,dvaz numero de divisoes no eixo de queda liquida e potencia, respectivamente.
+#'     Tambem podem ser fornecidos vetores indicando as posicoes das divisoes de queda e potencia
+#' @param byhl,bypot,byvaz intervalo entre divisoes de queda e potencia, respectivamente; se
+#'     forncecido \code{dhl} e \code{dpot} serao ignorados. Ver Detalhes
 #' @param expande vetor de duas posicoes indicando percentual de expansao do dominio. Ver Detalhes
 #' 
 #' @examples
@@ -65,43 +69,30 @@
 #' 
 #' @export
 
-coordgrade <- function(colina, dhl, dpot, byhl, bypot, expande) UseMethod("coordgrade", colina)
+coordgrade <- function(colina, dhl, dpot, dvaz, byhl, bypot, byvaz, expande) UseMethod("coordgrade", colina)
 
 #' @export
 
-coordgrade.data.table <- function(colina, dhl, dpot, byhl, bypot, expande = c(0, 0)) {
+coordgrade.data.table <- function(colina, dhl, dpot, dvaz, byhl, bypot, byvaz, expande = c(0, 0)) {
 
-    hl <- pot <- NULL
+    hl <- pot <- vaz <- NULL
 
-    xhl <- expande[1] * diff(range(colina$hl))
-    xhl <- range(colina$hl) + c(-1, 1) * xhl
+    is_vaz <- !missing(dvaz) || !missing(byvaz)
+    is_pot <- !missing(dpot) || !missing(bypot)
 
-    xpot <- expande[2] * diff(range(colina$pot))
-    xpot <- range(colina$pot) + c(-1, 1) * xpot
-
-    if(!missing(byhl)) {
-        if(!missing(dhl)) warning("Tanto 'dhl' quanto 'byhl' foram fornecidos -- ignorando 'dhl'")
-
-        minhl <- floor(xhl[1] / byhl) * byhl
-        maxhl <- ceiling(xhl[2] / byhl) * byhl
-        dhl <- seq(minhl, maxhl, by = byhl)
+    if(is_vaz & is_pot) {
+        stop("Foram fornecidos argumentos para segmentacao em vazao e potencia -- escolha um")
     }
 
-    if(!missing(bypot)) {
-        if(!missing(dpot)) warning("Tanto 'dpot' quanto 'bypot' foram fornecidos -- ignorando 'dpot'")
-
-        minpot <- floor(xpot[1] / bypot) * bypot
-        maxpot <- ceiling(xpot[2] / bypot) * bypot
-        dpot <- seq(minpot, maxpot, by = bypot)
+    range_hl <- gerarange(colina$hl, dhl, byhl, expande)
+    if(is_vaz) {
+        range_Y <- gerarange(colina$vaz, dvaz, byvaz, expande)
+    } else {
+        range_Y <- gerarange(colina$pot, dpot, bypot, expande)
     }
 
-    dhlvetor <- length(dhl) > 1L
-    dpotvetor <- length(dpot) > 1L
-
-    if(dhlvetor) hl <- dhl else hl <- seq(xhl[1], xhl[2], length.out = dhl)
-    if(dpotvetor) pot <- dpot else pot <- seq(xpot[1], xpot[2], length.out = dpot)
-
-    grade <- expand.grid(hl = hl, pot = pot)
+    grade <- expand.grid(hl = range_hl, Y = range_Y)
+    colnames(grade)[2] <- ifelse(is_vaz, "vaz", "pot")
 
     grade <- as.data.table(grade)
 
@@ -110,18 +101,18 @@ coordgrade.data.table <- function(colina, dhl, dpot, byhl, bypot, expande = c(0,
 
 #' @export
 
-coordgrade.data.frame <- function(colina, dhl, dpot, byhl, bypot, expande = c(0, 0)) {
+coordgrade.data.frame <- function(colina, dhl, dpot, dvaz, byhl, bypot, byvaz, expande = c(0, 0)) {
 
-    grade <- coordgrade.data.table(as.data.table(colina), dhl, dpot, byhl, bypot, expande)
+    grade <- coordgrade.data.table(as.data.table(colina), dhl, dpot, dvaz, byhl, bypot, byvaz, expande)
 
     return(grade)
 }
 
 #' @export
 
-coordgrade.curvacolina <- function(colina, dhl, dpot, byhl, bypot, expande = c(0, 0)) {
+coordgrade.curvacolina <- function(colina, dhl, dpot, dvaz, byhl, bypot, byvaz, expande = c(0, 0)) {
 
-    grade <- coordgrade(colina$CC, dhl, dpot, byhl, bypot, expande)
+    grade <- coordgrade(colina$CC, dhl, dpot, dvaz, byhl, bypot, byvaz, expande)
 
     return(grade)
 }
