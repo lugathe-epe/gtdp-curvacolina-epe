@@ -74,6 +74,10 @@ grade2 <- coordgrade(colinadummy, 40:60, seq(150, 400, by = 10))
 plot(colinadummy, "2d") + ggplot2::geom_point(data = grade, aes(hl, pot), col = 2)
 }
 
+# grade em vazoes
+colina <- learqprocit(system.file("extdata/procit_cc_original.xlsx", package = "curvacolina"))
+grade_vaz <- coordgrade(colina[[1]], 10, dvaz = 10)
+
 }
 \seealso{
 Other curvacolina: 

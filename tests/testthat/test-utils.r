@@ -1,4 +1,4 @@
-test_that("Gerador de grades", {
+test_that("Gerador de grades em potencia", {
 
     # metodos entregam mesmo resultado
     grade_1 <- coordgrade(colinadummy, 20, 20)
@@ -6,6 +6,7 @@ test_that("Gerador de grades", {
     grade_3 <- coordgrade(as.data.frame(colinadummy$CC), 20, 20)
     expect_true(all(grade_1 == grade_2))
     expect_true(all(grade_2 == grade_3))
+    expect_equal(colnames(grade_1), c("hl", "pot"))
 
     # grade gerada com dhl e dpot inteiros
     expect_equal(length(unique(grade_1$hl)), 20)
@@ -65,4 +66,17 @@ test_that("Gerador de grades", {
     expect_equal(min(grade_4$pot), 85)
     expect_equal(max(grade_4$pot), 485)
     expect_equal(seq(85, 485, by = 5), unique(grade_4$pot))
+
+    # grade gerad em vazao
+
+    colina <- system.file("extdata/procit_cc_original.xlsx", package = "curvacolina")
+    colina <- learqprocit(colina)[[1]]
+    grade_vaz1 <- coordgrade(colina, 10, dvaz = 10)
+    expect_equal(colnames(grade_vaz1), c("hl", "vaz"))
+    expect_equal(length(unique(grade_vaz1$hl)), 10)
+    expect_equal(length(unique(grade_vaz1$vaz)), 10)
+
+    expect_warning(grade_vaz1 <- coordgrade(colina, 10, dvaz = 10, byvaz = 10))
+
+    expect_error(grade_vaz1 <- coordgrade(colina, 10, 10, 10))
 })
