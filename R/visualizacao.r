@@ -92,7 +92,7 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, modo = "pot"
 #' Para plotar uma superficie e necessario amostrar pontos numa grade regular. A definicao desta 
 #' grade e realizada atraves do argumento \code{...}, que sera utilizado numa chamada de 
 #' \code{\link{coordgrade}} e esta grade amostrada do interpolador \code{x}. E possivel deixa-lo nao
-#' especificado; neste caso sera usado o padrao \code{list(dhl = 200, dpot = 200)}, que deve ser
+#' especificado; neste caso sera usado o padrao de duzentas divisoes em cada eixo, que deve ser
 #' suficiente para um plot suave na maioria das circunstancias.
 #' 
 #' @param x objeto \code{interpolador} retornado pela funcao homonima
@@ -121,21 +121,20 @@ plot.interpolador <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print 
     hl <- pot <- rend <- NULL
 
     tipo <- match.arg(tipo)
+    modo <- attr(x, "modo")
 
     coord_args  <- list(...)
 
-    minargs <- list(c("dhl", "byhl"), c("dpot", "bypot"))
+    minargs <- list(c("dhl", "byhl"), paste0(c("d", "by"), modo))
     tem_minargs <- sapply(minargs, function(x) any(x %in% names(coord_args)))
 
     if(!tem_minargs[1]) coord_args <- c(coord_args, list(dhl = 200))
-    if(!tem_minargs[2]) coord_args <- c(coord_args, list(dpot = 200))
-
-    if(add_colina) colina <- copy(getcolina(x)$CC) else colina <- data.table(hl = NA, pot = NA, rend = 0)
+    if(!tem_minargs[2]) coord_args <- c(coord_args, structure(list(200), names = paste0("d", modo)))
 
     dsurf <- do.call(coordgrade, c(list(colina = getcolina(x)), coord_args))
     dsurf <- predict(x, dsurf, TRUE)
 
-    plot.gradecolina(dsurf, tipo, add_colina, print)
+    plot.gradecolina(dsurf, tipo, add_colina, print, modo)
 }
 
 #' Visualizacao De \code{gradecolina}
@@ -167,21 +166,29 @@ plot.gradecolina <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print =
     hl <- pot <- rend <- NULL
 
     tipo <- match.arg(tipo)
+    modo <- attr(x, "modo")
 
-    if(add_colina) colina <- copy(x$colina$CC) else colina <- data.table(hl = NA_real_, pot = NA_real_, rend = 0)
+    if(add_colina) {
+        colina <- copy(x$colina$CC)
+    } else {
+        colina <- data.table(hl = NA_real_, pot = NA_real_, vaz = NA_real_, rend = 0)
+    }
 
     grade <- x$grade
+    grade[, Y := grade[[modo]]]
+    colina[, Y := colina[[modo]]]
+    leg <- ifelse(modo == "pot", "Pot\U00EAncia (MW)", "Vaz\u00e3o Turbinada (m\u00b3/s)")
 
     if(tipo == "3d") {
         p <- plot_ly() %>%
-            add_markers(x = colina$hl, y = colina$pot, z = colina$rend,
+            add_markers(x = colina$hl, y = colina$Y, z = colina$rend,
                 type = "scatter3d", name = "colina") %>%
-            add_surface(x = unique(grade$hl), y = unique(grade$pot),
-                z = t(data.matrix(dcast(grade, hl ~ pot, value.var = "rend"))[, -1]),
+            add_surface(x = unique(grade$hl), y = unique(grade$Y),
+                z = t(data.matrix(dcast(grade, hl ~ Y, value.var = "rend"))[, -1]),
                 name = "interpolacao") %>%
             layout(scene = list(
                 xaxis = list(title = list(text = "Queda L\U00EDquida (m)")),
-                yaxis = list(title = list(text = "Pot\U00EAncia (MW)")),
+                yaxis = list(title = list(text = leg)),
                 zaxis = list(title = list(text = "Rendimento (%)")))
             )
 
@@ -192,10 +199,10 @@ plot.gradecolina <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print =
         colina[, rend := factor(paste0(formatC(rend, format = "f", digits = 3), "%"))]
         grade <- grade[complete.cases(grade)]
         p <- ggplot() +
-            geom_raster(data = grade, aes(hl, pot, fill = rend)) +
-            geom_point(data = colina, aes(hl, pot), color = "blue") +
+            geom_raster(data = grade, aes(hl, Y, fill = rend)) +
+            geom_point(data = colina, aes(hl, Y), color = "blue") +
             scale_fill_viridis_c(name = "Rendimento (%)", na.value = NA) +
-            labs(x = "Queda L\U00EDquida (m)", y = "Pot\U00EAncia (MW)") +
+            labs(x = "Queda L\U00EDquida (m)", y = leg) +
             theme_bw() +
             guides(color = guide_legend(ncol = 1))
 

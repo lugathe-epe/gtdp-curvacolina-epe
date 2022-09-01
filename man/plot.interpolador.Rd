@@ -31,7 +31,7 @@ Funcao para visualizacao dos modelos ajustados atraves de \code{interpolador}
 Para plotar uma superficie e necessario amostrar pontos numa grade regular. A definicao desta
 grade e realizada atraves do argumento \code{...}, que sera utilizado numa chamada de
 \code{\link{coordgrade}} e esta grade amostrada do interpolador \code{x}. E possivel deixa-lo nao
-especificado; neste caso sera usado o padrao \code{list(dhl = 200, dpot = 200)}, que deve ser
+especificado; neste caso sera usado o padrao de duzentas divisoes em cada eixo, que deve ser
 suficiente para um plot suave na maioria das circunstancias.
 }
 \seealso{

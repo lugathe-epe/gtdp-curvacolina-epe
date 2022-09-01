@@ -17,7 +17,7 @@ test_that("Visuazalicao de curvacolina", {
 test_that("Visuazalicao de Interpolador", {
     tt <- triangulacao(colinadummy)
 
-    # RODADA SIMPLES 
+    # RODADA SIMPLES
     p2d <- plot(tt, "2d", print = FALSE)
     p3d <- plot(tt, "3d", print = FALSE)
 
@@ -49,6 +49,36 @@ test_that("Visuazalicao de Interpolador", {
 
     expect_equal(class(p2d), c("gg", "ggplot"))
     expect_equal(class(p3d), c("plotly", "htmlwidget"))
+
+    # interpolador por vazao
+    colina2 <- learqprocit(system.file("extdata/procit_cc_alterada.xlsx", package = "curvacolina"))
+    tt <- triangulacao(colina2[[1]], modo = "vaz")
+
+    p2d <- plot(tt, "2d", print = FALSE)
+    p3d <- plot(tt, "3d", print = FALSE)
+
+    expect_equal(class(p2d), c("gg", "ggplot"))
+    expect_equal(class(p3d), c("plotly", "htmlwidget"))
+    tt <- triangulacao(colina2[[1]], modo = "vaz")
+
+    p2d <- plot(tt, "2d", print = FALSE, dvaz = 50)
+    p3d <- plot(tt, "3d", print = FALSE, dvaz = 50)
+
+    expect_equal(class(p2d), c("gg", "ggplot"))
+    expect_equal(class(p3d), c("plotly", "htmlwidget"))
+
+    p2d <- plot(tt, "2d", print = FALSE, byvaz = 10)
+    p3d <- plot(tt, "3d", print = FALSE, byvaz = 10)
+
+    expect_equal(class(p2d), c("gg", "ggplot"))
+    expect_equal(class(p3d), c("plotly", "htmlwidget"))
+
+    # add_colina = FALSE
+    p2d <- plot(tt, "2d", add_colina = FALSE, print = FALSE)
+    p3d <- plot(tt, "3d", add_colina = FALSE, print = FALSE)
+
+    expect_equal(class(p2d), c("gg", "ggplot"))
+    expect_equal(class(p3d), c("plotly", "htmlwidget"))
 })
 
 test_that("Visuazalicao de gradecolina", {
@@ -56,6 +86,24 @@ test_that("Visuazalicao de gradecolina", {
     grade <- predict(tt, coordgrade(colinadummy, 20, 20), as.gradecolina = TRUE)
 
     # rodada simples
+    p2d <- plot(grade, "2d", print = FALSE)
+    p3d <- plot(grade, "3d", print = FALSE)
+
+    expect_equal(class(p2d), c("gg", "ggplot"))
+    expect_equal(class(p3d), c("plotly", "htmlwidget"))
+
+    # add_colina = FALSE
+    p2d <- plot(grade, "2d", add_colina = FALSE, print = FALSE)
+    p3d <- plot(grade, "3d", add_colina = FALSE, print = FALSE)
+
+    expect_equal(class(p2d), c("gg", "ggplot"))
+    expect_equal(class(p3d), c("plotly", "htmlwidget"))
+
+    # interpolador por vazao
+    colina2 <- learqprocit(system.file("extdata/procit_cc_alterada.xlsx", package = "curvacolina"))
+    tt <- triangulacao(colina2[[1]], modo = "vaz")
+    grade <- predict(tt, coordgrade(colina2[[1]], 20, dvaz = 20), as.gradecolina = TRUE)
+
     p2d <- plot(grade, "2d", print = FALSE)
     p3d <- plot(grade, "3d", print = FALSE)
 
