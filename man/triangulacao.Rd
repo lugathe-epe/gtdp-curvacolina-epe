@@ -12,6 +12,9 @@ triangulacao(colina, tessfunc = tessdelaunay, modo = "pot", ...)
 \item{tessfunc}{funcao ou string com nome da funcao pela qual executar a tesselacao do espaco.
 Ver Detalhes}
 
+\item{modo}{um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+modelada}
+
 \item{...}{nao possui funcao, so existe para compatibilizacao com a chamada generica de
 \code{\link{interpolador}}}
 }

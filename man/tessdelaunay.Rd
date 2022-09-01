@@ -8,6 +8,9 @@ tessdelaunay(colina, modo)
 }
 \arguments{
 \item{colina}{objeto \code{curvacolina} contendo curva a tesselar}
+
+\item{modo}{um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+modelada}
 }
 \value{
 matriz com tres colunas indicando, em cada linha, o indice em \code{colina$CC} dos pontos

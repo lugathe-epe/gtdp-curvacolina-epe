@@ -10,6 +10,9 @@ new_interpoladorM(modelos, quebra, modo)
 \item{modelos}{lista de interpoladores estimados}
 
 \item{quebra}{numerico indicando o rendimento da curva a partir da qual troca de interpolador}
+
+\item{modo}{um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+modelada}
 }
 \value{
 objeto da classe \code{interpolador} com subclasse \code{"interpoladorM"}

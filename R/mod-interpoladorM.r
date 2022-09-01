@@ -6,6 +6,8 @@
 #' 
 #' @param modelos lista de interpoladores estimados
 #' @param quebra numerico indicando o rendimento da curva a partir da qual troca de interpolador
+#' @param modo um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+#'     modelada
 #' 
 #' @return objeto da classe \code{interpolador} com subclasse \code{"interpoladorM"}
 

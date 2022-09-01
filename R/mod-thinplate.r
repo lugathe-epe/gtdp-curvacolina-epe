@@ -27,7 +27,7 @@ thinplate <- function(colina, taxa_reducao = 1, modo = "pot", ...) {
     colina_reduzida <- reduzcolina(colina, taxa_reducao)
 
     cols <- c("hl", modo)
-    mod <- Tps(colina_reduzida$CC[, ..cols], colina_reduzida$CC$rend, lambda = 0)
+    mod <- Tps(colina_reduzida$CC[, .SD, .SDcols = cols], colina_reduzida$CC$rend, lambda = 0)
 
     new_thinplate(mod, colina, modo)
 }

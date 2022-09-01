@@ -9,6 +9,7 @@
 #' @param print booleano indicando se o plot deve ser exibido. Caso \code{print = FALSE} o objeto
 #'     sera retornado silenciosamente
 #' @param modo um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+#'     modelada
 #' @param ... existe somente para consistencia de metodos. Nao possui utilidade
 #' 
 #' @examples 
@@ -44,7 +45,7 @@
 
 plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, modo = "pot", ...) {
 
-    hl <- pot <- rend <- rend_label <- NULL
+    hl <- Y <- rend <- rend_label <- NULL
 
     tipo <- match.arg(tipo)
 
@@ -163,7 +164,7 @@ plot.interpolador <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print 
 
 plot.gradecolina <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print = TRUE, ...) {
 
-    hl <- pot <- rend <- NULL
+    hl <- Y <- rend <- NULL
 
     tipo <- match.arg(tipo)
     modo <- attr(x, "modo")

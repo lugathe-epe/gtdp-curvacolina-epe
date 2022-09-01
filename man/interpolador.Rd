@@ -14,7 +14,8 @@ interpolador(colina, metodo, quebra, modo = "pot", ...)
 \item{quebra}{opcional, numerico indicando o rendimento da curva a partir da qual chavear
 metodos. Ver Detalhes}
 
-\item{modo}{um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo}
+\item{modo}{um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+modelada}
 
 \item{...}{demais parametros que possam ser passados as funcoes de ajuste de cada \code{metodo}.
 Ver Detalhes}

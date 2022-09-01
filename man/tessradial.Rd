@@ -8,6 +8,9 @@ tessradial(colina, modo)
 }
 \arguments{
 \item{colina}{um data.frame ou data.table contendo queda liquida, potencia e rendimento}
+
+\item{modo}{um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+modelada}
 }
 \value{
 matriz de tres colunas indicando o indicie em \code{dat} dos pontos correspondentes aos

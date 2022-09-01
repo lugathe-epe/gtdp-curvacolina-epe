@@ -14,7 +14,8 @@
 \item{print}{booleano indicando se o plot deve ser exibido. Caso \code{print = FALSE} o objeto
 sera retornado silenciosamente}
 
-\item{modo}{um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo}
+\item{modo}{um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+modelada}
 
 \item{...}{existe somente para consistencia de metodos. Nao possui utilidade}
 }

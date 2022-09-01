@@ -24,6 +24,8 @@
 #' @param colina objeto \code{curvacolina} retornado pelas funcoes de leitura
 #' @param tessfunc funcao ou string com nome da funcao pela qual executar a tesselacao do espaco.
 #'     Ver Detalhes
+#' @param modo um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+#'     modelada
 #' @param ... nao possui funcao, so existe para compatibilizacao com a chamada generica de 
 #'     \code{\link{interpolador}}
 #' 
@@ -68,6 +70,8 @@ print.triangulacao <- function(x, ...) {
 #' Realiza triangulacao do espaco pelo metodo de Delauney via \code{geometry::delaunayn}
 #' 
 #' @param colina objeto \code{curvacolina} contendo curva a tesselar
+#' @param modo um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+#'     modelada
 #' 
 #' @return matriz com tres colunas indicando, em cada linha, o indice em \code{colina$CC} dos pontos
 #'     correspondentes aos vertices de cada triangulo gerado
@@ -88,6 +92,8 @@ tessdelaunay <- function(colina, modo) {
 #' pontos da ultima curva.
 #' 
 #' @param colina um data.frame ou data.table contendo queda liquida, potencia e rendimento
+#' @param modo um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+#'     modelada
 #' 
 #' @return matriz de tres colunas indicando o indicie em \code{dat} dos pontos correspondentes aos
 #'     vertices de cada triangulo. Cada linha corresponde a um triangulo

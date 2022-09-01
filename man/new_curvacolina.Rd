@@ -40,9 +40,9 @@ Construtor para uso interno, nao deve ser chamado diretamente pelo usuario
 O dado \code{curvas} deve ser um data.table de tres colunas nomeadas
 
 \describe{
-\item{hl} queda liquida
-\item{pot} potencia na turbina
-\item{rend} rendimento da turbina
+\item{\code{hl}}{queda liquida}
+\item{\code{pot}}{potencia na turbina}
+\item{\code{rend}}{rendimento da turbina}
 }
 
 Conjuntamente com os valores de \code{rho} e \code{g} este dado e utilizado para calculo da

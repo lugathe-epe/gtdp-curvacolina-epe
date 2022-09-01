@@ -42,6 +42,7 @@
 #' @param quebra opcional, numerico indicando o rendimento da curva a partir da qual chavear
 #'     metodos. Ver Detalhes
 #' @param modo um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+#'     modelada
 #' @param ... demais parametros que possam ser passados as funcoes de ajuste de cada \code{metodo}.
 #'     Ver Detalhes
 #' 
