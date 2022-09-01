@@ -1,6 +1,14 @@
 test_that("Visuazalicao de curvacolina", {
+    colina2 <- learqprocit(system.file("extdata/procit_cc_alterada.xlsx", package = "curvacolina"))
+
     p2d <- plot(colinadummy, "2d", print = FALSE)
     p3d <- plot(colinadummy, "3d", print = FALSE)
+
+    expect_equal(class(p2d), c("gg", "ggplot"))
+    expect_equal(class(p3d), c("plotly", "htmlwidget"))
+
+    p2d <- plot(colina2[[1]], "2d", print = FALSE, modo = "vaz")
+    p3d <- plot(colina2[[1]], "3d", print = FALSE, modo = "vaz")
 
     expect_equal(class(p2d), c("gg", "ggplot"))
     expect_equal(class(p3d), c("plotly", "htmlwidget"))

@@ -4,7 +4,7 @@
 \alias{plot.curvacolina}
 \title{Visualizacao De \code{curvacolina}}
 \usage{
-\method{plot}{curvacolina}(x, tipo = c("3d", "2d"), print = TRUE, ...)
+\method{plot}{curvacolina}(x, tipo = c("3d", "2d"), print = TRUE, modo = "pot", ...)
 }
 \arguments{
 \item{x}{objeto \code{curvacolina} retornado por uma das funcoes de leitura}
@@ -13,6 +13,8 @@
 
 \item{print}{booleano indicando se o plot deve ser exibido. Caso \code{print = FALSE} o objeto
 sera retornado silenciosamente}
+
+\item{modo}{um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo}
 
 \item{...}{existe somente para consistencia de metodos. Nao possui utilidade}
 }
@@ -26,17 +28,22 @@ Plots bi ou tridimensionais de curvas colinas
 }
 \examples{
 
-arq <- system.file("extdata/colina.xlsx", package = "curvacolina")
+arq <- system.file("extdata/procit_cc_alterada.xlsx", package = "curvacolina")
 colina <- learqcolina(arq)
 
 \dontrun{
 # plot 3d
-plot(colina, "3d")
-plot(colina, "2d")
+plot(colina[[1]], "3d")
+plot(colina[[1]], "2d")
 
 # execucao silenciosa e posterior exibicao
 p <- plot(colina, "2d", print = FALSE)
 print(p)
+
+# plotando por vazao
+plot(colina[[1]], "3d", modo = "vaz")
+plot(colina[[1]], "2d", modo = "vaz")
+
 }
 
 }

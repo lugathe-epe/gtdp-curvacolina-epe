@@ -8,21 +8,27 @@
 #' @param tipo um de \code{c("3d", "2d")} indicando o tipo de grafico desejado
 #' @param print booleano indicando se o plot deve ser exibido. Caso \code{print = FALSE} o objeto
 #'     sera retornado silenciosamente
+#' @param modo um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
 #' @param ... existe somente para consistencia de metodos. Nao possui utilidade
 #' 
 #' @examples 
 #' 
-#' arq <- system.file("extdata/colina.xlsx", package = "curvacolina")
+#' arq <- system.file("extdata/procit_cc_alterada.xlsx", package = "curvacolina")
 #' colina <- learqcolina(arq)
 #' 
 #' \dontrun{
 #' # plot 3d
-#' plot(colina, "3d")
-#' plot(colina, "2d")
+#' plot(colina[[1]], "3d")
+#' plot(colina[[1]], "2d")
 #' 
 #' # execucao silenciosa e posterior exibicao
 #' p <- plot(colina, "2d", print = FALSE)
 #' print(p)
+#' 
+#' # plotando por vazao
+#' plot(colina[[1]], "3d", modo = "vaz")
+#' plot(colina[[1]], "2d", modo = "vaz")
+#' 
 #' }
 #' 
 #' @return se \code{tipo = "3d"} um objeto \code{plotly}, do contrario um objeto \code{ggplot} 
@@ -36,7 +42,7 @@
 #' 
 #' @export 
 
-plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
+plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, modo = "pot", ...) {
 
     hl <- pot <- rend <- rend_label <- NULL
 
@@ -47,13 +53,15 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
 
     if(tipo == "3d") {
         dplot[, rend_label := paste0("Rend = ", rend_label, "%")]
+        dplot[, Y := dplot[[modo]]]
+        leg <- ifelse(modo == "pot", "Pot\U00EAncia (MW)", "Vaz\u00e3o Turbinada (m\u00b3/s)")
 
-        p <- plot_ly(dplot, x = ~hl, y = ~pot, z = ~rend, color = ~rend_label, 
+        p <- plot_ly(dplot, x = ~hl, y = ~Y, z = ~rend, color = ~rend_label,
             colors = viridisLite::viridis(attr(x, "ncurvas")),
             type = "scatter3d", mode = "markers") %>%
             layout(scene = list(
                 xaxis = list(title = list(text = "Queda L\U00EDquida (m)")),
-                yaxis = list(title = list(text = "Pot\U00EAncia (MW)")),
+                yaxis = list(title = list(text = leg)),
                 zaxis = list(title = list(text = "Rendimento (%)")))
             )
 
@@ -62,9 +70,12 @@ plot.curvacolina <- function(x, tipo = c("3d", "2d"), print = TRUE, ...) {
         invisible(p)
     } else {
 
-        p <- ggplot(dplot, aes(hl, pot, color = rend_label)) + geom_point() +
+        dplot[, Y := dplot[[modo]]]
+        leg <- ifelse(modo == "pot", "Pot\U00EAncia (MW)", "Vaz\u00e3o Turbinada (m\u00b3/s)")
+
+        p <- ggplot(dplot, aes(hl, Y, color = rend_label)) + geom_point() +
             scale_color_viridis_d(name = "Rendimento (%)") +
-            labs(x = "Queda L\U00EDquida (m)", y = "Pot\U00EAncia (MW)") +
+            labs(x = "Queda L\U00EDquida (m)", y = leg) +
             theme_bw() +
             guides(color = guide_legend(ncol = 1))
 
