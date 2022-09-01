@@ -4,7 +4,7 @@
 \alias{new_interpoladorM}
 \title{Construtor Interno De \code{interpoladorM}}
 \usage{
-new_interpoladorM(modelos, quebra)
+new_interpoladorM(modelos, quebra, modo)
 }
 \arguments{
 \item{modelos}{lista de interpoladores estimados}

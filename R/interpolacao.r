@@ -109,7 +109,7 @@ interpolador <- function(colina, metodo, quebra, modo = "pot", ...) {
             eval(interp_func, envir = parent.frame())
         }, SIMPLIFY = FALSE)
 
-        new_interpoladorM(interp, quebra)
+        new_interpoladorM(interp, quebra, modo)
     }
 }
 

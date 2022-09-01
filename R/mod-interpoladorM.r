@@ -9,10 +9,11 @@
 #' 
 #' @return objeto da classe \code{interpolador} com subclasse \code{"interpoladorM"}
 
-new_interpoladorM <- function(modelos, quebra) {
+new_interpoladorM <- function(modelos, quebra, modo) {
     obj <- list(superficies = modelos)
 
     class(obj) <- c("interpoladorM", "interpolador")
+    attr(obj, "modo")   <- modo
     attr(obj, "quebra") <- quebra
 
     return(obj)
@@ -49,6 +50,8 @@ predict.interpoladorM <- function(object, pontos, as.gradecolina = FALSE, ...) {
 
     rend <- hl <- pot <- NULL
 
+    modo <- attr(object, "modo")
+
     pontos <- pontos[complete.cases(pontos), ]
 
     if(nrow(pontos) == 0) return(numeric(0))
@@ -60,11 +63,12 @@ predict.interpoladorM <- function(object, pontos, as.gradecolina = FALSE, ...) {
 
     # primeira camada de critica, so vai testar quais pontos estao dentro do menor retangulo que
     # envolve o poligono
-    inpoly <- inpoly & ((pontos[, 1] > min(poly$hl))  & (pontos[, 1] < max(poly$hl)))
-    inpoly <- inpoly & ((pontos[, 2] > min(poly$pot)) & (pontos[, 2] < max(poly$pot)))
+    inpoly <- inpoly & ((pontos[, 1] > min(poly[["hl"]])) & (pontos[, 1] < max(poly[["hl"]])))
+    inpoly <- inpoly & ((pontos[, 2] > min(poly[[modo]])) & (pontos[, 2] < max(poly[[modo]])))
 
     whichin <- which(inpoly)
-    inpoly[whichin] <- as.logical(PTINPOLY(data.matrix(pontos[whichin]), data.matrix(poly[, list(hl, pot)])))
+    inpoly[whichin] <- as.logical(PTINPOLY(data.matrix(pontos[whichin]),
+        data.matrix(poly[, .SD, .SDcols = c("hl", modo)])))
 
     ordem0   <- unlist(split(seq(nrow(pontos)), inpoly + 1))
     l_pontos <- split(pontos, inpoly + 1)
