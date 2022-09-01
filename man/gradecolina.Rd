@@ -16,7 +16,7 @@ data.table com as colunas
 
 \describe{
 \item{\code{hl}}{queda liquida}
-\item{\code{pot}}{potencia gerada}
+\item{\code{pot/vaz}}{potencia ou vazao, dependendo do \code{modo} usado no interpolador}
 \item{\code{rend}}{rendimento interpolado}
 \item{\code{inhull}}{booleano indicando se o ponto foi interpolado (\code{TRUE}) ou extrapolado (\code{FALSE})}
 }

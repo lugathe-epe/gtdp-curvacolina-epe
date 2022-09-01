@@ -13,7 +13,7 @@
 #' 
 #' \describe{
 #' \item{\code{hl}}{queda liquida}
-#' \item{\code{pot}}{potencia gerada}
+#' \item{\code{pot/vaz}}{potencia ou vazao, dependendo do \code{modo} usado no interpolador}
 #' \item{\code{rend}}{rendimento interpolado}
 #' \item{\code{inhull}}{booleano indicando se o ponto foi interpolado (\code{TRUE}) ou extrapolado (\code{FALSE})}
 #' }
@@ -38,7 +38,7 @@ NULL
 #' 
 #' \describe{
 #' \item{\code{hl}}{queda liquida}
-#' \item{\code{pot}}{potencia gerada}
+#' \item{\code{pot/vaz}}{potencia ou vazao, dependendo do \code{modo} usado no interpolador}
 #' \item{\code{rend}}{rendimento interpolado}
 #' \item{\code{inhull}}{booleano indicando se o ponto foi interpolado (\code{TRUE}) ou extrapolado (\code{FALSE})}
 #' }
@@ -49,23 +49,26 @@ NULL
 
 new_gradecolina <- function(pontos, rends, interpolador) {
 
+    modo <- attr(interpolador, "modo")
+
     hl <- pot <- vaz <- rend <- NULL
 
     colina <- getcolina(interpolador)
 
-    nhl  <- length(unique(pontos[, "hl"]))
-    npot <- length(unique(pontos[, "pot"]))
+    nhl <- length(unique(pontos[, "hl"]))
+    nY  <- length(unique(pontos[, modo]))
 
     grade <- as.data.table(cbind(pontos, rend = rends))
 
-    inhull <- inhulln(convhulln(colina$CC[, list(hl, pot)]), data.matrix(pontos))
+    inhull <- inhulln(convhulln(colina$CC[, .SD, .SDcols = c("hl", modo)]), data.matrix(pontos))
     grade$inhull <- inhull
 
     out <- list(grade = grade, colina = colina)
     class(out) <- "gradecolina"
     attr(out, "interp") <- class(interpolador)[1]
-    attr(out, "nhl")  <- nhl
-    attr(out, "npot") <- npot
+    attr(out, "modo") <- modo
+    attr(out, "nhl") <- nhl
+    attr(out, "nY") <- nY
 
     return(out)
 }
