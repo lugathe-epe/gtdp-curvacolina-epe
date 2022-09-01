@@ -4,7 +4,7 @@
 \alias{tessradial}
 \title{Triangulacao Radial}
 \usage{
-tessradial(colina)
+tessradial(colina, modo)
 }
 \arguments{
 \item{colina}{um data.frame ou data.table contendo queda liquida, potencia e rendimento}

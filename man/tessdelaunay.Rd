@@ -4,7 +4,7 @@
 \alias{tessdelaunay}
 \title{Triangulacao Delauney}
 \usage{
-tessdelaunay(colina)
+tessdelaunay(colina, modo)
 }
 \arguments{
 \item{colina}{objeto \code{curvacolina} contendo curva a tesselar}

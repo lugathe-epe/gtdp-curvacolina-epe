@@ -4,7 +4,7 @@
 \alias{triangulacao}
 \title{Triangulacao De \code{curvacolina}}
 \usage{
-triangulacao(colina, tessfunc = tessdelaunay, ...)
+triangulacao(colina, tessfunc = tessdelaunay, modo = "pot", ...)
 }
 \arguments{
 \item{colina}{objeto \code{curvacolina} retornado pelas funcoes de leitura}
@@ -21,7 +21,7 @@ objeto da classe \code{triangulacao} contendo a tesselacao da curva colina
 \description{
 Funcao interna executada quando \code{metodo = "triangulacao"} em \code{interpolador}. O
 argumento \code{tessfunc} permite controlar como o espaco projetado sera tesselado em triangulos.
-Atualmente ha duas opcoes implementadas no pacote:ang
+Atualmente ha duas opcoes implementadas no pacote:
 }
 \details{
 \itemize{

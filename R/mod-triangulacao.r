@@ -4,7 +4,7 @@
 #' 
 #' Funcao interna executada quando \code{metodo = "triangulacao"} em \code{interpolador}. O 
 #' argumento \code{tessfunc} permite controlar como o espaco projetado sera tesselado em triangulos. 
-#' Atualmente ha duas opcoes implementadas no pacote:ang
+#' Atualmente ha duas opcoes implementadas no pacote:
 #' 
 #' \itemize{
 #' \item{\code{\link{tessdelaunay}}}
@@ -31,20 +31,21 @@
 #' 
 #' @export
 
-triangulacao <- function(colina, tessfunc = tessdelaunay, ...) {
+triangulacao <- function(colina, tessfunc = tessdelaunay, modo = "pot", ...) {
     hl <- pot <- NULL
 
     if(is.character(tessfunc)) tessfunc <- as.name(tessfunc)
-    tri <- eval(as.call(list(tessfunc, colina)))
+    tri <- eval(as.call(list(tessfunc, colina, modo)))
 
-    new_triangulacao(tri, colina)
+    new_triangulacao(tri, colina, modo)
 }
 
-new_triangulacao <- function(tri, colina) {
+new_triangulacao <- function(tri, colina, modo) {
 
     obj <- list(triangulos = tri, colina = colina)
 
     class(obj) <- c("triangulacao", "interpolador")
+    attr(obj, "modo") <- modo
     attr(obj, "ntri") <- nrow(tri)
 
     return(obj)
@@ -71,9 +72,9 @@ print.triangulacao <- function(x, ...) {
 #' @return matriz com tres colunas indicando, em cada linha, o indice em \code{colina$CC} dos pontos
 #'     correspondentes aos vertices de cada triangulo gerado
 
-tessdelaunay <- function(colina) {
+tessdelaunay <- function(colina, modo) {
     hl <- pot <- NULL
-    geometry::delaunayn(colina$CC[, list(hl, pot)])
+    geometry::delaunayn(colina$CC[, .SD, .SDcols = c("hl", modo)])
 }
 
 #' Triangulacao Radial
@@ -93,11 +94,11 @@ tessdelaunay <- function(colina) {
 #' 
 #' @importFrom utils tail
 
-tessradial <- function(colina) {
+tessradial <- function(colina, modo) {
 
     rend <- NULL
 
-    tri <- tessdelaunay(colina)
+    tri <- tessdelaunay(colina, modo)
 
     # identifica triangulos da ultima curva de rend para dentro
     ultrends <- tail(attr(colina, "rends"), 2)
@@ -106,10 +107,10 @@ tessradial <- function(colina) {
     tri <- tri[!innertri, ]
 
     dat <- copy(colina$CC)
-    chl  <- dat[rend == ultrends[2]]$hl
-    cpot <- dat[rend == ultrends[2]]$pot
+    chl <- dat[rend == ultrends[2]]$hl
+    cY  <- dat[rend == ultrends[2]][[modo]]
     dat <- dat[rend == ultrends[1]]
-    angord <- orderpoly(dat, chl, cpot)
+    angord <- orderpoly(dat, chl, cY)
 
     N1 <- nrow(dat)
     N2 <- nrow(colina$CC[!(rend %in% ultrends)])
@@ -133,8 +134,7 @@ getcolina.triangulacao <- function(object) object$colina
 #' Realiza interpolacao baricentrica de \code{pontos} nos triangulos da tesselacao
 #' 
 #' @param object objeto da classe \code{triangulacao} retornado pela funcao homonima
-#' @param pontos data.frame ou matriz contendo coordenadas \code{(hl, pot)} dos pontos onde 
-#'     interpolar
+#' @param pontos data.frame ou matriz contendo coordenadas dos pontos onde interpolar
 #' @param as.gradecolina booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
 #'     interpolados nas coordenadas \code{pontos}; se \code{TRUE} um objeto \code{gradecolina}. Veja
 #'     \code{\link{gradecolina}}
@@ -147,6 +147,8 @@ getcolina.triangulacao <- function(object) object$colina
 
 predict.triangulacao <- function(object, pontos, as.gradecolina = FALSE, ...) {
 
+    modo <- attr(object, "modo")
+
     pontos <- pontos[complete.cases(pontos), ]
 
     if(nrow(pontos) == 0) return(numeric(0))
@@ -157,7 +159,7 @@ predict.triangulacao <- function(object, pontos, as.gradecolina = FALSE, ...) {
     triangulos <- object$triangulos
     colina     <- data.matrix(object$colina$CC)
 
-    barycoord <- geometry::tsearchn(colina[, c("hl", "pot")], triangulos, pontos)
+    barycoord <- geometry::tsearchn(colina[, c("hl", modo)], triangulos, pontos)
 
     rends <- sapply(seq(npontos), function(i) {
         indtri <- barycoord$idx[i]
