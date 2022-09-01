@@ -53,13 +53,20 @@ test_that("Modelagem por Tensor Product", {
     expect_equal(names(interp), c("superficie", "colina"))
 
     expect_equal(getcolina.tensorprod(interp), colinadummy)
+    expect_equal(colnames(interp$superficie$model), c("rend", "hl", "pot"))
+
+    # MODO VAZAO
+
+    colina <- learqprocit(system.file("extdata/procit_cc_original.xlsx", package = "curvacolina"))
+    interp_vaz <- interpolador(colina[[1]], "tensorprod", modo = "vaz")
 
     # PREDICT VAZIO
     gg <- expand.grid(hl = 1:10, pot = NA)
     expect_equal(predict(interp, gg), numeric(0))
 
-    gg <- coordgrade(colinadummy, 20, 20)
+    # PREDICTS COM INTERP DE POT
 
+    gg <- coordgrade(colinadummy, 20, 20)
     pred_vec <- predict(interp, gg)
     expect_snapshot_value(pred_vec, style = "json2")
 
@@ -68,6 +75,20 @@ test_that("Modelagem por Tensor Product", {
     expect_equal(class(pred_full[[2]]), "curvacolina")
     expect_equal(colnames(pred_full[[1]]), c("hl", "pot", "rend", "inhull"))
     expect_equal(pred_full[[1]]$rend, pred_vec)
+
+    # PREDICTS COM INTERP DE VAZ
+
+    gg_vaz <- coordgrade(colina[[1]], 20, dvaz = 20)
+    pred_vec_vaz <- predict(interp_vaz, gg_vaz)
+    expect_snapshot_value(pred_vec_vaz, style = "json2")
+
+    pred_full_vaz <- predict(interp_vaz, gg_vaz, TRUE)
+    expect_equal(class(pred_full_vaz), "gradecolina")
+    expect_equal(class(pred_full_vaz[[2]]), "curvacolina")
+    expect_equal(colnames(pred_full_vaz[[1]]), c("hl", "vaz", "rend", "inhull"))
+    expect_equal(pred_full_vaz[[1]]$rend, pred_vec_vaz)
+
+    # PLOTS
 
     p3d <- plot(interp, print = FALSE, dhl = 10, dpot = 10)
     expect_equal(class(p3d), c("plotly", "htmlwidget"))

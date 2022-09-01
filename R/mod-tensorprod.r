@@ -7,6 +7,8 @@
 #' Esta funcao nao deve ser chamada pelo usuario diretamente na maioria dos casos
 #' 
 #' @param colina objeto \code{curvacolina} retornado pelas funcoes de leitura
+#' @param modo um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+#'     modelada
 #' @param ... parametros extras para configuracao do modelo estimado. Ver Detalhes em 
 #'     \code{\link{interpolador}}
 #' 
@@ -16,21 +18,25 @@
 #' 
 #' @export
 
-tensorprod <- function(colina, ...) {
+tensorprod <- function(colina, modo = "pot", ...) {
 
     args <- list(...)
 
     if(is.null(args$bs)) BS <- "ps" else BS <- args$bs
     if(is.null(args$k))  K  <- NA   else K  <- args$k
 
-    mod <- gam(rend ~ te(hl, pot, k = K, bs = BS), data = colina$CC)
+    form <- paste0("rend ~ te(hl, ", modo, ", k = K, bs = BS)")
+    form <- as.formula(form)
 
-    new_tensorprod(mod, colina)
+    mod <- gam(form, data = colina$CC)
+
+    new_tensorprod(mod, colina, modo)
 }
 
-new_tensorprod <- function(mod, colina) {
+new_tensorprod <- function(mod, colina, modo) {
     obj        <- list(superficie = mod, colina = colina)
     class(obj) <- c("tensorprod", "interpolador")
+    attr(obj, "modo") <- modo
     return(obj)
 }
 
@@ -45,8 +51,7 @@ getcolina.tensorprod <- function(object) object$colina
 #' Amostra as coordenadas especificadas via \code{pontos} na superficie suavizada
 #' 
 #' @param object objeto da classe \code{tensorprod} retornado pela funcao homonima
-#' @param pontos data.frame ou matriz contendo coordenadas \code{(hl, pot)} dos pontos onde 
-#'     interpolar
+#' @param pontos data.frame ou matriz contendo coordenadas dos pontos onde interpolar
 #' @param as.gradecolina booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
 #'     interpolados nas coordenadas \code{pontos}; se \code{TRUE} um objeto \code{gradecolina}. Veja
 #'     \code{\link{gradecolina}}

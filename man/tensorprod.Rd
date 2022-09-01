@@ -4,10 +4,13 @@
 \alias{tensorprod}
 \title{Suavizacao De \code{curvacolina} Por Produto Tensor De P-Splines}
 \usage{
-tensorprod(colina, ...)
+tensorprod(colina, modo = "pot", ...)
 }
 \arguments{
 \item{colina}{objeto \code{curvacolina} retornado pelas funcoes de leitura}
+
+\item{modo}{um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+modelada}
 
 \item{...}{parametros extras para configuracao do modelo estimado. Ver Detalhes em
 \code{\link{interpolador}}}
