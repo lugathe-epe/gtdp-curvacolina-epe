@@ -126,6 +126,47 @@ learqprocit <- function(arq) {
     return(colinas)
 }
 
+#' Construtor Interno Da Classe \code{curvacolina}
+#' 
+#' Construtor para uso interno, nao deve ser chamado diretamente pelo usuario
+#' 
+#' O dado \code{curvas} deve ser um data.table de tres colunas nomeadas
+#' 
+#' \describe{
+#' \item{hl} queda liquida
+#' \item{pot} potencia na turbina
+#' \item{rend} rendimento da turbina
+#' }
+#' 
+#' Conjuntamente com os valores de \code{rho} e \code{g} este dado e utilizado para calculo da 
+#' vazao. Se nao forem passados, serao assumidos como NA e a vazao tambem sera NA. 
+#' 
+#' Caso ja exista uma coluna de vazao chamada \code{vaz}, ela sera preservada no dado. Caso sejam 
+#' passados \code{rho} e \code{g} nesse caso eles ficarao incompativeis com os valores de vazao.
+#' 
+#' @param curvas data.table contendo a digitalizacao da colina. Ver Detalhes
+#' @param g aceleracao da gravidade
+#' @param rho massa especifica da agua
+#' 
+#' @return objeto \code{curvacolina}, uma lista de um elemento \code{data.table} contendo as colunas
+#' 
+#' \describe{
+#' \item{\code{hl}}{queda liquida}
+#' \item{\code{pot}}{potencia gerada}
+#' \item{\code{vaz}}{vazao turbinada}
+#' \item{\code{rend}}{rendimento correspondente}
+#' }
+#' 
+#' Adicionalmente tem os atributos:
+#' 
+#' \describe{
+#' \item{\code{ncurvas}}{numero de curvas na colina}
+#' \item{\code{rends}}{vetor de rendimentos contidos na curva colina}
+#' \item{\code{max}}{rendimento no "olho" da colina}
+#' \item{\code{rho}}{densidade da agua associada}
+#' \item{\code{g}}{gravidade associada}
+#' } 
+#' 
 #' @import data.table
 
 new_curvacolina <- function(curvas, g, rho) {
