@@ -23,6 +23,7 @@ Funcao auxiliar para gerar uma sequencia de pontos de segmentacao num determinad
 }
 \examples{
 
+\dontrun{
 gerarange(1:20, 5, expande = c(0, 0))
 # [1]  1.00  5.75 10.50 15.25 20.00
 
@@ -31,5 +32,6 @@ gerarange(1:20, by = 5, expande = c(0, 0))
 
 gerarange(1:20, by = 5, expande = c(0.1, 0.1))
 # [1] -5  0  5 10 15 20 25
+}
 
 }

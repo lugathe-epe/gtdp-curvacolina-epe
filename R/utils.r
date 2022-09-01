@@ -132,6 +132,7 @@ coordgrade.curvacolina <- function(colina, dhl, dpot, dvaz, byhl, bypot, byvaz, 
 #' 
 #' @examples 
 #' 
+#' \dontrun{
 #' gerarange(1:20, 5, expande = c(0, 0))
 #' # [1]  1.00  5.75 10.50 15.25 20.00
 #' 
@@ -140,6 +141,7 @@ coordgrade.curvacolina <- function(colina, dhl, dpot, dvaz, byhl, bypot, byvaz, 
 #' 
 #' gerarange(1:20, by = 5, expande = c(0.1, 0.1))
 #' # [1] -5  0  5 10 15 20 25
+#' }
 #' 
 #' @return vetor de divisoes no dominio de \code{vec} de acordo com os parametros passados
 

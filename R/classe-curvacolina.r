@@ -294,7 +294,8 @@ parsedadocolina <- function(x, force) {
 
     ncolsx <- ncol(x)
     temcolnames <- all(mincols %in% colnames(x))
-    keepcols <- match(c(mincols, "vaz"), colnames(x))
+    keepcols <- colnames(x)[match(c(mincols, "vaz"), colnames(x))]
+    keepcols <- keepcols[!is.na(keepcols)]
 
     if(force) {
         if(!temcolnames) {

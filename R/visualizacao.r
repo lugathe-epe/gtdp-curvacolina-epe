@@ -15,7 +15,7 @@
 #' @examples 
 #' 
 #' arq <- system.file("extdata/procit_cc_alterada.xlsx", package = "curvacolina")
-#' colina <- learqcolina(arq)
+#' colina <- learqprocit(arq)
 #' 
 #' \dontrun{
 #' # plot 3d
