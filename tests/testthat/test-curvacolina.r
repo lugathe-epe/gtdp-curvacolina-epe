@@ -271,6 +271,17 @@ test_that("as.curvacolina", {
 
     expect_equal(attr(xx4, "g"), 9.81)
     expect_equal(attr(xx4, "rho"), 1000)
+
+    # PRESERVACAO DE VAZAO -----------------------------------------------------
+
+    cc <- learqprocit(system.file("extdata/procit_cc_original.xlsx", package = "curvacolina"))[[1]]
+
+    cc2 <- as.curvacolina(cc$CC)
+    expect_true(all(mapply("-", cc$CC, cc2$CC) == 0))
+
+    # mesmo passando novos g e rho eles sao ignorados quando ja existe coluna de vazao
+    cc3 <- as.curvacolina(cc$CC, 9.81, 1000)
+    expect_true(all(mapply("-", cc3$CC, cc2$CC) == 0))
 })
 
 test_that("set_grho", {
