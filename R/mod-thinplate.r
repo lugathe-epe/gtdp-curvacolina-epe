@@ -9,6 +9,8 @@
 #' @param colina objeto \code{curvacolina} retornado pelas funcoes de leitura
 #' @param taxa_reducao inteiro indicando reducao do tamanho do historico em \code{taxa_reducao}
 #'     vezes. Ver Detalhes
+#' @param modo um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+#'     modelada
 #' @param ... nao possui funcao, so existe para compatibilizacao com a chamada generica de 
 #'     \code{\link{interpolador}}
 #' 
@@ -18,20 +20,22 @@
 #' 
 #' @export
 
-thinplate <- function(colina, taxa_reducao = 1, ...) {
+thinplate <- function(colina, taxa_reducao = 1, modo = "pot", ...) {
 
     hl <- pot <- rend <- NULL
 
     colina_reduzida <- reduzcolina(colina, taxa_reducao)
 
-    mod <- Tps(colina_reduzida$CC[, list(hl, pot)], colina_reduzida$CC$rend, lambda = 0)
+    cols <- c("hl", modo)
+    mod <- Tps(colina_reduzida$CC[, ..cols], colina_reduzida$CC$rend, lambda = 0)
 
-    new_thinplate(mod, colina)
+    new_thinplate(mod, colina, modo)
 }
 
-new_thinplate <- function(mod, colina) {
+new_thinplate <- function(mod, colina, modo) {
     obj        <- list(superficie = mod, colina = colina)
     class(obj) <- c("thinplate", "interpolador")
+    attr(obj, "modo") <- modo
     return(obj)
 }
 
@@ -46,8 +50,7 @@ getcolina.thinplate <- function(object) object$colina
 #' Amostra as coordenadas especificadas via \code{pontos} na superficie suavizada
 #' 
 #' @param object objeto da classe \code{thinplate} retornado pela funcao homonima
-#' @param pontos data.frame ou matriz contendo coordenadas \code{(hl, pot)} dos pontos onde 
-#'     interpolar
+#' @param pontos data.frame ou matriz contendo coordenadas dos pontos onde interpolar
 #' @param as.gradecolina booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
 #'     interpolados nas coordenadas \code{pontos}; se \code{TRUE} um objeto \code{gradecolina}. Veja
 #'     \code{\link{gradecolina}}

@@ -9,8 +9,7 @@
 \arguments{
 \item{object}{objeto da classe \code{thinplate} retornado pela funcao homonima}
 
-\item{pontos}{data.frame ou matriz contendo coordenadas \code{(hl, pot)} dos pontos onde
-interpolar}
+\item{pontos}{data.frame ou matriz contendo coordenadas dos pontos onde interpolar}
 
 \item{as.gradecolina}{booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
 interpolados nas coordenadas \code{pontos}; se \code{TRUE} um objeto \code{gradecolina}. Veja
