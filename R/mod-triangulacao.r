@@ -169,7 +169,7 @@ predict.triangulacao <- function(object, pontos, as.gradecolina = FALSE, ...) {
     })
 
     if(as.gradecolina) {
-        out <- new_gradecolina(pontos, rends, object)
+        out <- new_gradecolina(as.data.frame(pontos), rends, object)
     } else {
         out <- as.numeric(rends)
     }

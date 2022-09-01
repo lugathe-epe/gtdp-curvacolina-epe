@@ -55,8 +55,8 @@ new_gradecolina <- function(pontos, rends, interpolador) {
 
     colina <- getcolina(interpolador)
 
-    nhl <- length(unique(pontos[, "hl"]))
-    nY  <- length(unique(pontos[, modo]))
+    nhl <- length(unique(pontos[["hl"]]))
+    nY  <- length(unique(pontos[[modo]]))
 
     grade <- as.data.table(cbind(pontos, rend = rends))
 
