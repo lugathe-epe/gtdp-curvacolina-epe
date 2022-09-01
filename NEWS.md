@@ -6,6 +6,7 @@
   * `interpolador` agora recebe argumento `modo` indicando se a curva colina modelada e do tipo
     `hl x pot` ou `hl x vaz`
   * Funcoes de visualizacao agora suportam plots de colina e ajustes por vazao
+  * Metodos de `gradecolina` adaptados para uso com grades geradas de interpoladores por vazao
   * `coordgrade` agora pode gerar discretizacao de dominios `hl x vazao`, alem de `hl x potencia`
 
 ## Bug fixes

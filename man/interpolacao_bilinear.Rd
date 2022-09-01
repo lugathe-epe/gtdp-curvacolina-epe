@@ -16,8 +16,7 @@
 \arguments{
 \item{object}{objeto da classe \code{gradecolina}}
 
-\item{pontos}{data.frame-like contendo as coordenadas \code{hl} e \code{pot} dos pontos a
-interpolar.}
+\item{pontos}{data.frame ou matriz contendo pontos nos quais amostrar o rendimento}
 
 \item{full.output}{booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
 interpolados nas coordenadas \code{pontos}; se \code{TRUE} um data.table de \code{pontos} com

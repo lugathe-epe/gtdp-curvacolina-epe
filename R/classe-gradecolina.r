@@ -85,8 +85,7 @@ new_gradecolina <- function(pontos, rends, interpolador) {
 #' original na grade.
 #' 
 #' @param object objeto da classe \code{gradecolina}
-#' @param pontos data.frame-like contendo as coordenadas \code{hl} e \code{pot} dos pontos a 
-#'     interpolar.
+#' @param pontos data.frame ou matriz contendo pontos nos quais amostrar o rendimento
 #' @param full.output booleano -- se \code{FALSE} (padrao) retorna apenas o vetor de rendimentos
 #'     interpolados nas coordenadas \code{pontos}; se \code{TRUE} um data.table de \code{pontos} com
 #'     a coluna \code{rend} adicionada
@@ -127,29 +126,32 @@ new_gradecolina <- function(pontos, rends, interpolador) {
 
 predict.gradecolina <- function(object, pontos, full.output = FALSE, ...) {
 
-    hl <- pot <- ordem0 <- NULL
+    hl <- pot <- vaz <- ordem0 <- NULL
+
+    modo <- attr(object, "modo")
 
     gradecolina <- as.data.table(object[[1]])
     pontos      <- as.data.table(pontos)
 
-    hlGrade  <- gradecolina[, unique(hl)]
-    potGrade <- gradecolina[, unique(pot)]
-    rendGrade <- data.matrix(dcast(gradecolina, hl ~ pot, value.var = "rend")[, -1])
+    hlGrade <- unique(gradecolina[["hl"]])
+    YGrade  <- unique(gradecolina[[modo]])
+    form <- as.formula(paste0("hl ~ ", modo))
+    rendGrade <- data.matrix(dcast(gradecolina, form, value.var = "rend")[, -1])
 
     pontos[, ordem0 := seq_len(.N)]
-    setorder(pontos, pot)
-    hlPred  <- pontos[, hl]
-    potPred <- pontos[, pot]
+    if(modo == "pot") setorder(pontos, pot) else setorder(pontos, vaz)
+    hlPred <- pontos[["hl"]]
+    YPred  <- pontos[[modo]]
 
-    interp <- INTERPBILIN(hlGrade, potGrade, rendGrade, hlPred, potPred)
+    interp <- INTERPBILIN(hlGrade, YGrade, rendGrade, hlPred, YPred)
 
     if(full.output) {
-        out    <- cbind(pontos[, list(hl, pot)], rend = as.numeric(interp))
+        out    <- cbind(pontos[, .SD, .SDcols = c("hl", modo)], rend = as.numeric(interp))
 
         # o inhulln reclama se receber uma matriz de inteiros (inacreditavelmente), entao precisa
         # somar um 0.0 para converter a matriz em floats
-        pts    <- data.matrix(pontos[, list(hl, pot)]) + .0
-        inhull <- inhulln(convhulln(object$colina$CC[, list(hl, pot)]), pts)
+        pts    <- data.matrix(pontos[, .SD, .SDcols = c("hl", modo)]) + .0
+        inhull <- inhulln(convhulln(object$colina$CC[, .SD, .SDcols = c("hl", modo)]), pts)
 
         out[, inhull := inhull]
     } else {
@@ -168,9 +170,8 @@ predict.gradecolina <- function(object, pontos, full.output = FALSE, ...) {
 
 fitted.gradecolina <- function(object, full.output = FALSE, ...) {
 
-    hl <- pot <- NULL
-
-    fitt <- predict(object, object$colina$CC[, list(hl, pot)], full.output)
+    modo <- attr(object, "modo")
+    fitt <- predict(object, object$colina$CC[, .SD, .SDcols = c("hl", modo)], full.output)
 
     return(fitt)
 }
