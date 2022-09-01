@@ -13,7 +13,7 @@
 #' \item{\code{\link{tensorprod}}}
 #' }
 #' 
-#' Se \code{metodo = "triangulacao"}, a colina fornecida e projetada no plano hl x pot e entao 
+#' Se \code{metodo = "triangulacao"}, a colina fornecida e projetada no plano hl x pot/vaz e entao 
 #' tesselada atraves da triangulacao de Delaunay. Interpolacao de um ponto em objetos de 
 #' triangulacao se da atraves de transformacao para coordenadas baricentricas e subsequente media
 #' ponderada dos rendimentos nos vertices do triangulo que o contem.
@@ -41,6 +41,7 @@
 #' @param metodo um ou dois de \code{c("triangulacao", "thinplate", "tensorpro")}. Ver Detalhes
 #' @param quebra opcional, numerico indicando o rendimento da curva a partir da qual chavear
 #'     metodos. Ver Detalhes
+#' @param modo um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
 #' @param ... demais parametros que possam ser passados as funcoes de ajuste de cada \code{metodo}.
 #'     Ver Detalhes
 #' 
@@ -79,7 +80,7 @@
 #' 
 #' @export
 
-interpolador <- function(colina, metodo, quebra, ...) {
+interpolador <- function(colina, metodo, quebra, modo = "pot", ...) {
 
     rend <- NULL
 
@@ -87,6 +88,7 @@ interpolador <- function(colina, metodo, quebra, ...) {
         interp_func <- match.call()
         interp_func[[1]] <- as.name(metodo)
         interp_func$metodo <- NULL
+        interp_func$modo <- modo
 
         interp <- eval(interp_func, envir = parent.frame())
 
@@ -102,6 +104,7 @@ interpolador <- function(colina, metodo, quebra, ...) {
             interp_func[[1]] <- as.name(m)
             interp_func$colina <- c
             interp_func$metodo <- NULL
+            interp_func$modo <- modo
 
             eval(interp_func, envir = parent.frame())
         }, SIMPLIFY = FALSE)

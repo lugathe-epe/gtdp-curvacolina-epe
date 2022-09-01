@@ -4,7 +4,7 @@
 \alias{interpolador}
 \title{Modelo Para Interpolacao De Curva Colina}
 \usage{
-interpolador(colina, metodo, quebra, ...)
+interpolador(colina, metodo, quebra, modo = "pot", ...)
 }
 \arguments{
 \item{colina}{objeto da classe \code{curvacolina} (retornado pelas funcoes de leitura)}
@@ -13,6 +13,8 @@ interpolador(colina, metodo, quebra, ...)
 
 \item{quebra}{opcional, numerico indicando o rendimento da curva a partir da qual chavear
 metodos. Ver Detalhes}
+
+\item{modo}{um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo}
 
 \item{...}{demais parametros que possam ser passados as funcoes de ajuste de cada \code{metodo}.
 Ver Detalhes}
@@ -34,7 +36,7 @@ quais interpolar a colina original. Atualmente ha tres abordagens implementadas:
 \item{\code{\link{tensorprod}}}
 }
 
-Se \code{metodo = "triangulacao"}, a colina fornecida e projetada no plano hl x pot e entao
+Se \code{metodo = "triangulacao"}, a colina fornecida e projetada no plano hl x pot/vaz e entao
 tesselada atraves da triangulacao de Delaunay. Interpolacao de um ponto em objetos de
 triangulacao se da atraves de transformacao para coordenadas baricentricas e subsequente media
 ponderada dos rendimentos nos vertices do triangulo que o contem.
