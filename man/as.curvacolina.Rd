@@ -29,6 +29,11 @@ Por padrao a conversao de \code{x} so sera executada caso tres criterios sejam a
 \item{rendimentos nao estejam em formato decimal (ex: 0.91)}
 }
 
+A coluna de vazao nao e obrigatoria no dado, pois na maior parte das vezes sera calculada a
+partir da potencia. Caso ela exista, sera preservada na saida por padrao quando
+\code{force = FALSE}. Se \code{force = TRUE}, caso existam as demais colunas no dado, vazao sera
+preservada, do contrario ela e descartada para ser recalculada.
+
 Caso um ou mais destes requisitos nao seja atendido, por padrao a conversao sera abotada. Nestes
 casos, o argumento \code{force} permite forcar a transformacao do dado para \code{curvacolina}. A
 seguir sao detalhados os comportamentos caso \code{force = TRUE} e algum criterio e violado.

@@ -139,7 +139,9 @@ new_curvacolina <- function(curvas, g, rho) {
 
     rends <- curvas[, unique(rend)]
 
-    curvas[, vaz := pot / (hl * rend / 100 * rho * g) * 1e6]
+    if(is.null(curvas$vaz) || all(is.na(curvas$vaz))) {
+        curvas[, vaz := pot / (hl * rend / 100 * rho * g) * 1e6]
+    }
     setcolorder(curvas, c("hl", "pot", "vaz", "rend"))
 
     colina <- list(CC = curvas)
@@ -247,22 +249,23 @@ parsedadocolina <- function(x, force) {
 
     x <- as.data.frame(x)
 
-    cols <- c("hl", "pot", "rend")
+    mincols <- c("hl", "pot", "rend")
 
     ncolsx <- ncol(x)
-    temcolnames <- all(cols %in% colnames(x))
+    temcolnames <- all(mincols %in% colnames(x))
+    keepcols <- match(c(mincols, "vaz"), colnames(x))
 
     if(force) {
         if(!temcolnames) {
             if(ncolsx >= 3) {
                 x <- x[, 1:3]
                 warning("'x' nao possui todas as colunas 'hl', 'pot' e 'rend' -- tomando as tres primeiras")
-                colnames(x) <- cols
+                colnames(x) <- mincols
             } else if(ncolsx < 3) {
                 stop("'x' possui menos de tres colunas -- abortando operacao")
             }
         } else {
-            x <- x[, cols]
+            x <- x[, keepcols]
         }
 
         classes <- lapply(x, class)
@@ -292,7 +295,7 @@ parsedadocolina <- function(x, force) {
             stop("Verifique se as colunas 'hl', 'pot', 'rend' constam no dado")
         }
 
-        x <- x[, cols]
+        x <- x[, keepcols]
 
         classes <- lapply(x, class)
         numerica <- sapply(classes, function(x) (x == "numeric") | (x == "integer"))
@@ -316,6 +319,11 @@ parsedadocolina <- function(x, force) {
 #' \item{alguma das colunas nao esteja em formato numerico (ex: rendimento como "91%" ou "0.9%")}
 #' \item{rendimentos nao estejam em formato decimal (ex: 0.91)}
 #' }
+#' 
+#' A coluna de vazao nao e obrigatoria no dado, pois na maior parte das vezes sera calculada a 
+#' partir da potencia. Caso ela exista, sera preservada na saida por padrao quando 
+#' \code{force = FALSE}. Se \code{force = TRUE}, caso existam as demais colunas no dado, vazao sera
+#' preservada, do contrario ela e descartada para ser recalculada.
 #' 
 #' Caso um ou mais destes requisitos nao seja atendido, por padrao a conversao sera abotada. Nestes 
 #' casos, o argumento \code{force} permite forcar a transformacao do dado para \code{curvacolina}. A
@@ -399,7 +407,7 @@ reduzcolina <- function(colina, taxa) {
         }
         d
     })
-    colreduzida <- as.curvacolina(rbindlist(colreduzida))
+    colreduzida <- as.curvacolina(rbindlist(colreduzida), attr(colina, "g"), attr(colina, "rho"))
 
     return(colreduzida)
 }
