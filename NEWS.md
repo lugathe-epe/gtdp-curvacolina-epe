@@ -1,6 +1,17 @@
 # modvaz
 
-* `coordgrade` agora pode gerar discretizacao de dominios hl x vazao, alem de hl x potencia
+## New features
+
+* Suporte a tratamento dos dados por vazao
+  * `interpolador` agora recebe argumento `modo` indicando se a curva colina modelada e do tipo
+    `hl x pot` ou `hl x vaz`
+  * Funcoes de visualizacao agora suportam plots de colina e ajustes por vazao
+  * `coordgrade` agora pode gerar discretizacao de dominios `hl x vazao`, alem de `hl x potencia`
+
+## Bug fixes
+
+* Funcoes construtoras de objeto `curvacolina` agora preservam colunas de vazao precalculadas, que 
+  anteriormente acabavam sendo descartadas
 
 # curvacolina 1.8.0
 
