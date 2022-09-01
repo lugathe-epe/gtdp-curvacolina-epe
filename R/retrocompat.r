@@ -55,6 +55,7 @@ retamindist <- function(arq) {
 new_retamindist <- function(grade, colina) {
     out <- list(superficie = grade, colina = colina)
     class(out) <- c("retamindist", "interpolador")
+    attr(out, "modo") <- "pot"
 
     return(out)
 }
