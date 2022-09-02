@@ -1,7 +1,7 @@
 Package: curvacolina
 Title: Interface Para Leitura, Interpolacao E Extrapolacao De Curvas
     Colina
-Version: 1.9.1
+Version: 1.9.2
 Authors@R: 
     person("Lucas", "Khenayfis", , "lucaskhenayfis@example.com", role = c("aut", "cre"))
 Description: Funcoes para extracao dos dados de curva colina digitalizada
