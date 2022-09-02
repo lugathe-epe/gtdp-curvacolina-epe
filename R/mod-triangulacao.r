@@ -116,7 +116,7 @@ tessradial <- function(colina, modo) {
     chl <- dat[rend == ultrends[2]]$hl
     cY  <- dat[rend == ultrends[2]][[modo]]
     dat <- dat[rend == ultrends[1]]
-    angord <- orderpoly(dat, chl, cY)
+    angord <- orderpoly(dat, chl, cY, modo = modo)
 
     N1 <- nrow(dat)
     N2 <- nrow(colina$CC[!(rend %in% ultrends)])

@@ -4,14 +4,17 @@
 \alias{orderpoly}
 \title{Ordem Dos Vertices De Poligono}
 \usage{
-orderpoly(dat, centro_hl, centro_pot)
+orderpoly(dat, centro_hl, centro_Y, modo)
 }
 \arguments{
 \item{dat}{\code{data.table} contendo vertices de um poligono cuja ordem sera determinada}
 
 \item{centro_hl}{opcional, valor para centralizar \code{dat$hl}. Caso vazio usa a media}
 
-\item{centro_pot}{opcional, valor para centralizar \code{dat$pot}. Caso vazio usa a media}
+\item{centro_Y}{opcional, valor para centralizar \code{dat$Y}. Caso vazio usa a media}
+
+\item{modo}{um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+modelada}
 }
 \value{
 vetor de inteiros indicando os indices dos vertices na ordenacao por angulo
@@ -22,5 +25,5 @@ Centraliza \code{dat} por referencia e retorna vetor de indices dos vertices em 
 \details{
 A determinacao de ordem dos vertices e feita com base no angulo entre cada um e o centro do
 poligono. Este centro pode ser infromado por meio dos argumentos \code{centro_hl} e
-\code{centro_pot} ou, caso estes fiquem vazios, sera calculado como a media amostral.
+\code{centro_Y} ou, caso estes fiquem vazios, sera calculado como a media amostral.
 }

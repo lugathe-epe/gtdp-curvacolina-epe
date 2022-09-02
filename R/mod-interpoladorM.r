@@ -59,7 +59,7 @@ predict.interpoladorM <- function(object, pontos, as.gradecolina = FALSE, ...) {
     if(nrow(pontos) == 0) return(numeric(0))
 
     poly   <- object$superficies[[1]]$colina[rend == attr(object, "quebra")]$CC
-    angord <- orderpoly(poly)
+    angord <- orderpoly(poly, modo = modo)
     poly   <- poly[angord]
     inpoly <- rep(TRUE, nrow(pontos))
 

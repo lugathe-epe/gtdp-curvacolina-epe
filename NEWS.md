@@ -1,3 +1,9 @@
+# curvacolina 1.9.2
+
+## Bug fixes
+
+* Corrige `orderpoly` que ainda nao estava preparada para interpoladores por vazao
+
 # curvacolina 1.9.1
 
 ## New features

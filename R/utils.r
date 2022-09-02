@@ -185,26 +185,29 @@ getcolina <- function(object) UseMethod("getcolina")
 #' 
 #' A determinacao de ordem dos vertices e feita com base no angulo entre cada um e o centro do
 #' poligono. Este centro pode ser infromado por meio dos argumentos \code{centro_hl} e 
-#' \code{centro_pot} ou, caso estes fiquem vazios, sera calculado como a media amostral.
+#' \code{centro_Y} ou, caso estes fiquem vazios, sera calculado como a media amostral.
 #' 
 #' @param dat \code{data.table} contendo vertices de um poligono cuja ordem sera determinada
 #' @param centro_hl opcional, valor para centralizar \code{dat$hl}. Caso vazio usa a media 
-#' @param centro_pot opcional, valor para centralizar \code{dat$pot}. Caso vazio usa a media 
+#' @param centro_Y opcional, valor para centralizar \code{dat$Y}. Caso vazio usa a media 
+#' @param centro_Y opcional, valor para centralizar \code{dat$Y}. Caso vazio usa a media
+#' @param modo um de \code{c("pot", "vaz")}, indicando qual o modo de curva colina esta sendo
+#'     modelada 
 #' 
 #' @return vetor de inteiros indicando os indices dos vertices na ordenacao por angulo
 
-orderpoly <- function(dat, centro_hl, centro_pot) {
+orderpoly <- function(dat, centro_hl, centro_Y, modo) {
 
-    ang <- pot <- hl <- NULL
+    ang <- Y <- hl <- NULL
 
-    if(missing(centro_hl))  centro_hl  <- mean(dat$hl)
-    if(missing(centro_pot)) centro_pot <- mean(dat$pot)
+    if(missing(centro_hl)) centro_hl <- mean(dat$hl)
+    if(missing(centro_Y))  centro_Y  <- mean(dat[[modo]])
 
-    dat$hl  <- dat$hl - centro_hl
-    dat$pot <- dat$pot - centro_pot
-    dat[, ang := atan2(pot, hl)]
+    dat$hl      <- dat$hl - centro_hl
+    dat[[modo]] <- dat[[modo]] - centro_Y
+    ang <- atan2(dat[[modo]], dat$hl)
 
-    angord <- order(dat$ang)
+    angord <- order(ang)
 
     return(angord)
 }
