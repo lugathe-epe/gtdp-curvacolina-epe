@@ -1,3 +1,11 @@
+# curvacolina 1.9.3
+
+## Bug fixes
+
+* `new_gradecolina` agora retorna uma coluna a mais, de vaz ou pot, calculada a partir da tabela
+* `plot.gradecolina` tinha um efeito colateral que adicionava uma colina a grade sendo plotada. Isto
+  foi corrigido
+
 # curvacolina 1.9.2
 
 ## Bug fixes
