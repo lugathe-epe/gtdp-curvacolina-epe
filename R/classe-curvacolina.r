@@ -286,7 +286,7 @@ write.curvacolina <- function(x, file) fwrite(x$CC, file, quote = FALSE, sep = "
 
 parsedadocolina <- function(x, force) {
 
-    if(!("data.frame" %in% class(x))) stop("Argumento deve ser um data.frame ou data.table")
+    if(!inherits(x, "data.frame")) stop("Argumento deve ser um data.frame ou data.table")
 
     x <- as.data.frame(x)
 
@@ -488,7 +488,7 @@ reduzcolina <- function(colina, taxa) {
 
 set_grho <- function(x, g, rho) {
 
-    if(class(x) != "curvacolina") stop("'x' nao e um objeto 'curvacolina'")
+    if(!inherits(x, "curvacolina")) stop("'x' nao e um objeto 'curvacolina'")
 
     out <- x
 
