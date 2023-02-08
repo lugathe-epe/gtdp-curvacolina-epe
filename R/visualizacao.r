@@ -175,7 +175,7 @@ plot.gradecolina <- function(x, tipo = c("3d", "2d"), add_colina = TRUE, print =
         colina <- data.table(hl = NA_real_, pot = NA_real_, vaz = NA_real_, rend = 0)
     }
 
-    grade <- x$grade
+    grade <- copy(x$grade)
     grade[, Y := grade[[modo]]]
     colina[, Y := colina[[modo]]]
     leg <- ifelse(modo == "pot", "Pot\U00EAncia (MW)", "Vaz\u00e3o Turbinada (m\u00b3/s)")
