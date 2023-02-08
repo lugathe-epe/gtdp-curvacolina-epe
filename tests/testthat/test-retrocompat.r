@@ -19,7 +19,7 @@ test_that("Reta Minima Distancia", {
     pred_full <- predict(interp, gg, TRUE)
     expect_equal(class(pred_full), "gradecolina")
     expect_equal(class(pred_full[[2]]), "curvacolina")
-    expect_equal(colnames(pred_full[[1]]), c("hl", "pot", "rend", "inhull"))
+    expect_equal(colnames(pred_full[[1]]), c("hl", "pot", "rend", "vaz", "inhull"))
     expect_equal(pred_full[[1]]$rend, pred_vec)
 
     p3d <- plot(interp, print = FALSE, dhl = 10, dpot = 10)

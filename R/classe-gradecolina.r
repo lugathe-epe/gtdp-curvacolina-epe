@@ -60,6 +60,14 @@ new_gradecolina <- function(pontos, rends, interpolador) {
 
     grade <- as.data.table(cbind(pontos, rend = rends))
 
+    g   <- attr(interpolador$colina, "g")
+    rho <- attr(interpolador$colina, "rho")
+    if(modo == "pot") {
+        grade[, vaz := pot / (hl * rend / 100 * rho * g) * 1e6]
+    } else {
+        grade[, pot := vaz * (hl * rend / 100 * rho * g) / 1e6]
+    }
+
     inhull <- inhulln(convhulln(colina$CC[, .SD, .SDcols = c("hl", modo)]), data.matrix(pontos))
     grade$inhull <- inhull
 

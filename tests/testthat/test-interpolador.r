@@ -32,7 +32,7 @@ test_that("Modelagem por Triangulacao", {
     pred_full <- predict(interp, gg, TRUE)
     expect_equal(class(pred_full), "gradecolina")
     expect_equal(class(pred_full[[2]]), "curvacolina")
-    expect_equal(colnames(pred_full[[1]]), c("hl", "pot", "rend", "inhull"))
+    expect_equal(colnames(pred_full[[1]]), c("hl", "pot", "rend", "vaz", "inhull"))
     expect_equal(pred_full[[1]]$rend, pred_vec)
 
     # PREDICTS COM INTERP DE VAZ
@@ -44,7 +44,7 @@ test_that("Modelagem por Triangulacao", {
     pred_full_vaz <- predict(interp_vaz, gg_vaz, TRUE)
     expect_equal(class(pred_full_vaz), "gradecolina")
     expect_equal(class(pred_full_vaz[[2]]), "curvacolina")
-    expect_equal(colnames(pred_full_vaz[[1]]), c("hl", "vaz", "rend", "inhull"))
+    expect_equal(colnames(pred_full_vaz[[1]]), c("hl", "vaz", "rend", "pot", "inhull"))
     expect_equal(pred_full_vaz[[1]]$rend, pred_vec_vaz)
 
     # PLOTS
@@ -93,7 +93,7 @@ test_that("Modelagem por Tensor Product", {
     pred_full <- predict(interp, gg, TRUE)
     expect_equal(class(pred_full), "gradecolina")
     expect_equal(class(pred_full[[2]]), "curvacolina")
-    expect_equal(colnames(pred_full[[1]]), c("hl", "pot", "rend", "inhull"))
+    expect_equal(colnames(pred_full[[1]]), c("hl", "pot", "rend", "vaz", "inhull"))
     expect_equal(pred_full[[1]]$rend, pred_vec)
 
     # PREDICTS COM INTERP DE VAZ
@@ -105,7 +105,7 @@ test_that("Modelagem por Tensor Product", {
     pred_full_vaz <- predict(interp_vaz, gg_vaz, TRUE)
     expect_equal(class(pred_full_vaz), "gradecolina")
     expect_equal(class(pred_full_vaz[[2]]), "curvacolina")
-    expect_equal(colnames(pred_full_vaz[[1]]), c("hl", "vaz", "rend", "inhull"))
+    expect_equal(colnames(pred_full_vaz[[1]]), c("hl", "vaz", "rend", "pot", "inhull"))
     expect_equal(pred_full_vaz[[1]]$rend, pred_vec_vaz)
 
     # PLOTS
@@ -145,7 +145,7 @@ test_that("Modelagem por Thin Plate", {
     pred_full <- predict(interp, gg, TRUE)
     expect_equal(class(pred_full), "gradecolina")
     expect_equal(class(pred_full[[2]]), "curvacolina")
-    expect_equal(colnames(pred_full[[1]]), c("hl", "pot", "rend", "inhull"))
+    expect_equal(colnames(pred_full[[1]]), c("hl", "pot", "rend", "vaz", "inhull"))
     expect_equal(pred_full[[1]]$rend, pred_vec)
 
     # PREDICTS COM INTERP DE VAZ
@@ -157,7 +157,7 @@ test_that("Modelagem por Thin Plate", {
     pred_full_vaz <- predict(interp_vaz, gg_vaz, TRUE)
     expect_equal(class(pred_full_vaz), "gradecolina")
     expect_equal(class(pred_full_vaz[[2]]), "curvacolina")
-    expect_equal(colnames(pred_full_vaz[[1]]), c("hl", "vaz", "rend", "inhull"))
+    expect_equal(colnames(pred_full_vaz[[1]]), c("hl", "vaz", "rend", "pot", "inhull"))
     expect_equal(pred_full_vaz[[1]]$rend, pred_vec_vaz)
 
     # PLOTS
@@ -205,7 +205,7 @@ test_that("Interolador Multiplo", {
     pred_full <- predict(interp, gg, TRUE)
     expect_equal(class(pred_full), "gradecolina")
     expect_equal(class(pred_full[[2]]), "curvacolina")
-    expect_equal(colnames(pred_full[[1]]), c("hl", "pot", "rend", "inhull"))
+    expect_equal(colnames(pred_full[[1]]), c("hl", "pot", "rend", "vaz", "inhull"))
     expect_equal(pred_full[[1]]$rend, pred_vec)
 
     # PLOTS
@@ -251,6 +251,6 @@ test_that("Interolador Multiplo", {
     pred_full <- predict(interp, gg, TRUE)
     expect_equal(class(pred_full), "gradecolina")
     expect_equal(class(pred_full[[2]]), "curvacolina")
-    expect_equal(colnames(pred_full[[1]]), c("hl", "vaz", "rend", "inhull"))
+    expect_equal(colnames(pred_full[[1]]), c("hl", "vaz", "rend", "pot", "inhull"))
     expect_equal(pred_full[[1]]$rend, pred_vec)
 })
