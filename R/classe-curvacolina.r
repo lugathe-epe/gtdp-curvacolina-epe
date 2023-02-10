@@ -184,6 +184,7 @@ new_curvacolina <- function(curvas, g, rho) {
         curvas[, vaz := pot / (hl * rend / 100 * rho * g) * 1e6]
     }
     setcolorder(curvas, c("hl", "pot", "vaz", "rend"))
+    curvas <- curvas[rend != 0]
 
     colina <- list(CC = curvas)
 
