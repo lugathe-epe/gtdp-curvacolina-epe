@@ -97,11 +97,12 @@ learqprocit <- function(arq) {
     alterada <- grepl("Alterada", abas_colina)
     if(any(alterada)) abas_colina <- abas_colina[alterada]
 
-    rho_g <- lapply(abas_abertura, function(a) {
-        plan <- as.data.table(readxl::read_xlsx(arq, a, col_names = FALSE, .name_repair = "minimal"))
-        plan <- as.numeric(plan[14:18, 7][[1]])
-        if(all(is.na(plan[4:5]))) return(plan[1:2]) else return(plan[4:5])
-    })
+    # algumas planilhas de procit com mais de uma colina tem rho e g em todas as aberturas e algumas
+    # so tem na abertura (1). Pode ser um bug do codigo antigo
+    rho_g <- as.data.table(readxl::read_xlsx(arq, abas_abertura[1], col_names = FALSE, .name_repair = "minimal"))
+    rho_g <- as.numeric(rho_g[14:18, 7][[1]])
+    rho_g <- if(all(is.na(rho_g[4:5]))) rho_g[1:2] else rho_g[4:5]
+    rho_g <- lapply(abas_abertura, function(i) rho_g)
 
     colinas <- mapply(abas_colina, rho_g, FUN = function(a, r_g) {
         learqcolina(arq, a, r_g[1], r_g[2])
