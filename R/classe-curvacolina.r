@@ -269,7 +269,7 @@ rbind.curvacolina <- function(...) {
 #' 
 #' @export
 
-write.curvacolina <- function(x, file) fwrite(x$CC, file, quote = FALSE, sep = ";")
+write.curvacolina <- function(x, file) fwrite(x$CC, file, quote = FALSE)
 
 # HELPERS ------------------------------------------------------------------------------------------
 
