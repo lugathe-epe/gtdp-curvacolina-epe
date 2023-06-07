@@ -28,7 +28,6 @@ thinplate <- function(colina, taxa_reducao = 1, modo = "pot", ...) {
 
     cols <- c("hl", modo)
     mod <- Tps(colina_reduzida$CC[, .SD, .SDcols = cols], colina_reduzida$CC$rend, lambda = 0)
-    mod$matrices <- NULL # tira esse peso morto do objeto, nao tem utilidade p curvacolina
 
     new_thinplate(mod, colina, modo)
 }
@@ -61,6 +60,7 @@ getcolina.thinplate <- function(object) object$colina
 #'     objeto \code{\link{gradecolina}}
 #' 
 #' @export
+#' 
 
 predict.thinplate <- function(object, pontos, as.gradecolina = FALSE, ...) {
 

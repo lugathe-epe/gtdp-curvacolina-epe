@@ -1,5 +1,9 @@
 ##################################### FUNCOES PARA INTERPOLACAO ####################################
 
+predict <- function(...) {
+  stats::predict(...)
+}
+
 #' Modelo Para Interpolacao De Curva Colina
 #' 
 #' Funcao para estimacao de diferentes interpoladores de curva colina

@@ -147,9 +147,9 @@ predict.gradecolina <- function(object, pontos, full.output = FALSE, ...) {
     rendGrade <- data.matrix(dcast(gradecolina, form, value.var = "rend")[, -1])
 
     pontos[, ordem0 := seq_len(.N)]
-    if(modo == "pot") setorder(pontos, pot) else setorder(pontos, vaz)
-    hlPred <- pontos[["hl"]]
-    YPred  <- pontos[[modo]]
+    #if(modo == "pot") setorder(pontos, pot) else setorder(pontos, vaz)
+    hlPred <- as.double(pontos[["hl"]])
+    YPred  <- as.double(pontos[[modo]])
 
     interp <- INTERPBILIN(hlGrade, YGrade, rendGrade, hlPred, YPred)
 

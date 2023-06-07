@@ -26,7 +26,7 @@
 #' 
 #' @return vetor de valores interpolados
 INTERPBILIN <- function(hlGrade, potGrade, rendGrade, hlPred, potPred) {
-    .Call(`_curvacolina_INTERPBILIN`, hlGrade, potGrade, rendGrade, hlPred, potPred)
+    .Call(`_colinapython_INTERPBILIN`, hlGrade, potGrade, rendGrade, hlPred, potPred)
 }
 
 #' Implementacao Do Algoritmo Raycasting
@@ -43,6 +43,6 @@ INTERPBILIN <- function(hlGrade, potGrade, rendGrade, hlPred, potPred) {
 #' 
 #' @return vetor coluna de 0s e 1s indicando quais pontos estao dentro do poligono
 PTINPOLY <- function(points, poly) {
-    .Call(`_curvacolina_PTINPOLY`, points, poly)
+    .Call(`_colinapython_PTINPOLY`, points, poly)
 }
 

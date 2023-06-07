@@ -97,12 +97,11 @@ learqprocit <- function(arq) {
     alterada <- grepl("Alterada", abas_colina)
     if(any(alterada)) abas_colina <- abas_colina[alterada]
 
-    # algumas planilhas de procit com mais de uma colina tem rho e g em todas as aberturas e algumas
-    # so tem na abertura (1). Pode ser um bug do codigo antigo
-    rho_g <- as.data.table(readxl::read_xlsx(arq, abas_abertura[1], col_names = FALSE, .name_repair = "minimal"))
-    rho_g <- as.numeric(rho_g[14:18, 7][[1]])
-    rho_g <- if(all(is.na(rho_g[4:5]))) rho_g[1:2] else rho_g[4:5]
-    rho_g <- lapply(abas_abertura, function(i) rho_g)
+    rho_g <- lapply(abas_abertura, function(a) {
+        plan <- as.data.table(readxl::read_xlsx(arq, a, col_names = FALSE, .name_repair = "minimal"))
+        plan <- as.numeric(plan[14:18, 7][[1]])
+        if(all(is.na(plan[4:5]))) return(plan[1:2]) else return(plan[4:5])
+    })
 
     colinas <- mapply(abas_colina, rho_g, FUN = function(a, r_g) {
         learqcolina(arq, a, r_g[1], r_g[2])
@@ -185,7 +184,6 @@ new_curvacolina <- function(curvas, g, rho) {
         curvas[, vaz := pot / (hl * rend / 100 * rho * g) * 1e6]
     }
     setcolorder(curvas, c("hl", "pot", "vaz", "rend"))
-    curvas <- curvas[rend != 0]
 
     colina <- list(CC = curvas)
 
@@ -269,7 +267,7 @@ rbind.curvacolina <- function(...) {
 #' 
 #' @export
 
-write.curvacolina <- function(x, file) fwrite(x$CC, file, quote = FALSE)
+write.curvacolina <- function(x, file) fwrite(x$CC, file, quote = FALSE, sep = ";")
 
 # HELPERS ------------------------------------------------------------------------------------------
 
