@@ -1,5 +1,5 @@
 test_that("Leitura de colinas pura", {
-    arq <- system.file("extdata/colina.xlsx", package = "curvacolina")
+    arq <- system.file("extdata/colina.xlsx", package = "colinapython")
     colina <- learqcolina(arq)
 
     expect_equal(class(colina), "curvacolina")
@@ -20,14 +20,14 @@ test_that("Leitura de colinas pura", {
 
     # COLINA VAZIA
 
-    arq <- system.file("extratestdata/colina_vazia.xlsx", package = "curvacolina")
+    arq <- system.file("extratestdata/colina_vazia.xlsx", package = "colinapython")
     colina <- learqcolina(arq)
 
     expect_true(is.null(colina))
 })
 
 test_that("Leitura de colinas fornecendo rho e g", {
-    arq <- system.file("extdata/colina.xlsx", package = "curvacolina")
+    arq <- system.file("extdata/colina.xlsx", package = "colinapython")
     colina <- learqcolina(arq, rho = 1000, g = 9.81)
 
     expect_equal(class(colina), "curvacolina")
@@ -68,7 +68,7 @@ test_that("Colina dummy", {
 })
 
 test_that("Leitura de processo iterativo com 1 colina", {
-    arq <- system.file("extratestdata/procit_cc_alterada_1colina.xlsx", package = "curvacolina")
+    arq <- system.file("extratestdata/procit_cc_alterada_1colina.xlsx", package = "colinapython")
     colina <- learqprocit(arq)
 
     expect_equal(class(colina), "curvacolina")
@@ -94,7 +94,7 @@ test_that("Leitura de processo iterativo com 1 colina", {
 })
 
 test_that("Leitura de processo iterativo (CC Original)", {
-    arq <- system.file("extdata/procit_cc_original.xlsx", package = "curvacolina")
+    arq <- system.file("extdata/procit_cc_original.xlsx", package = "colinapython")
     colina <- learqprocit(arq)
 
     expect_true(is.list(colina))
@@ -125,7 +125,7 @@ test_that("Leitura de processo iterativo (CC Original)", {
 })
 
 test_that("Leitura de processo iterativo (CC Alterada)", {
-    arq <- system.file("extdata/procit_cc_alterada.xlsx", package = "curvacolina")
+    arq <- system.file("extdata/procit_cc_alterada.xlsx", package = "colinapython")
     colina <- learqprocit(arq)
 
     expect_true(is.list(colina))
@@ -156,7 +156,7 @@ test_that("Leitura de processo iterativo (CC Alterada)", {
 })
 
 test_that("Leitura de processo iterativo (CC Alterada) montada errada", {
-    arq <- system.file("extratestdata/procit_alterada_orig.xlsx", package = "curvacolina")
+    arq <- system.file("extratestdata/procit_alterada_orig.xlsx", package = "colinapython")
     expect_warning(colina <- learqprocit(arq))
 
     expect_true(is.list(colina))
@@ -274,7 +274,7 @@ test_that("as.curvacolina", {
 
     # PRESERVACAO DE VAZAO -----------------------------------------------------
 
-    cc <- learqprocit(system.file("extdata/procit_cc_original.xlsx", package = "curvacolina"))[[1]]
+    cc <- learqprocit(system.file("extdata/procit_cc_original.xlsx", package = "colinapython"))[[1]]
 
     cc2 <- as.curvacolina(cc$CC)
     expect_true(all(mapply("-", cc$CC, cc2$CC) == 0))
