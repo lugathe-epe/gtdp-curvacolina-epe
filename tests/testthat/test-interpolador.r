@@ -16,7 +16,7 @@ test_that("Modelagem por Triangulacao", {
 
     # MODO VAZAO
 
-    colina <- learqprocit(system.file("extdata/procit_cc_original.xlsx", package = "curvacolina"))
+    colina <- learqprocit(system.file("extdata/procit_cc_original.xlsx", package = "colinapython"))
     interp_vaz <- interpolador(colina[[1]], "triangulacao", modo = "vaz", taxa_reducao = 5)
 
     # PREDICT VAZIO
