@@ -38,7 +38,7 @@ test_that("Interpolacao Bilinear", {
 
     # TESTE COM INTERPOLADOR POR VAZAO -----------------------------------------
 
-    colina2 <- learqprocit(system.file("extdata/procit_cc_alterada.xlsx", package = "curvacolina"))
+    colina2 <- learqprocit(system.file("extdata/procit_cc_alterada.xlsx", package = "colinapython"))
     tri <- interpolador(colina2[[1]], "triangulacao", modo = "vaz")
     gradecolina <- predict(tri, coordgrade(colina2[[1]], 100, dvaz = 100), as.gradecolina = TRUE)
 
