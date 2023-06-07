@@ -1,4 +1,4 @@
 library(testthat)
-library(curvacolina)
+library(colinapython)
 
-test_check("curvacolina")
+test_check("colinapython")
