@@ -1,5 +1,5 @@
 test_that("Visuazalicao de curvacolina", {
-    colina2 <- learqprocit(system.file("extdata/procit_cc_alterada.xlsx", package = "curvacolina"))
+    colina2 <- learqprocit(system.file("extdata/procit_cc_alterada.xlsx", package = "colinapython"))
 
     p2d <- plot(colinadummy, "2d", print = FALSE)
     p3d <- plot(colinadummy, "3d", print = FALSE)
