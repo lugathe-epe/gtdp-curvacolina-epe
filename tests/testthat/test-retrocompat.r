@@ -1,10 +1,10 @@
 test_that("Reta Minima Distancia", {
     arq <- system.file("extratestdata/retamindist/colina_Processada/preliminar/retamindistteste.csv",
-        package = "curvacolina")
+        package = "colinapython")
     expect_warning(interp <- retamindist(arq))
 
     arq <- system.file("extratestdata/retamindist/colina_Processada/preliminar/retamindistteste_1.csv",
-        package = "curvacolina")
+        package = "colinapython")
     interp <- retamindist(arq)
 
     expect_equal(class(interp), c("retamindist", "interpolador"))
